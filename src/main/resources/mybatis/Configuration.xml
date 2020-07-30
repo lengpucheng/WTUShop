@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+
+
+
+
+
+    <!-- 在Spring中已经配置别名 -->
+<!--    <typeAliases>
+        &lt;!&ndash;        <typeAlias type="UserInfo" alias="UserInfo"/>&ndash;&gt;
+        <package name="cn.hll520.wtuShop.pojo"/>
+    </typeAliases>-->
+
+    <!-- 在Spring中已经通过引用JDBC PROPERTIES文件配置 -->
+<!--    <environments default="development">
+        <environment id="development">
+
+            <transactionManager type="JDBC">
+                <property name="" value=""/>
+            </transactionManager>
+
+            <dataSource type="UNPOOLED">
+                <property name="driver" value="com.mysql.cj.jdbc.Driver"/>
+                <property name="url" value="jdbc:mysql://db.wtu.hll520.cn:10105/WTUShop"/>
+                <property name="username" value="root"/>
+                <property name="password" value="Hll520!!!"/>
+            </dataSource>
+
+        </environment>
+    </environments>-->
+
+<!--    &lt;!&ndash;     设置独立日志输出，避免和Spring冲突 &ndash;&gt;-->
+<!--    <settings>-->
+<!--        <setting name="logImpl" value="LOG4J"/>-->
+<!--    </settings>-->
+
+    <!-- 配置分页插件 -->
+    <plugins>
+        <!-- com.github.pagehelper为PageHelper类所在包名 -->
+        <plugin interceptor="com.github.pagehelper.PageInterceptor">
+            <!-- 使用下面的方式配置参数，后面会有所有的参数介绍 -->
+            <property name="reasonable" value="true"/>
+        </plugin>
+    </plugins>
+
+
+
+    <!-- 索引映射其他的Mapper文件 -->
+    <mappers>
+        <mapper resource="mybatis/UserinfoMapper.xml"/>
+        <mapper resource="mybatis/CategoryMapper.xml"/>
+        <mapper resource="mybatis/GoodsMapper.xml"/>
+        <mapper resource="mybatis/AdminMapper.xml"/>
+    </mappers>
+
+</configuration>
