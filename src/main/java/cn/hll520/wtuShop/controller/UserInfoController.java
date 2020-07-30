@@ -71,10 +71,14 @@ public class UserInfoController {
     @RequestMapping(path = "/dologin")
     public String login2(HttpServletRequest request, HttpServletResponse response, UserInfo userInfo) {
         UserInfo loginUser = service.login(userInfo);
+
+        response.setContentType("text/html; charset=utf-8");
+
+
         if (loginUser != null) {
             request.getSession().setAttribute("user", loginUser);
             /* 不写 redirect: 表示请求转发   带上表示302重定向*/
-            return "redirect:/index";
+            return "redirect:/admin/category/search";
         } else {
             try {
                 response.getWriter().write("<script>alert('登录失败');history.go(-1)</script>");
@@ -105,6 +109,7 @@ public class UserInfoController {
         int register = service.register(userInfo);
 
         System.out.println(register);
+        response.setContentType("text/html; charset=utf-8");
 
         if (register < 1){
             try {
@@ -114,6 +119,6 @@ public class UserInfoController {
             }
             return null;
         }
-        return "redirect:/hello";
+        return "redirect:/login";
     }
 }

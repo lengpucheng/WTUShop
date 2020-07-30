@@ -25,10 +25,14 @@
 
     <!-- 渲染视图 -->
     <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-        <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
-        <property name="prefix" value="/WEB-INF/jsp/"/>
-        <property name="suffix" value=".jsp"/>
+    <!--        <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>-->
+        <property name="prefix" value="/WEB-INF/views/"/>
+        <property name="suffix" value=".html"/>
     </bean>
+
+    <!-- 不拦截静态文件 -->
+    <mvc:default-servlet-handler/>
+
 
     <!-- 忽略static路径下的任何url，直接映射到真实路径， mapping下的**(逻辑路径） 在location中 -->
     <mvc:resources  location="/static/" mapping="/static/**"/>

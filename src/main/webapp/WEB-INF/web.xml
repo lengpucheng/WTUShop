@@ -12,7 +12,7 @@
 
     <!-- 首页 -->
     <welcome-file-list>
-        <welcome-file>index.jsp</welcome-file>
+        <welcome-file>index.html</welcome-file>
     </welcome-file-list>
 
 
@@ -58,10 +58,10 @@
             <param-name>forceRequestEncoding</param-name>
             <param-value>true</param-value>
         </init-param>
-        <init-param>
+       <!-- <init-param>
             <param-name>forceResponseEncoding</param-name>
             <param-value>true</param-value>
-        </init-param>
+        </init-param>-->
     </filter>
     <!-- 过滤器索引（作用域） -->
     <filter-mapping>

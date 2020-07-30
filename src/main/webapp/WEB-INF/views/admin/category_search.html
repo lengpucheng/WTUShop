@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>客户列表</title>
+    <script type="text/javascript" src="http://127.0.0.1/WTUShop/static/js/jquery.min.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            search();
+            $("#search").click(function () {
+                $("#searchVar").html("");
+                search();
+            });
+
+            $("#reset").click(function () {
+                $("#searchVar").html("");
+                $("#nameKey").val("");
+                search();
+            });
+
+            $("#upon").click(function () {
+                $("#searchVar").html("");
+                search(pageNow - 1);
+            });
+
+
+            $("#next").click(function () {
+                $("#searchVar").html("");
+                search(pageNow + 1);
+            });
+
+            $("#start").click(function () {
+                $("#searchVar").html("");
+                search(1);
+            });
+
+            $("#last").click(function () {
+                $("#searchVar").html("");
+                search(pageAll);
+            });
+        });
+
+        var pageNow = 1;
+        var pageAll= 1;
+
+        function search(page, size) {
+            $.getJSON(
+                "http://127.0.0.1/WTUShop/admin/category/doSearch",
+                {name: $("#nameKey").val(), pageIndex: page, pageSize: size},
+                function (json) {
+                    if (json.statusCode !== 200) {
+                        alert("获取数据失败！" + json.msg);
+                        return false;
+                    }
+
+                    $("#sumRows").html(json.data.total);
+                    pageNow = json.data.pageNum;
+                    $("#pageNum").html(pageNow);
+                    pageAll=json.data.pages;
+                    $("#pages").html(pageAll);
+
+                    $("#upon").attr('disabled', json.data.isFirstPage);
+                    $("#next").attr('disabled', json.data.isLastPage);
+
+
+                    for (let i = 0; i < json.data.list.length; i++) {
+                        let category = json.data.list[i];
+                        $("#searchVar").append(`
+                        <tr>
+                        <td>${category.id}</td>
+                        <td>${category.name}</td>
+                        <td>${category.goodsNum}</td>
+                        <td><a href="del/${category.id}" >删除</a>&nbsp;<a href="edit/${category.id}" >编辑</a></td>
+                        </tr>
+                        `);
+                    }
+                },
+                "json"
+            );
+        }
+
+
+    </script>
+</head>
+<body>
+<h1>客户列表</h1>
+搜索：<label for="nameKey"></label><input type="text" id="nameKey">&nbsp;&nbsp;
+<button id="search">搜索</button>&nbsp;
+<button id="reset">恢复</button>&nbsp;
+共找到<span id="sumRows" style="color: crimson"></span>条数据&nbsp;
+<a href="http://127.0.0.1/WTUShop/admin/category/toAdd"><button>添加</button></a>
+
+<table id="listCustomer">
+    <thead>
+    <th>ID</th>
+    <th>商品名称</th>
+    <th>商品数量</th>
+    <th>操作</th>
+    </thead>
+    <tbody id="searchVar">
+    <!-- 预留数据 -->
+
+
+    </tbody>
+    <tfoot>
+    <!-- 尾部数据 -->
+    <td><a href="#" id="start">首页</a></td>
+    <td>
+        <button id="upon" >上一页</button>&nbsp;
+        第<span id="pageNum" style="color: #142fdc"></span>页&nbsp;
+        <button id="next">下一页</button>
+        共<span id="pages"></span>页&nbsp;
+    </td>
+    <td><a href="#" id="last">末页</a></td>
+    <td></td>
+    </tfoot>
+</table>
+</body>
+</html>
