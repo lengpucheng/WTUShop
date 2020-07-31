@@ -93,6 +93,6 @@ public class GoodsServiceImpl implements GoodsService {
         /* 如果类别为空就返回错误 */
         if (goods.getCategoryId() == null || categoryMapper.selectByPrimaryKey(goods.getCategoryId()) == null)
             return -1;
-        return mapper.updateByPrimaryKey(goods);
+        return mapper.updateByPrimaryKeySelective(goods);
     }
 }

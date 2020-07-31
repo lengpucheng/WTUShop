@@ -123,6 +123,7 @@ public class GoodsController {
         JsonResult result=new JsonResult();
         Goods old = (Goods) request.getSession().getAttribute("goods");
         goods.setId(old.getId());
+        goods.setCreateTime(old.getCreateTime());
         goods.setUpdateTime(new Date());
         int rows = service.editGoodsByID(goods);
         if(rows==0){
