@@ -64,24 +64,50 @@ public class UserInfoController {
      * */
     private final UserInfoService service;
 
+    /**
+     * 通过构造函数获取当前业务对象
+     */
     public UserInfoController(UserInfoService service) {
         this.service = service;
     }
 
+    /**
+     * 转发登录页面
+     */
+    @RequestMapping(path = "/login")
+    public ModelAndView appLoginForward() {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("login");
+        /*  将请求发送到数据解析（Adapter）  */
+        return modelAndView;
+    }
+
+    /**
+     * 转发注册页面
+     */
+    @RequestMapping(path = "/register")
+    public String appRegisterForward() {
+        return "register";
+    }
+
+
+    /**
+     * 执行登录
+     */
     @RequestMapping(path = "/dologin")
     public String login2(HttpServletRequest request, HttpServletResponse response, UserInfo userInfo) {
         UserInfo loginUser = service.login(userInfo);
 
         response.setContentType("text/html; charset=utf-8");
 
-
         if (loginUser != null) {
             request.getSession().setAttribute("user", loginUser);
             /* 不写 redirect: 表示请求转发   带上表示302重定向*/
-            return "redirect:/admin/category/search";
+            return "redirect:/admin/category";
+
         } else {
             try {
-                response.getWriter().write("<script>alert('登录失败');history.go(-1)</script>");
+                response.getWriter().write(JSTools.alterBack("登陆失败！"));
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -89,29 +115,17 @@ public class UserInfoController {
         }
     }
 
-
-    @RequestMapping(path = "/login")
-    public ModelAndView loginJSP() {
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("login");
-
-        /*  将请求发送到数据解析（Adapter）  */
-        return modelAndView;
-    }
-
-    @RequestMapping(path = "/register")
-    public String register() {
-        return "register";
-    }
-
+    /**
+     * 执行注册
+     */
     @RequestMapping(path = "/doRegister")
-    public String doRegister(UserInfo userInfo,HttpServletResponse response) {
+    public String doRegister(UserInfo userInfo, HttpServletResponse response) {
         int register = service.register(userInfo);
 
         System.out.println(register);
         response.setContentType("text/html; charset=utf-8");
 
-        if (register < 1){
+        if (register < 1) {
             try {
                 response.getWriter().write(JSTools.alterBack("注册失败！"));
             } catch (IOException e) {
@@ -119,6 +133,7 @@ public class UserInfoController {
             }
             return null;
         }
+
         return "redirect:/login";
     }
 }

@@ -24,4 +24,25 @@ public interface CategoryService {
      * @return  商品类别集合
      */
     PageInfo<Category> search(Category category, int pageIndex, int pageSize);
+
+    /**
+     * 根据ID获取类别信息
+     * @param id ID
+     * @return  类别对象
+     */
+    Category getCategoryByID(Integer id);
+
+    /**
+     * 根据ID修改
+     * @param category 修改的对象
+     * @return 修改的条数
+     */
+    int editByID(Category category);
+
+    /**
+     * 根据 ID 删除
+     * @param integer ID
+     * @return 删除的条数
+     */
+    int delByID(Integer integer);
 }

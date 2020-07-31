@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>修改信息</title>
+    <script type="text/javascript" src="http://127.0.0.1/WTUShop/static/js/jquery.min.js"></script>
+    <script>
+        $(function () {
+
+            $.getJSON(
+                "http://127.0.0.1/WTUShop/admin/category/getEdit",
+                {},
+                function (json) {
+                    if(json.statusCode!==200){
+                        alert("获取失败！"+json.msg);
+                    }
+                    $("#cid").attr("value", json.data.id);
+                    $("#name").attr("value", json.data.name);
+                    $("#goodsNum").attr("value", json.data.goodsNum);
+                },
+                "json"
+            );
+
+
+            $("#btn_submit").click(function () {
+                $.getJSON(
+                    "http://127.0.0.1/WTUShop/admin/category/doEdit",
+                    $("#editInfo").serialize(),
+                    function (json) {
+                        if (json.statusCode === 200) {
+                            alert("修改成功");
+                            location.href = "http://127.0.0.1/WTUShop/admin/category/search";
+                            //正常响应
+                        } else {
+                            alert(json.msg);
+                        }
+                    },
+                    "json"
+                );
+            })
+        });
+    </script>
+</head>
+<body>
+<h3>类别添加</h3>
+<form id="editInfo" method="post">
+    ID：<label for="cid"></label><input id="cid" type="text" name="cid" value="" disabled><br>
+    类别名：<label for="name"></label><input id="name" type="text" name="name"><br>
+    商品数量：<label for="goodsNum"></label><input id="goodsNum" type="text" name="goodsNum"><br>
+    <input id="btn_submit" type="button" value="修改">
+</form>
+</body>
+</html>

@@ -8,34 +8,28 @@
         $(function () {
             search();
             $("#search").click(function () {
-                $("#searchVar").html("");
                 search();
             });
 
             $("#reset").click(function () {
-                $("#searchVar").html("");
                 $("#nameKey").val("");
                 search();
             });
 
             $("#upon").click(function () {
-                $("#searchVar").html("");
                 search(pageNow - 1);
             });
 
 
             $("#next").click(function () {
-                $("#searchVar").html("");
                 search(pageNow + 1);
             });
 
             $("#start").click(function () {
-                $("#searchVar").html("");
                 search(1);
             });
 
             $("#last").click(function () {
-                $("#searchVar").html("");
                 search(pageAll);
             });
         });
@@ -43,6 +37,7 @@
         var pageNow = 1;
         var pageAll= 1;
         function search(page, size) {
+            $("#searchVar").html("");
             $.getJSON(
                 "http://127.0.0.1/WTUShop/admin/category/doSearch",
                 {name: $("#nameKey").val(), pageIndex: page, pageSize: size},
@@ -68,7 +63,7 @@
                         <td>${category.name}</td>
                         <td>${category.goodsNum}</td>
                         <td><a href="javascript:delCategory(${category.id})" >删除</a>&nbsp;
-                        <a href="toEdit/${category.id}" >编辑</a></td>
+                        <a href="http://127.0.0.1/WTUShop/admin/category/toEdit/${category.id}" >编辑</a></td>
                         </tr>
                         `);
                     }
@@ -78,8 +73,10 @@
         }
         
         function delCategory(CategoryID) {
+            if(!confirm("确定要删除吗？"))
+                return false;
             $.post(
-                "http://127.0.0.1/WTUShop/admin/category/delCategory/"+CategoryID,
+                "http://127.0.0.1/WTUShop/admin/category/del/"+CategoryID,
                 {},
                 function (json) {
                     if (json.statusCode !== 200) {
@@ -87,6 +84,8 @@
                         return false;
                     }
                     alert("删除成功");
+
+                    search(pageNow);
                 },
                 "json"
             ).fail(function () {

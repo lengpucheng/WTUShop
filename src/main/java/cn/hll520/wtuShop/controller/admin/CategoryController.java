@@ -6,16 +6,19 @@ import cn.hll520.wtuShop.utils.JsonResult;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
  * @author lpc
  * @create 2020-07-30-8:45
  */
+@SuppressWarnings("all")
 @Controller
 @RequestMapping(path = "/admin/category/")
 public class CategoryController {
@@ -23,16 +26,22 @@ public class CategoryController {
     @Autowired
     private CategoryService service;
 
-    @RequestMapping(path = "toAdd")
-    public String toAdd() {
-        return "admin/category_toAdd";
+    /**
+     * 转发请求页面
+     */
+    @RequestMapping(path = "{method}")
+    public String appforward(@PathVariable String method) {
+        System.out.println(method);
+        return "admin/category/" + method;
     }
 
+    /**
+     * 执行添加
+     */
     @RequestMapping(path = "doAdd")
     @ResponseBody
     public JsonResult doAdd(Category category, HttpServletResponse response) {
         int result = service.addCategory(category);
-
 
         JsonResult jsonResult = new JsonResult();
         jsonResult.setData(result);
@@ -50,24 +59,16 @@ public class CategoryController {
         return jsonResult;
     }
 
-    @RequestMapping(path = "search")
-    public String search() {
-        return "admin/category_search";
-    }
-
-
-    /* @RequestParam可以设置默认值 name是接收的参数名（默认和形参一致），defaultValue为默认值  */
+    /**
+     * 模糊搜索
+     * {@RequestParam 可以设置默认值} name是接收的参数名（默认和形参一致），defaultValue为默认值
+     */
     @ResponseBody
     @RequestMapping(path = "doSearch")
     public JsonResult search(Category category, @RequestParam(name = "pageIndex", defaultValue = "1") Integer pageIndex, @RequestParam(defaultValue = "5") Integer pageSize) {
         JsonResult jsonResult = new JsonResult();
         PageInfo<Category> search = service.search(category, pageIndex, pageSize);
-//        if(search.size()<1){
-//            jsonResult.setStatusCode(500);
-//            jsonResult.setMsg("查询失败");
-//        }else{
-//            jsonResult.setStatusCode(200);
-//        }
+
         if (search.getList().size() < 1)
             jsonResult.setStatusCode(JsonResult.STATUS_NOTFOUND);
         else
@@ -76,6 +77,73 @@ public class CategoryController {
         return jsonResult;
     }
 
+    /**
+     * 报错需要修改的内容到会话中  {@PathVariable 表示路径中的变量}，即占位符,name 为参数名称，默认和形参一致
+     */
+    @RequestMapping(path = "toEdit/{id}")
+    public String toEdit(@PathVariable(name = "id") Integer id, HttpServletRequest request) {
+        Category category = service.getCategoryByID(id);
+        request.getSession().setAttribute("category", category);
+        return "admin/category/toEdit";
+    }
 
+    /**
+     * 获取当前正在编辑的内容
+     */
+    @ResponseBody
+    @RequestMapping(path = "getEdit")
+    public JsonResult getEdit(HttpServletRequest request) {
+        JsonResult jsonResult = new JsonResult();
+        Object category = request.getSession().getAttribute("category");
+        if (category == null)
+            jsonResult.setStatusCode(JsonResult.STATUS_ERROR);
+        jsonResult.setData(category);
+        return jsonResult;
+    }
+
+    /**
+     * 执行修改
+     */
+    @ResponseBody
+    @RequestMapping(path = "doEdit")
+    public JsonResult doEdit(Category category, HttpServletRequest request) {
+
+        System.out.println("____________" + category);
+
+        JsonResult result = new JsonResult();
+        Category old = (Category) request.getSession().getAttribute("category");
+        category.setId(old.getId());
+        int rows = service.editByID(category);
+        if (rows == 1)
+            result.setStatusCode(JsonResult.STATUS_SUCCESS_OK);
+        else if (rows == 0)
+            result.setStatusCode(JsonResult.STATUS_ERROR);
+        else {
+            result.setStatusCode(JsonResult.STATUS_ERROR);
+            result.setMsg("名称重复！");
+        }
+        result.setData(rows);
+        return result;
+    }
+
+    /**
+     * 执行删除
+     */
+    @ResponseBody
+    @RequestMapping(path = "del/{id}")
+    public JsonResult delCategory(@PathVariable Integer id) {
+        JsonResult result = new JsonResult();
+        int rows = service.delByID(id);
+        if (rows == 1)
+            result.setStatusCode(JsonResult.STATUS_SUCCESS_OK);
+        else if (rows == 0) {
+            result.setStatusCode(JsonResult.STATUS_NOTFOUND);
+        } else {
+            result.setStatusCode(JsonResult.STATUS_ERROR);
+            result.setMsg("该类别下还有商品没有移除！");
+        }
+        result.setData(rows);
+        return result;
+    }
 
 }

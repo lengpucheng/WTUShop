@@ -23,6 +23,8 @@ public class GoodsController {
         this.service = service;
     }
 
+
+
     @RequestMapping(path = "getAll")
     /* 该注解可以将List转换为Json */
     @ResponseBody
