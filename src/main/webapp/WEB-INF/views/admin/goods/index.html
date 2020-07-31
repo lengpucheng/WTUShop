@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>类别列表</title>
+    <title>商品列表</title>
     <script type="text/javascript" src="http://127.0.0.1/WTUShop/static/js/jquery.min.js"></script>
     <script type="text/javascript">
         $(function () {
@@ -40,7 +40,7 @@
         function search(page, size) {
             $("#searchVar").html("");
             $.getJSON(
-                "http://127.0.0.1/WTUShop/admin/category/doSearch",
+                "http://127.0.0.1/WTUShop/admin/goods/search",
                 {name: $("#nameKey").val(), pageIndex: page, pageSize: size},
                 function (json) {
                     if (json.statusCode !== 200) {
@@ -57,14 +57,19 @@
                     $("#next").attr('disabled', json.data.isLastPage);
 
                     for (let i = 0; i < json.data.list.length; i++) {
-                        let category = json.data.list[i];
+                        let goods = json.data.list[i];
                         $("#searchVar").append(`
                         <tr>
-                        <td>${category.id}</td>
-                        <td>${category.name}</td>
-                        <td>${category.goodsNum}</td>
-                        <td><a href="javascript:delCategory(${category.id})" >删除</a>&nbsp;
-                        <a href="http://127.0.0.1/WTUShop/admin/category/toEdit/${category.id}" >编辑</a></td>
+                        <td>${goods.categoryId}</td>
+                        <td>${goods.id}</td>
+                        <td>${goods.name}</td>
+                        <td>${goods.price}</td>
+                        <td>${goods.num}</td>
+                        <td>${goods.image}</td>
+                        <td>${goods.createTime}</td>
+                        <td>${goods.updateTime}</td>
+                        <td><a href="javascript:delCategory(${goods.id})" >删除</a>&nbsp;
+                        <a href="http://127.0.0.1/WTUShop/admin/goods/edit/${goods.id}" >编辑</a></td>
                         </tr>
                         `);
                     }
@@ -77,7 +82,7 @@
             if (!confirm("确定要删除吗？"))
                 return false;
             $.post(
-                "http://127.0.0.1/WTUShop/admin/category/del/" + CategoryID,
+                "http://127.0.0.1/WTUShop/admin/goods/doDel/" + CategoryID,
                 {},
                 function (json) {
                     if (json.statusCode !== 200) {
@@ -108,15 +113,20 @@
 <button id="search">搜索</button>&nbsp;
 <button id="reset">恢复</button>&nbsp;
 共找到<span id="sumRows" style="color: crimson"></span>条数据&nbsp;
-<a href="http://127.0.0.1/WTUShop/admin/category/toAdd">
+<a href="http://127.0.0.1/WTUShop/admin/goods/toAdd">
     <button>添加</button>
 </a>
 
 <table id="listCustomer">
     <thead>
-    <th>ID</th>
-    <th>类别名称</th>
-    <th>类别商品数量</th>
+    <th>所属类别</th>
+    <th>商品ID</th>
+    <th>商品名称</th>
+    <th>商品价格</th>
+    <th>商品数量</th>
+    <th>商品预览</th>
+    <th>创建时间</th>
+    <th>更新日期</th>
     <th>操作</th>
     </thead>
     <tbody id="searchVar">
@@ -126,13 +136,13 @@
     </tbody>
     <tfoot>
     <!-- 尾部数据 -->
-    <td colspan="4">
-        <a href="#" id="start">首页</a>
+    <td colspan="9">
+        <a href="#" id="start">首页</a>&nbsp;
         <button id="upon">上一页</button>&nbsp;
         第<span id="pageNum" style="color: #142fdc"></span>页&nbsp;
         <button id="next">下一页</button>&nbsp;
         共<span id="pages"></span>页&nbsp;
-        <a href="#" id="last">末页</a>
+        <a href="#" id="last">末页</a>&nbsp;
     </td>
     </tfoot>
 </table>

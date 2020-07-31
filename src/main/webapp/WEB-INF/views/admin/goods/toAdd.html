@@ -2,18 +2,18 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>类别添加</title>
+    <title>商品添加</title>
     <script type="text/javascript" src="http://127.0.0.1/WTUShop/static/js/jquery.min.js"></script>
     <script>
         $(function () {
             $("#btn_submit").click(function () {
                 $.getJSON(
-                    "http://127.0.0.1/WTUShop/admin/category/doAdd",
-                    {name: $("#name").val()},
+                    "http://127.0.0.1/WTUShop/admin/goods/doAdd",
+                    $("#goods").serialize(),
                     function (json) {
                         if (json.statusCode === 200) {
                             alert("添加成功");
-                            location.href = "http://127.0.0.1/WTUShop/admin/category";
+                            location.href = "http://127.0.0.1/WTUShop/admin/goods";
                             //正常响应
                         } else {
                             alert(json.msg);
@@ -27,8 +27,20 @@
 </head>
 <body>
 <h3>类别添加</h3>
-<form method="post">
-    类别名：<label for="name"></label><input id="name" type="text" name="name"><br>
+<form id="goods" method="post">
+    商品名称：<label>
+    <input type="text" name="name">
+</label><br>
+    商品价格：<label>
+    <input type="text" name="price">
+</label><br>
+    商品数量：<label>
+    <input type="text" name="num">
+</label><br>
+    商品预览：<input type="file" name="image"><br>
+    商品类别：<label>
+    <input type="text" name="categoryId">
+</label><br>
     <input id="btn_submit" type="button" value="添加">
 </form>
 </body>
