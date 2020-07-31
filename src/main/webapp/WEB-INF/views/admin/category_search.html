@@ -42,15 +42,13 @@
 
         var pageNow = 1;
         var pageAll= 1;
-
         function search(page, size) {
             $.getJSON(
                 "http://127.0.0.1/WTUShop/admin/category/doSearch",
                 {name: $("#nameKey").val(), pageIndex: page, pageSize: size},
                 function (json) {
                     if (json.statusCode !== 200) {
-                        alert("获取数据失败！" + json.msg);
-                        return false;
+                        $("#searchVar").html("没有找到相关内容 "+json.msg);
                     }
 
                     $("#sumRows").html(json.data.total);
@@ -62,7 +60,6 @@
                     $("#upon").attr('disabled', json.data.isFirstPage);
                     $("#next").attr('disabled', json.data.isLastPage);
 
-
                     for (let i = 0; i < json.data.list.length; i++) {
                         let category = json.data.list[i];
                         $("#searchVar").append(`
@@ -70,7 +67,8 @@
                         <td>${category.id}</td>
                         <td>${category.name}</td>
                         <td>${category.goodsNum}</td>
-                        <td><a href="del/${category.id}" >删除</a>&nbsp;<a href="edit/${category.id}" >编辑</a></td>
+                        <td><a href="javascript:delCategory(${category.id})" >删除</a>&nbsp;
+                        <a href="toEdit/${category.id}" >编辑</a></td>
                         </tr>
                         `);
                     }
@@ -78,9 +76,31 @@
                 "json"
             );
         }
+        
+        function delCategory(CategoryID) {
+            $.post(
+                "http://127.0.0.1/WTUShop/admin/category/delCategory/"+CategoryID,
+                {},
+                function (json) {
+                    if (json.statusCode !== 200) {
+                        alert("删除失败 "+json.msg);
+                        return false;
+                    }
+                    alert("删除成功");
+                },
+                "json"
+            ).fail(function () {
+                alert("网络错误!");
+            });
+        }
 
 
     </script>
+    <style type="text/css" >
+        td {
+            text-align:center;
+        }
+    </style>
 </head>
 <body>
 <h1>客户列表</h1>

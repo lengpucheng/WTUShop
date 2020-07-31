@@ -24,7 +24,7 @@ public class JsonResult {
     private int statusCode = STATUS_SUCCESS_OK;
 
     /** 响应提示信息 */
-    private String msg;
+    private String msg="";
 
     /** 响应的数据 */
     private Object data;

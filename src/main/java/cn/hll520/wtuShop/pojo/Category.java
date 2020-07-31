@@ -33,4 +33,13 @@ public class Category {
     public void setGoodsNum(Integer goodsNum) {
         this.goodsNum = goodsNum;
     }
+
+    @Override
+    public String toString() {
+        return "Category{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", goodsNum=" + goodsNum +
+                '}';
+    }
 }

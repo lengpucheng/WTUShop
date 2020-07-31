@@ -31,7 +31,6 @@ public class CategoryController {
     @RequestMapping(path = "doAdd")
     @ResponseBody
     public JsonResult doAdd(Category category, HttpServletResponse response) {
-        response.setContentType("");
         int result = service.addCategory(category);
 
 
@@ -52,28 +51,31 @@ public class CategoryController {
     }
 
     @RequestMapping(path = "search")
-    public String search(){
+    public String search() {
         return "admin/category_search";
     }
 
 
-
-    /* @RequestParam可以设置默认值  */
+    /* @RequestParam可以设置默认值 name是接收的参数名（默认和形参一致），defaultValue为默认值  */
     @ResponseBody
     @RequestMapping(path = "doSearch")
-    public JsonResult search(Category category, @RequestParam(defaultValue = "1") Integer pageIndex, @RequestParam(defaultValue = "5") Integer pageSize){
-        JsonResult jsonResult=new JsonResult();
-        PageInfo<Category> search = service.search(category,pageIndex,pageSize);
+    public JsonResult search(Category category, @RequestParam(name = "pageIndex", defaultValue = "1") Integer pageIndex, @RequestParam(defaultValue = "5") Integer pageSize) {
+        JsonResult jsonResult = new JsonResult();
+        PageInfo<Category> search = service.search(category, pageIndex, pageSize);
 //        if(search.size()<1){
 //            jsonResult.setStatusCode(500);
 //            jsonResult.setMsg("查询失败");
 //        }else{
 //            jsonResult.setStatusCode(200);
 //        }
-        System.out.println(category);
-        jsonResult.setStatusCode(JsonResult.STATUS_SUCCESS_OK);
+        if (search.getList().size() < 1)
+            jsonResult.setStatusCode(JsonResult.STATUS_NOTFOUND);
+        else
+            jsonResult.setStatusCode(JsonResult.STATUS_SUCCESS_OK);
         jsonResult.setData(search);
         return jsonResult;
     }
+
+
 
 }
