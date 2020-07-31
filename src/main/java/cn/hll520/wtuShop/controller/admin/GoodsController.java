@@ -1,4 +1,4 @@
-package cn.hll520.wtuShop.controller;
+package cn.hll520.wtuShop.controller.admin;
 
 import cn.hll520.wtuShop.pojo.Goods;
 import cn.hll520.wtuShop.service.GoodsService;

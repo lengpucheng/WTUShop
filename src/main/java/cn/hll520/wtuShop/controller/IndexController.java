@@ -15,11 +15,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class IndexController {
 
     /**
-     * 首页
+     * 转发首页和根页面
      */
     /*  method限定请求的方法   */
-    @RequestMapping(path = "/index", method = RequestMethod.GET)
-    public String forward() { return "index"; }
+    @RequestMapping(path = "/{module}", method = RequestMethod.GET)
+    public String forward(@PathVariable String module) { return module; }
 
 
     /**

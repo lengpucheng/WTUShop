@@ -5,7 +5,6 @@ import cn.hll520.wtuShop.service.UserInfoService;
 import cn.hll520.wtuShop.utils.JSTools;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -57,6 +56,7 @@ import java.io.IOException;
  * ————I.  addObject(key,obj)  对应 request.setAttribute(key,obj)
  */
 @Controller
+@RequestMapping(path = "user/")
 public class UserInfoController {
 
     /*
@@ -72,29 +72,9 @@ public class UserInfoController {
     }
 
     /**
-     * 转发登录页面
-     */
-    @RequestMapping(path = "/login")
-    public ModelAndView appLoginForward() {
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("login");
-        /*  将请求发送到数据解析（Adapter）  */
-        return modelAndView;
-    }
-
-    /**
-     * 转发注册页面
-     */
-    @RequestMapping(path = "/register")
-    public String appRegisterForward() {
-        return "register";
-    }
-
-
-    /**
      * 执行登录
      */
-    @RequestMapping(path = "/dologin")
+    @RequestMapping(path = "dologin")
     public String login2(HttpServletRequest request, HttpServletResponse response, UserInfo userInfo) {
         UserInfo loginUser = service.login(userInfo);
 
@@ -118,16 +98,33 @@ public class UserInfoController {
     /**
      * 执行注册
      */
-    @RequestMapping(path = "/doRegister")
+    @RequestMapping(path = "doRegister")
     public String doRegister(UserInfo userInfo, HttpServletResponse response) {
+
+        response.setContentType("text/html; charset=utf-8");
+        if(userInfo.getUsername()==null||userInfo.getUsername().isEmpty()||userInfo.getPassword()==null||userInfo.getPassword().isEmpty()){
+            try {
+                response.getWriter().write(JSTools.alterBack("用户名或密码不能为空！"));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
         int register = service.register(userInfo);
 
         System.out.println(register);
-        response.setContentType("text/html; charset=utf-8");
 
-        if (register < 1) {
+        if (register==0) {
             try {
                 response.getWriter().write(JSTools.alterBack("注册失败！"));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }else if(register==-1){
+            try {
+                response.getWriter().write(JSTools.alterBack("注册失败！用户名重复！"));
             } catch (IOException e) {
                 e.printStackTrace();
             }
