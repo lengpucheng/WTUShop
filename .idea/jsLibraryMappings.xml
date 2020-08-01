@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="JavaScriptLibraryMappings">
-    <file url="file://$PROJECT_DIR$" libraries="{holder, html5shiv, ie-emulation-modes-warning, ie10-viewport-bug-workaround, jquery, manage, respond}" />
+    <file url="file://$PROJECT_DIR$" libraries="{holder, html5shiv, ie-emulation-modes-warning, ie10-viewport-bug-workaround, jquery, manage, respond, signin}" />
   </component>
 </project>

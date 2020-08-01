@@ -3,7 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <title>修改信息</title>
+    <!-- JQuery -->
     <script type="text/javascript" src="http://127.0.0.1/WTUShop/static/js/jquery.min.js"></script>
+    <!-- Bootstrap核心CSS和JS -->
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script>
         $(function () {
 
@@ -42,12 +46,36 @@
     </script>
 </head>
 <body>
-<h3>类别添加</h3>
-<form id="editInfo" method="post">
-    ID：<label for="cid"></label><input id="cid" type="text" name="cid" value="" disabled><br>
-    类别名：<label for="name"></label><input id="name" type="text" name="name"><br>
-    商品数量：<label for="goodsNum"></label><input id="goodsNum" type="text" name="goodsNum"><br>
-    <input id="btn_submit" type="button" value="修改">
-</form>
+<div class="container">
+    <h1 class="page-header">编辑商品类别</h1>
+    <form class="form-horizontal" role="form">
+        <div class="form-group">
+            <label class="col-sm-2 control-label" for="cid">
+                类别ID：
+            </label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="cid" name="cid" disabled>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label" for="name">
+                类别名称：
+            </label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="name" name="name">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label" for="goodsNum">
+                商品数量：
+            </label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="goodsNum" name="goodsNum">
+                <input type="button" class="btn btn-lg btn-primary btn-block" style="margin-top: 30px" id="btn_submit"
+                       value="提交修改">
+            </div>
+        </div>
+    </form>
+</div>
 </body>
 </html>

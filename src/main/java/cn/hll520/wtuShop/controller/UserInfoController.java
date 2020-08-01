@@ -83,7 +83,7 @@ public class UserInfoController {
         if (loginUser != null) {
             request.getSession().setAttribute("user", loginUser);
             /* 不写 redirect: 表示请求转发   带上表示302重定向*/
-            return "redirect:/admin/category";
+            return "redirect:/manage";
 
         } else {
             try {
@@ -131,6 +131,6 @@ public class UserInfoController {
             return null;
         }
 
-        return "redirect:/login";
+        return "redirect:/dologin";
     }
 }

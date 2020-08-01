@@ -3,23 +3,53 @@
 <head>
     <meta charset="UTF-8">
     <title>用户注册</title>
+    <!-- JQuery -->
+    <script type="text/javascript" src="http://127.0.0.1/WTUShop/static/js/jquery.min.js"></script>
+    <!-- Bootstrap核心CSS和JS -->
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <body>
-<h3>用户注册</h3>
-<form action="http://127.0.0.1/WTUShop/user/doRegister" method="post">
-    <label>
-        用户名：
-        <input type="text" name="username">
-    </label><br>
-    <label>
-        密码：
-        <input type="text" name="password">
-    </label><br>
-    <label>
-        真实姓名：
-        <input type="text" name="realname">
-    </label><br>
-    <input type="submit" value="注册">
-</form>
+<div class="container">
+    <h1 class="page-header">用户注册</h1>
+
+    <form class="form-horizontal" role="form" action="http://127.0.0.1/WTUShop/user/doRegister" method="post">
+        <div class="form-group">
+            <label class="col-sm-2 control-label" for="username">
+                用户名：
+            </label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="username" name="username">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label" for="password">
+                密码：
+            </label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="password" name="password">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label" for="checkPassword">
+                确认密码：
+            </label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="checkPassword" name="checkPassword">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label" for="realname">
+                真实姓名：
+            </label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="realname" name="realname">
+                <button class="btn btn-lg btn-primary btn-block" style="margin-top: 30px" type="submit">登 录</button>
+            </div>
+        </div>
+
+    </form>
+</div>
+
 </body>
 </html>

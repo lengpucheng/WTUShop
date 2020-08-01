@@ -27,8 +27,13 @@
                 $("#menu li").removeClass("active");
                 /* 给当前添加样式 */
                 $(this).addClass("active");
-            })
-        })
+            });
+        });
+
+        function searchKey() {
+            let key=$("#key").val();
+            window.frames['_view'].location.href = "https://m.baidu.com/s?&wd="+key;
+        }
 
     </script>
 </head>
@@ -50,7 +55,7 @@
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right">
                 <li>
-                    <button type="button" class="btn btn-primary navbar-btn">
+                    <button type="button" class="btn btn-primary navbar-btn"  onclick="searchKey()">
                         <span class="glyphicon glyphicon-search"></span> 搜索
                     </button>
                 </li>
@@ -59,7 +64,7 @@
                 <li><a id="userName" href="#"><span class="glyphicon glyphicon-user"></span>admin</a></li>
             </ul>
             <form class="navbar-form navbar-right">
-                <input type="text" class="form-control" placeholder="输入内容">
+                <input type="text" class="form-control" placeholder="输入内容" id="key">
             </form>
         </div>
     </div>
@@ -72,14 +77,14 @@
             <ul class="nav nav-sidebar">
                 <li class="active"><a href="http://127.0.0.1/WTUShop/admin/goods" target="_view">商品列表 </a></li>
                 <li><a href="http://127.0.0.1/WTUShop/admin/goods/search" target="_view">搜索</a></li>
-                <li><a href="http://127.0.0.1/WTUShop/admin/goods/toAdd" target="_view">添加</a></li>
+                <li><a href="http://127.0.0.1/WTUShop/admin/goods/add" target="_view">添加</a></li>
                 <li><a href="http://127.0.0.1/WTUShop/admin/goods/edit/" target="_view">编辑</a></li>
             </ul>
             <ul class="nav nav-sidebar">
                 <li><a href="http://127.0.0.1/WTUShop/admin/category" target="_view">类别列表</a></li>
-                <li><a href="http://127.0.0.1/WTUShop/admin/category/search" target="_view">搜索</a></li>
-                <li><a href="http://127.0.0.1/WTUShop/admin/category/toAdd" target="_view">添加</a></li>
-                <li><a href="http://127.0.0.1/WTUShop/admin/category/toEdit" target="_view">编辑</a></li>
+                <li><a href="http://127.0.0.1/WTUShop/admin/category/doSearch" target="_view">搜索</a></li>
+                <li><a href="http://127.0.0.1/WTUShop/admin/category/add" target="_view">添加</a></li>
+                <li><a href="http://127.0.0.1/WTUShop/admin/category/edit" target="_view">编辑</a></li>
             </ul>
             <ul class="nav nav-sidebar">
                 <li><a href="http://127.0.0.1/WTUShop/admin/shoppingCart" target="_view">购物车</a></li>

@@ -80,11 +80,11 @@ public class CategoryController {
     /**
      * 报错需要修改的内容到会话中  {@PathVariable 表示路径中的变量}，即占位符,name 为参数名称，默认和形参一致
      */
-    @RequestMapping(path = "toEdit/{id}")
+    @RequestMapping(path = "edit/{id}")
     public String toEdit(@PathVariable(name = "id") Integer id, HttpServletRequest request) {
         Category category = service.getCategoryByID(id);
         request.getSession().setAttribute("category", category);
-        return "admin/category/toEdit";
+        return "admin/category/edit";
     }
 
     /**
@@ -115,7 +115,7 @@ public class CategoryController {
         category.setId(old.getId());
         int rows = service.editByID(category);
         if (rows == 1)
-            result.setStatusCode(JsonResult.STATUS_SUCCESS_OK);
+            request.getSession().removeAttribute("category");//成功修改则移除
         else if (rows == 0)
             result.setStatusCode(JsonResult.STATUS_ERROR);
         else {

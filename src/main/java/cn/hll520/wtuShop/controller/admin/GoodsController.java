@@ -101,7 +101,7 @@ public class GoodsController {
     public String edit(@PathVariable Integer id, HttpServletRequest request){
         Goods goods = service.getGoodsByID(id);
         request.getSession().setAttribute("goods",goods);
-        return "admin/goods/toEdit";
+        return "admin/goods/edit";
     }
 
     /** 获取编辑的原始数据 */
@@ -126,7 +126,9 @@ public class GoodsController {
         goods.setCreateTime(old.getCreateTime());
         goods.setUpdateTime(new Date());
         int rows = service.editGoodsByID(goods);
-        if(rows==0){
+        if(rows==1)
+            request.getSession().removeAttribute("goods");//成功修改则移除
+        else if(rows==0){
             result.setStatusCode(JsonResult.STATUS_ERROR);
         }else if(rows==-1){
             result.setStatusCode(JsonResult.STATUS_ERROR);
