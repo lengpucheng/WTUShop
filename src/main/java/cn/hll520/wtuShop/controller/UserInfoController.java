@@ -3,8 +3,10 @@ package cn.hll520.wtuShop.controller;
 import cn.hll520.wtuShop.pojo.UserInfo;
 import cn.hll520.wtuShop.service.UserInfoService;
 import cn.hll520.wtuShop.utils.JSTools;
+import cn.hll520.wtuShop.utils.JsonResult;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -132,5 +134,34 @@ public class UserInfoController {
         }
 
         return "redirect:/dologin";
+    }
+
+    /** 获取当前的用户登录信息 */
+    @ResponseBody
+    @RequestMapping(path = "getInfo")
+    public JsonResult getUserInfo(HttpServletRequest request){
+        JsonResult result=new JsonResult();
+        UserInfo user = (UserInfo) request.getSession().getAttribute("user");
+        System.out.println("_____当前登录："+user);
+        if(user==null||user.getUsername()==null){
+            result.setStatusCode(JsonResult.STATUS_NOTFOUND);
+            result.setMsg("请重新登录");
+        }else
+            user.setPassword("*******");
+        result.setData(user);
+        return result;
+    }
+
+    @RequestMapping(path = "signOut")
+    public String signOut(HttpServletRequest request,HttpServletResponse response){
+        request.getSession().removeAttribute("user");
+        request.getSession().invalidate();
+        response.setContentType("text/html; charset=utf-8");
+        try {
+            response.getWriter().write(JSTools.alterReplace("已安全退出","../manage"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }
