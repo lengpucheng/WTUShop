@@ -3,7 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <title>类别列表</title>
+    <!-- JQuery -->
     <script type="text/javascript" src="http://127.0.0.1/WTUShop/static/js/jquery.min.js"></script>
+    <!-- Bootstrap核心CSS和JS -->
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <!-- 自定义JS -->
     <script type="text/javascript">
         $(function () {
             search();
@@ -93,48 +98,52 @@
                 alert("网络错误!");
             });
         }
-
-
     </script>
-    <style type="text/css">
-        td {
-            text-align: center;
-        }
-    </style>
 </head>
 <body>
-<h1>客户列表</h1>
-搜索：<label for="nameKey"></label><input type="text" id="nameKey">&nbsp;&nbsp;
-<button id="search">搜索</button>&nbsp;
-<button id="reset">恢复</button>&nbsp;
+<h1 class="page-header">商品类别</h1>
+<span>搜索：</span>
+<label for="nameKey" class="form-inline">
+    <input type="text" id="nameKey" class="form-control">&nbsp;&nbsp;
+</label>
+<button id="search" class="btn btn-primary">
+    <span class="glyphicon glyphicon-search"></span> 搜索
+</button>&nbsp;
+<button id="reset" class="btn btn-danger">
+    <span class="glyphicon glyphicon-repeat"></span> 恢复
+</button>&nbsp;
 共找到<span id="sumRows" style="color: crimson"></span>条数据&nbsp;
 <a href="http://127.0.0.1/WTUShop/admin/category/toAdd">
-    <button>添加</button>
+    <button class="btn btn-info">
+        <span class="glyphicon glyphicon-plus"></span> 添加
+    </button>
 </a>
+<div class="table-responsive">
+    <table id="listCustomer" class="table table-striped">
+        <thead>
+        <th>ID</th>
+        <th>类别名称</th>
+        <th>类别商品数量</th>
+        <th>操作</th>
+        </thead>
+        <tbody id="searchVar">
+        <!-- 预留数据 -->
 
-<table id="listCustomer">
-    <thead>
-    <th>ID</th>
-    <th>类别名称</th>
-    <th>类别商品数量</th>
-    <th>操作</th>
-    </thead>
-    <tbody id="searchVar">
-    <!-- 预留数据 -->
 
-
-    </tbody>
-    <tfoot>
-    <!-- 尾部数据 -->
-    <td colspan="4">
-        <a href="#" id="start">首页</a>
-        <button id="upon">上一页</button>&nbsp;
-        第<span id="pageNum" style="color: #142fdc"></span>页&nbsp;
-        <button id="next">下一页</button>&nbsp;
-        共<span id="pages"></span>页&nbsp;
-        <a href="#" id="last">末页</a>
-    </td>
-    </tfoot>
-</table>
+        </tbody>
+        <tfoot>
+        <!-- 尾部数据 -->
+        <tr></tr>
+        </tfoot>
+    </table>
+</div>
+<div class="icon-align-center">
+    <a href="#" id="start">首页</a>
+    <button id="upon">上一页</button>&nbsp;
+    第<span id="pageNum" style="color: #142fdc"></span>页&nbsp;
+    <button id="next">下一页</button>&nbsp;
+    共<span id="pages"></span>页&nbsp;
+    <a href="#" id="last">末页</a>
+</div>
 </body>
 </html>

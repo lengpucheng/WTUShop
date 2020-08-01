@@ -2,6 +2,7 @@
   <dictionary name="lpc">
     <words>
       <w>dologin</w>
+      <w>glyphicon</w>
       <w>gson</w>
       <w>pagehelper</w>
       <w>realname</w>
