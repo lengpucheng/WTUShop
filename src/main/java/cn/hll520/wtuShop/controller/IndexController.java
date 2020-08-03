@@ -44,11 +44,18 @@ public class IndexController {
         return "manage";
     }
 
-    /**
-     * 转发admin下的模块首页
-     */
-    @RequestMapping(path = "/admin/{module}")
-    public String appAdminForward(@PathVariable String module) { return "admin/" + module + "/index"; }
+//    /**
+//     * 转发admin下的模块首页
+//     */
+//    @RequestMapping(path = "/admin/{module}")
+//    public String appAdminForward(@PathVariable String module) { return "admin/" + module + "/index"; }
 
+    /**
+     * 转发一级目录下的模块首页
+     */
+    @RequestMapping(path = "/{model}/{module}")
+    public String appForward(@PathVariable String model,@PathVariable String module){
+        return model+"/"+module+"/index";
+    }
 
 }

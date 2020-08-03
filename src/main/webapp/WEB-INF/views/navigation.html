@@ -45,8 +45,8 @@
                     <h3 class="masthead-brand">WTUShop</h3>
                     <nav>
                         <ul class="nav masthead-nav">
-                            <li class="active"><a href="#">欢迎页面</a></li>
-                            <li><a href="http://127.0.0.1/WTUShop/login">用户登录</a></li>
+                            <li class="active"><a href="#">页面导航</a></li>
+                            <li><a href="http://127.0.0.1/WTUShop/">首页</a></li>
                             <li><a href="http://127.0.0.1/WTUShop/register">用户注册</a></li>
                         </ul>
                     </nav>
@@ -54,15 +54,21 @@
             </div>
 
             <div class="inner cover">
-                <h1 class="cover-heading">Hello WTUShop！</h1>
-                <p class="lead">
-                    使用Bootstrap重构前端布局，视觉效果更加舒适，能够自适应移动端<br/>
-                    利用iframe对控制台进行重塑，导航与业务分隔，效率大幅提升<br/>
-                    同时加入搜索功能，在一个页面即可完成所有操作！
-                </p>
-                <p class="lead">
-                    <a href="http://127.0.0.1/WTUShop/manage" class="btn btn-lg btn-default">进入控制台</a>
-                </p>
+                <h1 class="cover-heading">业务导航</h1>
+                <p class="lead">本页面替代移动端无法显示导航栏</p>
+                <ul class="nav nav-sidebar">
+                    <li class="active"><a href="http://127.0.0.1/WTUShop/admin/goods" target="_view">商品管理</a></li>
+                    <li><a href="http://127.0.0.1/WTUShop/admin/category" target="_view">类别管理</a></li>
+                    <li><a href="http://127.0.0.1/WTUShop/kill/goods" target="_view">秒杀活动管理</a></li>
+                    <li><a href="http://127.0.0.1/WTUShop/admin/shoppingCart" target="_view">购物车</a></li>
+                    <li><a href="http://127.0.0.1/WTUShop/admin/order" target="_view">订单列表</a></li>
+                    <li><a href="http://127.0.0.1/WTUShop/admin/user" target="_view">用户管理</a></li>
+                    <a href="javascript:top.location.href='http://127.0.0.1/WTUShop/user/signOut'">
+                        <button style="width: 100%" class="btn btn-danger">退出登录</button>
+                    </a>
+                </ul>
+
+
             </div>
 
             <div class="mastfoot">

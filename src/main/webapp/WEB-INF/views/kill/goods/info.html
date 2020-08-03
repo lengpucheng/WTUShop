@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>商品详情</title>
+    <!-- JQuery -->
+    <script type="text/javascript" src="http://127.0.0.1/WTUShop/static/js/jquery.min.js"></script>
+    <!-- Bootstrap核心CSS和JS -->
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script>
+        $(function () {
+            getInfo();
+            // $("#btn_submit").click(function () {
+            //     $.getJSON(
+            //         "http://127.0.0.1/WTUShop/admin/goods/doEdit",
+            //         $("#goods").serialize(),
+            //         function (json) {
+            //             if (json.statusCode === 200) {
+            //                 alert("修改成功");
+            //                 location.href = "http://127.0.0.1/WTUShop/admin/goods";
+            //                 //正常响应
+            //             } else {
+            //                 alert(json.msg);
+            //             }
+            //         },
+            //         "json"
+            //     );
+            // })
+        });
+
+        var remainSeconds = 0;
+        var killStatus = 0;
+        var setTime;
+        function timeSed() {
+            remainSeconds=remainSeconds-1;
+            if(remainSeconds<=0||remainSeconds!==1&&remainSeconds!==0){
+                clearTimeout(setTime);
+                getInfo();
+            }else {
+                $("#time").html(remainSeconds + "秒");
+                setTime=setTimeout(timeSed,1000);
+            }
+        }
+
+        /* 获取信息 */
+        function getInfo() {
+            $.getJSON(
+                window.location.href + "/getGoods",
+                {},
+                function (json) {
+                    if (json.statusCode !== 200) {
+                        alert("获取失败！" + json.msg);
+                    }
+                    let killGoods = json.data.killGoods;
+                    remainSeconds = json.data.remainSeconds;
+                    killStatus = json.data.killStatus;
+
+                    /* 设置状态 */
+                    if (killStatus === 0) {
+                        $("#status").html("距离开始还有：")
+                        $("#time").html(remainSeconds + "秒");
+                        $("#btn_submit").attr('disabled', true);
+                    } else if (killStatus === 1) {
+                        $("#status").html("距离结束还有：")
+                        $("#time").html(remainSeconds + "秒");
+                        $("#btn_submit").attr('disabled', false);
+                    } else {
+                        remainSeconds=-1;
+                        $("#status").html("");
+                        $("#time").html("秒杀已结束");
+                        $("#btn_submit").attr('disabled', true);
+                    }
+
+                    /* 写入商品详情 */
+                    $("#killId").html(killGoods.killId);
+                    $("#goodsID").html(killGoods.goodsId);
+                    $("#name").html(killGoods.name);
+                    $("#goodsName").html(killGoods.name);
+                    $("#price").html(killGoods.price);
+                    $("#killPrice").html("秒杀价:" + killGoods.killPrice);
+                    $("#num").html(killGoods.stockCount);
+                    $("#goodsClass").html(killGoods.categoryId);
+
+                    /* 创建定时器 */
+                    timeSed();
+                },
+                "json"
+            );
+        }
+    </script>
+</head>
+<body>
+<div class="container">
+    <a  href="http://127.0.0.1/WTUShop"><h1 class="page-header">WTUShop</h1></a>
+    <div class="row clearfix">
+        <div class="col-md-12 column">
+            <ul class="breadcrumb">
+                <li>
+                    <a href="http://127.0.0.1/WTUShop/kill/goods">秒杀活动</a>
+                </li>
+                <li>
+                    <a href="http://127.0.0.1/WTUShop/kill/goods">商品详情</a>
+                </li>
+                <li class="active" id="goodsName">
+                    正在加载中ing...
+                </li>
+            </ul>
+
+            <!-- 主体 -->
+            <div class="row clearfix">
+
+                <!-- 左边 -->
+                <div class="col-md-6 column text-right">
+                    <img alt="140x140" src="http://wtushop.hll520.cn/image/7.jpg"
+                         style="width: 100%;" class="img-rounded"/>
+                    <div class="panel panel-danger">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">
+                                <span style="font-size: 16px">原价：</span>
+                                <s style="color: green;font-size: 16px" id="price">????</s>&nbsp;&nbsp;
+                                <span style="color: red;font-size: 24px" id="killPrice">秒杀价：????</span>
+                            </h3>
+                        </div>
+                        <div class="panel-body">
+                            <span style="font-size: 20px" id="status">距离开始</span>
+                            <span style="color:cornflowerblue;font-size: 24px" id="time">-1秒</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 右边 -->
+                <div class="col-md-6 column">
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                            <span style="font-size: 26px" id="name">
+                                ????视频名称正在加载中ing.....
+                            </span>
+                        </div>
+                        <div class="panel-body ">
+                            <span style="font-size: 22px">剩余数量：</span>
+                            <span style="font-size: 26px;color: red" id="num">???</span>
+                        </div>
+                    </div>
+
+                    <dl class="dl-horizontal">
+
+                        <dt>商品ID：</dt>
+                        <dd id="goodsID">????</dd>
+
+                        <dt>活动ID：</dt>
+                        <dd id="killId">????</dd>
+
+                        <dt>商品类别：</dt>
+                        <dd id="goodsClass">????</dd>
+
+                        <dt>详情信息：</dt>
+                        <dd>
+                            这是WTUShop很多商品中的一个，你买不了吃亏，买不了上当，虽然你也买不了。
+                            你问我为啥这里写怎么多废话，那不是废话吗？显然是的，不然这么大的地方你空着，它好看吗？
+                        </dd>
+
+                    </dl>
+                    <button id="btn_submit" type="button" class="btn btn-default btn-info btn-block">立即秒杀</button>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+</body>
+</html>

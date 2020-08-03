@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>修改信息</title>
+    <!-- JQuery -->
+    <script type="text/javascript" src="http://127.0.0.1/WTUShop/static/js/jquery.min.js"></script>
+    <!-- Bootstrap核心CSS和JS -->
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script>
+        $(function () {
+
+
+            $.getJSON(
+                window.location.href+"/getGoods",
+                {},
+                function (json) {
+                    if (json.statusCode !== 200) {
+                        alert("获取失败！" + json.msg);
+                    }
+                    let killGoods=json.data.killGoods;
+                    $("input[name='dateStart']").attr("value", killGoods.dateStart);
+                    $("input[name='dateEnd']").attr("value", killGoods.dateStart);
+                    $("input[name='stockCount']").attr("value", killGoods.stockCount);
+                    $("input[name='killPrice']").attr("value", killGoods.killPrice);
+                    $("input[name='goodsId']").attr("value", killGoods.goodsId);
+                    $("input[name='killId']").attr("value", killGoods.killId);
+
+                },
+                "json"
+            );
+            $("#btn_submit").click(function () {
+                $("#killId").attr('disabled',false);
+                $.getJSON(
+                    window.location.href+"/doEdit",
+                    $("#goods").serialize(),
+                    function (json) {
+                        $("#killId").attr('disabled',true);
+                        if (json.statusCode === 200) {
+                            alert("修改成功");
+                            location.href = "http://127.0.0.1/WTUShop/kill/goods";
+                            //正常响应
+                        } else {
+                            alert(json.msg);
+                        }
+                    },
+                    "json"
+                );
+            })
+        });
+    </script>
+</head>
+<body>
+<div class="container">
+    <h1 class="page-header">编辑秒杀活动</h1>
+    <form id="goods" class="form-horizontal" role="form">
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label" for="killId">
+                秒杀活动ID:
+            </label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="killId" name="killId" disabled>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label" for="goodsId">
+                设置商品ID：
+            </label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="goodsId" name="goodsId">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label" for="killPrice">
+                设置秒杀价格：
+            </label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="killPrice" name="killPrice">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label" for="stockCount">
+                设置秒杀数量：
+            </label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="stockCount" name="stockCount">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label" for="dateStart">
+                设置开始时间：
+            </label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="dateStart" name="dateStart">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label" for="dateEnd">
+                设置结束时间：
+            </label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="dateEnd" name="dateEnd">
+                <input type="button" class="btn btn-lg btn-danger btn-block" style="margin-top: 30px" id="btn_submit"
+                       value="修改">
+            </div>
+        </div>
+    </form>
+</div>
+
+
+
+</body>
+</html>
