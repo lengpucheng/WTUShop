@@ -57,6 +57,8 @@
         <mapper resource="mybatis/GoodsMapper.xml"/>
         <mapper resource="mybatis/AdminMapper.xml"/>
         <mapper resource="mybatis/KillGoodsMapper.xml"/>
+        <mapper resource="mybatis/OrderMapper.xml"/>
+        <mapper resource="mybatis/KillOrderMapper.xml"/>
     </mappers>
 
 </configuration>

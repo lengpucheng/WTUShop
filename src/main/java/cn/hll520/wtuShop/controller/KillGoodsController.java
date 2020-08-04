@@ -1,7 +1,9 @@
 package cn.hll520.wtuShop.controller;
 
 import cn.hll520.wtuShop.pojo.KillGoods;
+import cn.hll520.wtuShop.pojo.UserInfo;
 import cn.hll520.wtuShop.service.KillGoodsService;
+import cn.hll520.wtuShop.utils.JSTools;
 import cn.hll520.wtuShop.utils.JsonResult;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,8 +13,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Objects;
+
+import static cn.hll520.wtuShop.service.KillGoodsService.*;
 
 /**
  * @author lpc
@@ -97,7 +104,7 @@ public class KillGoodsController {
         int killStatus = 0;
         /* 距离1970年1月1 过的毫秒 */
 
-        if(killGoods.getDateStart()!=null&&killGoods.getDateEnd()!=null) {
+        if (killGoods.getDateStart() != null && killGoods.getDateEnd() != null) {
             long min = killGoods.getDateStart().getTime();
             long max = killGoods.getDateEnd().getTime();
             /* 现在距离1970 1 1 过的毫秒 */
@@ -144,6 +151,43 @@ public class KillGoodsController {
         }
         result.setData(rows);
         return result;
+    }
+
+    @RequestMapping(path = "info/{id}/kill")
+    public String kill(@PathVariable Integer id, HttpServletRequest request, HttpServletResponse response) {
+
+        UserInfo user = (UserInfo) request.getSession().getAttribute("user");
+        System.out.println(user);
+        System.out.println(id);
+        // X用户 秒杀了 X商品
+        int kill = service.kill(id, user);
+        System.out.println(kill);
+        try {
+            response.setContentType("text/html; charset=utf-8");
+            switch (kill) {
+                case NOT_KILL_TIME:
+                    response.getWriter().write(JSTools.alterBack("不在秒杀时间段"));
+                    break;
+                case NOT_ENOUGH_NUMBER:
+                    response.getWriter().write(JSTools.alterBack("库存不足，商品已经被抢购一空"));
+                    break;
+                case NOT_JUST_ONCE:
+                    response.getWriter().write(JSTools.alterBack("只能购买一次哦(●'◡'●)"));
+                    break;
+                case KILL_SUCCESS:
+                    response.getWriter().write(JSTools.alterUrl(
+                            "抢购成功","http://127.0.0.1/WTUShop/kill/goods"));
+                    break;
+                case KILL_FAIL:
+                default:
+                    response.getWriter().write(JSTools.alterBack("抢购失败！"));
+                    break;
+            }
+            return null;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "index";
     }
 
 

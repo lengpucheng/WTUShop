@@ -11,35 +11,39 @@
     <script>
         $(function () {
             getInfo();
-            // $("#btn_submit").click(function () {
-            //     $.getJSON(
-            //         "http://127.0.0.1/WTUShop/admin/goods/doEdit",
-            //         $("#goods").serialize(),
-            //         function (json) {
-            //             if (json.statusCode === 200) {
-            //                 alert("修改成功");
-            //                 location.href = "http://127.0.0.1/WTUShop/admin/goods";
-            //                 //正常响应
-            //             } else {
-            //                 alert(json.msg);
-            //             }
-            //         },
-            //         "json"
-            //     );
-            // })
+            $("#btn_submit").click(function () {
+
+                location.href = window.location.href + "/kill";
+                // $.getJSON(
+                //     window.location.href + "/kill",
+                //     $("#goods").serialize(),
+                //     function (json) {
+                //         if (json.statusCode === 200) {
+                //             alert("修改成功");
+                //             location.href = "http://127.0.0.1/WTUShop/admin/goods";
+                //             //正常响应
+                //         } else {
+                //             alert(json.msg);
+                //         }
+                //     },
+                //     "json"
+                // );
+            })
         });
 
         var remainSeconds = 0;
         var killStatus = 0;
         var setTime;
+
         function timeSed() {
-            remainSeconds=remainSeconds-1;
-            if(remainSeconds<=0||killStatus!==1&&killStatus!==0){
+            remainSeconds = remainSeconds - 1;
+            if (remainSeconds<=0) {
+                remainSeconds = 0;
                 clearTimeout(setTime);
                 getInfo();
-            }else {
+            } else {
                 $("#time").html(remainSeconds + "秒");
-                setTime=setTimeout(timeSed,1000);
+                setTime = setTimeout(timeSed, 1000);
             }
         }
 
@@ -66,7 +70,7 @@
                         $("#time").html(remainSeconds + "秒");
                         $("#btn_submit").attr('disabled', false);
                     } else {
-                        remainSeconds=-1;
+                        remainSeconds = -1;
                         $("#status").html("");
                         $("#time").html("秒杀已结束");
                         $("#btn_submit").attr('disabled', true);
@@ -82,8 +86,9 @@
                     $("#num").html(killGoods.stockCount);
                     $("#goodsClass").html(killGoods.categoryId);
 
-                    /* 创建定时器 */
-                    timeSed();
+                    /* 未结束就创建定时器 */
+                    if (killStatus !== 2)
+                        timeSed();
                 },
                 "json"
             );
@@ -92,7 +97,7 @@
 </head>
 <body>
 <div class="container">
-    <a  href="http://127.0.0.1/WTUShop"><h1 class="page-header">WTUShop</h1></a>
+    <a href="http://127.0.0.1/WTUShop"><h1 class="page-header">WTUShop</h1></a>
     <div class="row clearfix">
         <div class="col-md-12 column">
             <ul class="breadcrumb">
