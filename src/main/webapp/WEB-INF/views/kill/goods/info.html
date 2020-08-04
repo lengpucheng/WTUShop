@@ -34,7 +34,7 @@
         var setTime;
         function timeSed() {
             remainSeconds=remainSeconds-1;
-            if(remainSeconds<=0||remainSeconds!==1&&remainSeconds!==0){
+            if(remainSeconds<=0||killStatus!==1&&killStatus!==0){
                 clearTimeout(setTime);
                 getInfo();
             }else {
