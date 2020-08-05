@@ -21,7 +21,7 @@ import javax.servlet.http.HttpServletResponse;
 @SuppressWarnings("all")
 @Controller
 @RequestMapping(path = "/admin/category/")
-public class CategoryController {
+public class AdminCategoryController {
 
     @Autowired
     private CategoryService service;

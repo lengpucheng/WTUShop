@@ -20,7 +20,7 @@ import java.util.List;
 @SuppressWarnings("all")
 @Controller
 @RequestMapping("admin/order/")
-public class OrderAdminController {
+public class AdminOrderController {
 
     @Autowired
     private OrderService service;

@@ -22,10 +22,10 @@ import java.util.List;
 @Controller
 /* 限定路径前缀 */
 @RequestMapping(path = "admin/goods/")
-public class GoodsController {
+public class AdminGoodsController {
     private final GoodsService service;
 
-    public GoodsController(GoodsService service) {
+    public AdminGoodsController(GoodsService service) {
         this.service = service;
     }
 

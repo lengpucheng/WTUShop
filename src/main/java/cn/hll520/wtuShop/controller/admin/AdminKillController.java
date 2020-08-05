@@ -20,7 +20,7 @@ import java.util.Objects;
 @SuppressWarnings("all")
 @Controller
 @RequestMapping(path = "admin/kill/")
-public class KillGoodsController {
+public class AdminKillController {
 
     @Autowired
     private KillGoodsService service;
