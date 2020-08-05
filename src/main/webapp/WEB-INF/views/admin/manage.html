@@ -31,12 +31,12 @@
 
             /* 获取用户登录信息 */
             $.getJSON(
-                "http://127.0.0.1/WTUShop/user/getInfo",
+                "http://127.0.0.1/WTUShop/sa/getInfo",
                 {},
                 function (json) {
                     if (json.statusCode !== 200){
-                        alert("请先登录！")
-                        location.href="http://127.0.0.1/WTUShop/login";
+                        alert("权限不足，请用管理员账号登录！")
+                        location.href="http://127.0.0.1/WTUShop/admin";
                         return false;
                     }
                     $("#userName").html(json.data.realname);
@@ -114,7 +114,7 @@
                 <li><a href="http://127.0.0.1/WTUShop/admin/user" target="_view">用户管理</a></li>
             </ul>
 
-            <a href="http://127.0.0.1/WTUShop/user/signOut">
+            <a href="http://127.0.0.1/WTUShop/sa/signOut">
                 <button style="width: 100%" class="btn btn-danger">退出登录</button>
             </a>
         </div>

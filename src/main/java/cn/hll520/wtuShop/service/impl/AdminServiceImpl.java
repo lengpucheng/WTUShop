@@ -37,10 +37,10 @@ public class AdminServiceImpl implements AdminService {
         Admin sa = admins.get(0);
         UserInfo userInfo = userInfoMapper.selectByID(sa.getUserid());
 
-        userInfo.setPassword("******");
         sa.setUserInfo(userInfo);
-        sa.setPassword("******");
 
         return sa;
     }
+
+
 }
