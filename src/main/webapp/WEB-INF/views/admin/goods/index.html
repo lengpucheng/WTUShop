@@ -73,8 +73,11 @@
                         <td>${goods.image}</td>
                         <td>${goods.createTime}</td>
                         <td>${goods.updateTime}</td>
-                        <td><a href="javascript:delCategory(${goods.id})" >删除</a>&nbsp;
-                        <a href="http://127.0.0.1/WTUShop/admin/goods/edit/${goods.id}" >编辑</a></td>
+                        <td>
+                        <a href="http://127.0.0.1/WTUShop/goods/info/${goods.id}">详情</a>&nbsp;
+                        <a href="http://127.0.0.1/WTUShop/admin/goods/edit/${goods.id}" >编辑</a>&nbsp;
+                        <a href="javascript:delCategory(${goods.id})" >删除</a>
+                        </td>
                         </tr>
                         `);
                     }

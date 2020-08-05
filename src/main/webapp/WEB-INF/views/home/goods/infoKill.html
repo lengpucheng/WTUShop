@@ -12,22 +12,7 @@
         $(function () {
             getInfo();
             $("#btn_submit").click(function () {
-
                 location.href = window.location.href + "/kill";
-                // $.getJSON(
-                //     window.location.href + "/kill",
-                //     $("#goods").serialize(),
-                //     function (json) {
-                //         if (json.statusCode === 200) {
-                //             alert("修改成功");
-                //             location.href = "http://127.0.0.1/WTUShop/admin/goods";
-                //             //正常响应
-                //         } else {
-                //             alert(json.msg);
-                //         }
-                //     },
-                //     "json"
-                // );
             })
         });
 
@@ -77,6 +62,9 @@
                     }
 
                     /* 写入商品详情 */
+                    if(killGoods.image==null)
+                        killGoods.image="https://i0.hdslb.com/bfs/album/ebba81f89414e46c66082a507b427393240bfbfd.jpg@2000w_1e.webp";
+                    $("#goods_img").attr("src",killGoods.image);
                     $("#killId").html(killGoods.killId);
                     $("#goodsID").html(killGoods.goodsId);
                     $("#name").html(killGoods.name);
@@ -117,9 +105,9 @@
 
                 <!-- 左边 -->
                 <div class="col-md-6 column text-right">
-                    <img alt="预览图" src="http://wtushop.hll520.cn/image/7.jpg"
-                         style="width: 100%;" class="img-rounded"/>
-                    <div class="panel panel-danger">
+                    <img alt="预览图" src=""
+                         style="width: 100%;" class="img-rounded" id="goods_img"/>
+                    <div class="panel panel-danger" style="margin-top: 10px">
                         <div class="panel-heading">
                             <h3 class="panel-title">
                                 <span style="font-size: 16px">原价：</span>

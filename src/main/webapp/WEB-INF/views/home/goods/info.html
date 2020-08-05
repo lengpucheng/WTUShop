@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>商品详情</title>
+    <!-- JQuery -->
+    <script type="text/javascript" src="http://127.0.0.1/WTUShop/static/js/jquery.min.js"></script>
+    <!-- Bootstrap核心CSS和JS -->
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script>
+        $(function () {
+            getInfo();
+
+            /* 加入购物车 */
+            $("#btn_submit").click(function () {
+
+                location.href = window.location.href + "/kill";
+                // $.getJSON(
+                //     window.location.href + "/kill",
+                //     $("#goods").serialize(),
+                //     function (json) {
+                //         if (json.statusCode === 200) {
+                //             alert("修改成功");
+                //             location.href = "http://127.0.0.1/WTUShop/admin/goods";
+                //             //正常响应
+                //         } else {
+                //             alert(json.msg);
+                //         }
+                //     },
+                //     "json"
+                // );
+            })
+        });
+
+
+
+        /* 获取信息 */
+        function getInfo() {
+            $.getJSON(
+                window.location.href + "/getGoods",
+                {},
+                function (json) {
+                    if (json.statusCode !== 200) {
+                        alert("获取失败！" + json.msg);
+                        return false;
+                    }
+                    let goods = json.data;
+                    if(goods.image==null)
+                        goods.image="https://i0.hdslb.com/bfs/album/ebba81f89414e46c66082a507b427393240bfbfd.jpg@2000w_1e.webp";
+                    /* 写入商品详情 */
+                    $("#goodsID").html(goods.goodsId);
+                    $("#name").html(goods.name);
+                    $("#goodsName").html(goods.name);
+                    $("#price").html(goods.price);
+                    $("#num").html(goods.num);
+                    $("#goodsClass").html(goods.categoryId);
+                    $("#goods_img").attr("src",goods.image);
+                },
+                "json"
+            );
+        }
+    </script>
+</head>
+<body>
+<div class="container">
+
+
+
+    <a href="http://127.0.0.1/WTUShop"><h1 class="page-header">WTUShop</h1></a>
+    <div class="row clearfix">
+        <div class="col-md-12 column">
+            <ul class="breadcrumb">
+                <li>
+                    <a href="http://127.0.0.1/WTUShop/goods/search">搜索商品</a>
+                </li>
+                <li>
+                    <a href="http://127.0.0.1/WTUShop/goods/info">商品详情</a>
+                </li>
+                <li class="active" id="goodsName">
+                    正在加载中ing...
+                </li>
+            </ul>
+
+            <!-- 主体 -->
+            <div class="row clearfix">
+
+                <!-- 左边 -->
+                <div class="col-md-6 column text-right">
+                    <img alt="预览图" src=""
+                         style="width: 100%;" class="img-rounded" id="goods_img"/>
+                    <div class="panel panel-info" style="margin-top: 10px">
+                        <div class="panel-heading" style="color: red;font-size: 24px">
+                                <span style="font-size: 18px;color: #000">￥</span>
+                                <span  id="price">????</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 右边 -->
+                <div class="col-md-6 column">
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                            <span style="font-size: 26px" id="name">
+                                ????视频名称正在加载中ing.....
+                            </span>
+                        </div>
+                        <div class="panel-body ">
+                            <span style="font-size: 22px">剩余数量：</span>
+                            <span style="font-size: 26px;color: red" id="num">???</span>
+                        </div>
+                    </div>
+
+                    <dl class="dl-horizontal">
+
+                        <dt>商品ID：</dt>
+                        <dd id="goodsID">????</dd>
+
+                        <dt>商品类别：</dt>
+                        <dd id="goodsClass">????</dd>
+
+                        <dt>详情信息：</dt>
+                        <dd>
+                            这是WTUShop很多商品中的一个，你买不了吃亏，买不了上当，虽然你也买不了。
+                            你问我为啥这里写怎么多废话，那不是废话吗？显然是的，不然这么大的地方你空着，它好看吗？
+                        </dd>
+
+                    </dl>
+                    <button id="btn_submit" type="button"
+                            class="btn btn-default btn-info btn-block">添加到购物车</button>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+</body>
+</html>

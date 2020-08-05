@@ -22,6 +22,10 @@ public class UserGoodsController {
     @Autowired
     private GoodsService service;
 
+    /*
+    * 搜索商品
+    * */
+
     /** 搜索页面转发 */
     @RequestMapping("search/{key}")
     public String searchForward(@PathVariable(required = false) String key){
@@ -44,6 +48,30 @@ public class UserGoodsController {
         if (pageInfo.getList().size() < 1)
             result.setStatusCode(JsonResult.STATUS_NOTFOUND);
         result.setData(pageInfo);
+        return result;
+    }
+
+    /*
+    *  商品详情
+    * */
+
+    /** 转发详情 */
+    @RequestMapping("info/{key}")
+    public String infoForward(@PathVariable(required = false) String key){
+        System.out.println("正在搜索:___"+key);
+        return "home/goods/info";
+    }
+
+    /** 详情信息 */
+    @ResponseBody
+    @RequestMapping("info/{goodsID}/getGoods")
+    public JsonResult getGoods(@PathVariable(required = false) Integer goodsID) {
+        JsonResult result = new JsonResult();
+
+        Goods goods = service.getGoodsByID(goodsID);
+        if (goods==null)
+            result.setStatusCode(JsonResult.STATUS_NOTFOUND);
+        result.setData(goods);
         return result;
     }
 
