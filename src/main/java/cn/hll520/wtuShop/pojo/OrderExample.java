@@ -165,6 +165,76 @@ public class OrderExample {
             return (Criteria) this;
         }
 
+        public Criteria andOrderKeyIsNull() {
+            addCriterion("order_key is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderKeyIsNotNull() {
+            addCriterion("order_key is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderKeyEqualTo(String value) {
+            addCriterion("order_key =", value, "orderKey");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderKeyNotEqualTo(String value) {
+            addCriterion("order_key <>", value, "orderKey");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderKeyGreaterThan(String value) {
+            addCriterion("order_key >", value, "orderKey");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderKeyGreaterThanOrEqualTo(String value) {
+            addCriterion("order_key >=", value, "orderKey");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderKeyLessThan(String value) {
+            addCriterion("order_key <", value, "orderKey");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderKeyLessThanOrEqualTo(String value) {
+            addCriterion("order_key <=", value, "orderKey");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderKeyLike(String value) {
+            addCriterion("order_key like", value, "orderKey");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderKeyNotLike(String value) {
+            addCriterion("order_key not like", value, "orderKey");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderKeyIn(List<String> values) {
+            addCriterion("order_key in", values, "orderKey");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderKeyNotIn(List<String> values) {
+            addCriterion("order_key not in", values, "orderKey");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderKeyBetween(String value1, String value2) {
+            addCriterion("order_key between", value1, value2, "orderKey");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderKeyNotBetween(String value1, String value2) {
+            addCriterion("order_key not between", value1, value2, "orderKey");
+            return (Criteria) this;
+        }
+
         public Criteria andUserIdIsNull() {
             addCriterion("user_id is null");
             return (Criteria) this;

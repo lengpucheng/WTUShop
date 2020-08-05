@@ -3,6 +3,7 @@
 <mapper namespace="cn.hll520.wtuShop.mapper.OrderMapper">
     <resultMap id="BaseResultMap" type="cn.hll520.wtuShop.pojo.Order">
         <id column="order_id" jdbcType="INTEGER" property="orderId"/>
+        <result column="order_key" jdbcType="VARCHAR" property="orderKey"/>
         <result column="user_id" jdbcType="INTEGER" property="userId"/>
         <result column="goods_id" jdbcType="INTEGER" property="goodsId"/>
         <result column="goods_name" jdbcType="VARCHAR" property="goodsName"/>
@@ -73,7 +74,7 @@
         </where>
     </sql>
     <sql id="Base_Column_List">
-    order_id, user_id, goods_id, goods_name, goods_count, goods_price, order_status, 
+    order_id, order_key, user_id, goods_id, goods_name, goods_count, goods_price, order_status, 
     create_date, pay_date
   </sql>
     <select id="selectByExample" parameterType="cn.hll520.wtuShop.pojo.OrderExample" resultMap="BaseResultMap">
@@ -96,15 +97,16 @@
         from goodsorder
         where order_id = #{orderId,jdbcType=INTEGER}
     </select>
+
     <select id="selectByKillOrderId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-        select *
-        FROM goodsorder
-        where order_id=(
-            select order_id
-            from killorder
-            where kill_order_id=#{KillOrderId,jdbcType=INTEGER}
-        )
-  </select>
+      select *
+      FROM goodsorder
+      where order_id=(
+          select order_id
+          from killorder
+          where kill_order_id=#{KillOrderId,jdbcType=INTEGER}
+      )
+    </select>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from goodsorder
@@ -120,12 +122,14 @@
         <selectKey keyProperty="orderId" order="AFTER" resultType="java.lang.Integer">
             SELECT LAST_INSERT_ID()
         </selectKey>
-        insert into goodsorder (user_id, goods_id, goods_name,
-        goods_count, goods_price, order_status,
-        create_date, pay_date)
-        values (#{userId,jdbcType=INTEGER}, #{goodsId,jdbcType=INTEGER}, #{goodsName,jdbcType=VARCHAR},
-        #{goodsCount,jdbcType=INTEGER}, #{goodsPrice,jdbcType=INTEGER}, #{orderStatus,jdbcType=VARCHAR},
-        #{createDate,jdbcType=TIMESTAMP}, #{payDate,jdbcType=TIMESTAMP})
+        insert into goodsorder (order_key, user_id, goods_id,
+        goods_name, goods_count, goods_price,
+        order_status, create_date, pay_date
+        )
+        values (#{orderKey,jdbcType=VARCHAR}, #{userId,jdbcType=INTEGER}, #{goodsId,jdbcType=INTEGER},
+        #{goodsName,jdbcType=VARCHAR}, #{goodsCount,jdbcType=INTEGER}, #{goodsPrice,jdbcType=INTEGER},
+        #{orderStatus,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, #{payDate,jdbcType=TIMESTAMP}
+        )
     </insert>
     <insert id="insertSelective" parameterType="cn.hll520.wtuShop.pojo.Order">
         <selectKey keyProperty="orderId" order="AFTER" resultType="java.lang.Integer">
@@ -133,6 +137,9 @@
         </selectKey>
         insert into goodsorder
         <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="orderKey != null">
+                order_key,
+            </if>
             <if test="userId != null">
                 user_id,
             </if>
@@ -159,6 +166,9 @@
             </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="orderKey != null">
+                #{orderKey,jdbcType=VARCHAR},
+            </if>
             <if test="userId != null">
                 #{userId,jdbcType=INTEGER},
             </if>
@@ -197,6 +207,9 @@
             <if test="record.orderId != null">
                 order_id = #{record.orderId,jdbcType=INTEGER},
             </if>
+            <if test="record.orderKey != null">
+                order_key = #{record.orderKey,jdbcType=VARCHAR},
+            </if>
             <if test="record.userId != null">
                 user_id = #{record.userId,jdbcType=INTEGER},
             </if>
@@ -229,6 +242,7 @@
     <update id="updateByExample" parameterType="map">
         update goodsorder
         set order_id = #{record.orderId,jdbcType=INTEGER},
+        order_key = #{record.orderKey,jdbcType=VARCHAR},
         user_id = #{record.userId,jdbcType=INTEGER},
         goods_id = #{record.goodsId,jdbcType=INTEGER},
         goods_name = #{record.goodsName,jdbcType=VARCHAR},
@@ -244,6 +258,9 @@
     <update id="updateByPrimaryKeySelective" parameterType="cn.hll520.wtuShop.pojo.Order">
         update goodsorder
         <set>
+            <if test="orderKey != null">
+                order_key = #{orderKey,jdbcType=VARCHAR},
+            </if>
             <if test="userId != null">
                 user_id = #{userId,jdbcType=INTEGER},
             </if>
@@ -273,7 +290,8 @@
     </update>
     <update id="updateByPrimaryKey" parameterType="cn.hll520.wtuShop.pojo.Order">
     update goodsorder
-    set user_id = #{userId,jdbcType=INTEGER},
+    set order_key = #{orderKey,jdbcType=VARCHAR},
+      user_id = #{userId,jdbcType=INTEGER},
       goods_id = #{goodsId,jdbcType=INTEGER},
       goods_name = #{goodsName,jdbcType=VARCHAR},
       goods_count = #{goodsCount,jdbcType=INTEGER},

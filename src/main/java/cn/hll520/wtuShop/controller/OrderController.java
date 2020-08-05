@@ -1,39 +1,89 @@
 package cn.hll520.wtuShop.controller;
 
 import cn.hll520.wtuShop.pojo.Order;
-import cn.hll520.wtuShop.service.KillGoodsService;
+import cn.hll520.wtuShop.pojo.UserInfo;
+import cn.hll520.wtuShop.service.OrderService;
 import cn.hll520.wtuShop.utils.JsonResult;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.List;
+
+import static cn.hll520.wtuShop.service.OrderService.*;
 
 /**
  * @author lpc
- * @create 2020-08-05-8:51
+ * @create 2020-08-05-10:54
  */
 @Controller
-@RequestMapping(path = "kill/order/")
+@RequestMapping("order/")
 public class OrderController {
 
     @Autowired
-    private KillGoodsService service;
+    private OrderService service;
 
-    /* 订单详情 */
-    @RequestMapping(path = "pay/{killOrderId}")
-    public String viewOrder(@PathVariable Integer killOrderId) {
+    @ResponseBody
+    @RequestMapping("info/getAll")
+    public JsonResult getAll(@RequestParam(defaultValue = "1") Integer pageIndex,
+                             @RequestParam(defaultValue = "5") Integer pageSize) {
+        JsonResult result = new JsonResult();
+        PageInfo<Order> data = service.getAll(pageIndex, pageSize);
+        if (data.getList().size() < 1)
+            result.setStatusCode(JsonResult.STATUS_NOTFOUND);
+        result.setData(data);
+        return result;
+    }
+
+    @RequestMapping("info/{orderKey}")
+    public String viewInfo(@PathVariable String orderKey) {
         return "kill/order/pay";
     }
 
     @ResponseBody
-    @RequestMapping(path = "pay/{killOrderId}/getInfo")
-    public JsonResult getOrderInfo(@PathVariable Integer killOrderId) {
+    @RequestMapping("info/{orderKey}/getInfo")
+    public JsonResult getInfo(@PathVariable String orderKey) {
         JsonResult result = new JsonResult();
-        Order order = service.killOrderInfo(killOrderId);
-        if (order == null)
+        List<Order> orderList = service.getOrderByKey(orderKey);
+        if (orderList.size() < 1)
             result.setStatusCode(JsonResult.STATUS_NOTFOUND);
-        result.setData(order);
+        result.setData(orderList);
         return result;
     }
+
+    @ResponseBody
+    @RequestMapping("{orderKey}/pay")
+    public JsonResult pay(@PathVariable String orderKey,
+                          @RequestParam(defaultValue = "9999999999") Integer payPrice,
+                          HttpServletRequest request) {
+        JsonResult result = new JsonResult();
+        UserInfo user = (UserInfo) request.getSession().getAttribute("user");
+        int payStatus = service.payOrder(orderKey, user, payPrice);
+        switch (payStatus) {
+            case PAY_SUCCESS:
+                result.setMsg("支付成功！");
+                break;
+            case NOT_LOGIN:
+                result.setStatusCode(JsonResult.STATUS_ERROR);
+                result.setMsg("请先登录！");
+                break;
+            case NOT_PAY_PRICE:
+                result.setStatusCode(JsonResult.STATUS_ERROR);
+                result.setMsg("金额不足！");
+                break;
+            case PAY_FAIL:
+            default:
+                result.setStatusCode(JsonResult.STATUS_ERROR);
+                result.setMsg("支付失败！");
+                break;
+        }
+        result.setData(payStatus);
+        return result;
+    }
+
 }

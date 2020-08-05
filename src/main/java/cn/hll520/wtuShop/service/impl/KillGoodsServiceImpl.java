@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -89,9 +90,12 @@ public class KillGoodsServiceImpl implements KillGoodsService {
         /* 5. 创建订单和秒杀订单 */
         Order order = new Order();
         order.setGoodsId(goods.getGoodsId());
+        //设置订单Key
+        order.setOrderKey(userInfo.getUserid()+"_"+now);
         order.setUserId(userInfo.getUserid());
         order.setGoodsCount(1);
         order.setGoodsName(goods.getName());
+        order.setOrderStatus("未支付");
         order.setGoodsPrice(goods.getKillPrice());
         order.setCreateDate(new Date());
 
@@ -122,7 +126,10 @@ public class KillGoodsServiceImpl implements KillGoodsService {
     }
 
     @Override
-    public Order killOrderInfo(Integer killOrderId) {
-        return orderMapper.selectByKillOrderId(killOrderId);
+    public List<Order> killOrderInfo(Integer killOrderId) {
+        Order order = orderMapper.selectByKillOrderId(killOrderId);
+        List<Order> orders=new ArrayList<>();
+        orders.add(order);
+        return orders;
     }
 }

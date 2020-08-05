@@ -5,6 +5,8 @@ import cn.hll520.wtuShop.pojo.Order;
 import cn.hll520.wtuShop.pojo.UserInfo;
 import com.github.pagehelper.PageInfo;
 
+import java.util.List;
+
 /**
  * @author lpc
  * @create 2020-08-03-9:45
@@ -49,5 +51,5 @@ public interface KillGoodsService {
      */
     int kill(Integer killid, UserInfo userInfo);
 
-    Order killOrderInfo(Integer killOrderId);
+    List<Order> killOrderInfo(Integer killOrderId);
 }

@@ -5,6 +5,8 @@ import java.util.Date;
 public class Order {
     private Integer orderId;
 
+    private String orderKey;
+
     private Integer userId;
 
     private Integer goodsId;
@@ -27,6 +29,14 @@ public class Order {
 
     public void setOrderId(Integer orderId) {
         this.orderId = orderId;
+    }
+
+    public String getOrderKey() {
+        return orderKey;
+    }
+
+    public void setOrderKey(String orderKey) {
+        this.orderKey = orderKey == null ? null : orderKey.trim();
     }
 
     public Integer getUserId() {
@@ -91,20 +101,5 @@ public class Order {
 
     public void setPayDate(Date payDate) {
         this.payDate = payDate;
-    }
-
-    @Override
-    public String toString() {
-        return "Order{" +
-                "orderId=" + orderId +
-                ", userId=" + userId +
-                ", goodsId=" + goodsId +
-                ", goodsName='" + goodsName + '\'' +
-                ", goodsCount=" + goodsCount +
-                ", goodsPrice=" + goodsPrice +
-                ", orderStatus='" + orderStatus + '\'' +
-                ", createDate=" + createDate +
-                ", payDate=" + payDate +
-                '}';
     }
 }

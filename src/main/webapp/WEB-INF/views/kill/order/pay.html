@@ -16,7 +16,6 @@
     <!-- 自定义JS -->
     <script type="text/javascript">
         $(function () {
-
             $.getJSON(
                 location.href + "/getInfo",
                 {},
@@ -25,23 +24,58 @@
                         alert("没找到订单！");
                         return false;
                     }
-                    let order = json.data;
-                    $("#time").html(order.createDate);
-                    $("#order_id").html(order.orderId);
-                    $("#order_info").append(`
+                    let orderList = json.data;
+                    for (let i = 0; i < orderList.length; i++) {
+
+                        let order = orderList[i];
+                        let price = order.goodsPrice * order.goodsCount;
+                        /* 赋值 */
+                        priceAll += price;
+                        orderTime = order.createDate;
+                        orderKey = order.orderKey;
+                        /* 显示清单 */
+                        $("#order_info").append(`
                         <tr>
                         <td>暂无图片</td>
                         <td>${order.goodsName}</td>
                         <td>${order.goodsPrice}</td>
                         <td>${order.goodsCount}</td>
-                        <td>${order.goodsPrice * order.goodsCount}</td>
+                        <td>${price}</td>
+                        <td>${order.createDate}</td>
                         <td><a href="#">移除</a></td>
                         </tr>
                         `);
-                    $("#price_all").html(order.goodsPrice * order.goodsCount);
+                    }
+                    /* 设置总价格时间和订单编号 */
+                    $("#price_all").html(priceAll);
+                    $("#order_id").html(orderKey);
+                    $("#time").html(orderTime);
                 }
-            )
-        })
+            );
+
+
+            /* 支付 */
+            $("#btn_pay").click(function () {
+                $.getJSON(
+                    "http://127.0.0.1/WTUShop/order/"+orderKey+"/pay",
+                    {payPrice:99999},
+                    function (json) {
+                        if(json.statusCode!==200){
+                            alert(json.msg);
+                            return false;
+                        }
+                        alert("支付成功");
+                        location.href="http://127.0.0.1/WTUShop/kill/order/";
+                    }
+                )
+            });
+
+
+        });
+
+        var orderKey = "";
+        var priceAll = 0;
+        var orderTime;
     </script>
 </head>
 <body>
@@ -57,7 +91,6 @@
                 <li><a href="#">订单详情</a></li>
                 <li class="active">支付</li>
             </ul>
-
 
 
             <div class="row clearfix">
@@ -82,6 +115,7 @@
                     <th>单价</th>
                     <th>数量</th>
                     <th>小计</th>
+                    <th>添加时间</th>
                     <th>操作</th>
                 </tr>
                 </thead>
