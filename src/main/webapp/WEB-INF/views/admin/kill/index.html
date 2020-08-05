@@ -62,22 +62,23 @@
                     $("#next").attr('disabled', json.data.isLastPage);
 
                     for (let i = 0; i < json.data.list.length; i++) {
-                        let goods = json.data.list[i];
+                        let kill = json.data.list[i];
                         $("#searchVar").append(`
                         <tr>
-                        <td>${goods.categoryId}</td>
-                        <td>${goods.id}</td>
-                        <td>${goods.killId}</td>
-                        <td>${goods.name}</td>
-                        <td><s>${goods.price}</s></td>
-                        <td style="color: red">${goods.killPrice}</td>
-                        <td>${goods.image}</td>
-                        <td style="color: firebrick;">${goods.stockCount}</td>
-                        <td>${goods.dateStart}</td>
-                        <td>${goods.dateEnd}</td>
+                        <td>${kill.categoryId}</td>
+                        <td>${kill.id}</td>
+                        <td>${kill.killId}</td>
+                        <td>${kill.name}</td>
+                        <td><s>${kill.price}</s></td>
+                        <td style="color: red">${kill.killPrice}</td>
+                        <td>${kill.image}</td>
+                        <td style="color: firebrick;">${kill.stockCount}</td>
+                        <td>${kill.dateStart}</td>
+                        <td>${kill.dateEnd}</td>
                         <td>
-                        <a href="http://127.0.0.1/WTUShop/kill/info/${goods.killId}" >详情</a>&nbsp;
-                        <a href="http://127.0.0.1/WTUShop/admin/kill/edit/${goods.killId}" >编辑</a>
+                        <a href="http://127.0.0.1/WTUShop/kill/info/${kill.killId}" >详情</a>&nbsp;
+                        <a href="http://127.0.0.1/WTUShop/admin/kill/edit/${kill.killId}" >编辑</a>
+                        <a href="javaScript:delKill(${kill.killId})" >删除</a>
                         </td>
                         </tr>
                         `);
@@ -87,11 +88,11 @@
             );
         }
 
-        function delCategory(killID) {
+        function delKill(killID) {
             if (!confirm("确定要删除吗？"))
                 return false;
-            $.post(
-                "http://127.0.0.1/WTUShop/admin/kill/doDel/" + KillID,
+            $.getJSON(
+                "http://127.0.0.1/WTUShop/admin/kill/doDel/" + killID,
                 {},
                 function (json) {
                     if (json.statusCode !== 200) {

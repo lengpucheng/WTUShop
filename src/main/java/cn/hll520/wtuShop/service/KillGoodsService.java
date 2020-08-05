@@ -52,4 +52,6 @@ public interface KillGoodsService {
     int kill(Integer killid, UserInfo userInfo);
 
     List<Order> killOrderInfo(Integer killOrderId);
+
+    int del(Integer killid);
 }

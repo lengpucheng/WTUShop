@@ -108,7 +108,20 @@ public class KillGoodsController {
         return result;
     }
 
-
+    /**
+     *删除活动
+     * */
+    @ResponseBody
+    @RequestMapping("doDel/{id}")
+    public JsonResult doDel(@PathVariable Integer id) {
+        JsonResult result = new JsonResult();
+        int rows=service.del(id);
+        if (rows != 1) {
+            result.setStatusCode(JsonResult.STATUS_ERROR);
+        }
+        result.setData(rows);
+        return result;
+    }
 
 
 }

@@ -54,13 +54,13 @@ public class KillGoodsServiceImpl implements KillGoodsService {
     @Transactional
     @Override
     public int kill(Integer killid, UserInfo userInfo) {
-        if(userInfo==null)
+        if (userInfo == null)
             return -9;
 
         /* 1.  获取秒杀的商品 */
         KillGoods goods = mapper.selectAllKillGoodsByID(killid);
 
-        System.out.println("__商品获取___"+goods);
+        System.out.println("__商品获取___" + goods);
 
         /* 2. 判断是否结束或开始 */
         long min = goods.getDateStart().getTime();
@@ -93,7 +93,7 @@ public class KillGoodsServiceImpl implements KillGoodsService {
         Order order = new Order();
         order.setGoodsId(goods.getGoodsId());
         //设置订单Key
-        order.setOrderKey(userInfo.getUserid()+"_"+now);
+        order.setOrderKey(userInfo.getUserid() + "_" + now);
         order.setUserId(userInfo.getUserid());
         order.setGoodsCount(1);
         order.setGoodsName(goods.getName());
@@ -101,12 +101,12 @@ public class KillGoodsServiceImpl implements KillGoodsService {
         order.setGoodsPrice(goods.getKillPrice());
         order.setCreateDate(new Date());
 
-        System.out.println("__order__"+order);
+        System.out.println("__order__" + order);
 
         if (orderMapper.insertSelective(order) == 1) {
 
             System.out.println("__完成 5.11___");
-            System.out.println("__order2__"+order);
+            System.out.println("__order2__" + order);
             //加入秒杀订单
             KillOrder killOrder = new KillOrder();
             killOrder.setKillGoodsId(goods.getGoodsId());
@@ -119,7 +119,7 @@ public class KillGoodsServiceImpl implements KillGoodsService {
                 /* 6. 修改库存 */
                 goods.setStockCount(goods.getStockCount() - 1);
                 int upRows = mapper.updateByPrimaryKeySelective(goods);
-                if(upRows==1)
+                if (upRows == 1)
                     return killOrder.getKillOrderId();
             }
         }
@@ -130,8 +130,13 @@ public class KillGoodsServiceImpl implements KillGoodsService {
     @Override
     public List<Order> killOrderInfo(Integer killOrderId) {
         Order order = orderMapper.selectByKillOrderId(killOrderId);
-        List<Order> orders=new ArrayList<>();
+        List<Order> orders = new ArrayList<>();
         orders.add(order);
         return orders;
+    }
+
+    @Override
+    public int del(Integer killid) {
+        return mapper.deleteByPrimaryKey(killid);
     }
 }
