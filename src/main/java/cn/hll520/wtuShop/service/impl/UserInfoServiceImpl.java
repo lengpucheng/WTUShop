@@ -3,9 +3,13 @@ package cn.hll520.wtuShop.service.impl;
 import cn.hll520.wtuShop.mapper.UserInfoMapper;
 import cn.hll520.wtuShop.pojo.UserInfo;
 import cn.hll520.wtuShop.service.UserInfoService;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 /**
  * @author lpc
@@ -42,5 +46,27 @@ public class UserInfoServiceImpl implements UserInfoService {
             result = -1;
         }
         return result;
+    }
+
+    @Override
+    public PageInfo<UserInfo> getAll(Integer pageIndex, Integer pageSize) {
+        PageHelper.startPage(pageIndex, pageSize);
+        List<UserInfo> userInfos = mapper.selectAll();
+        return new PageInfo<>(userInfos);
+    }
+
+    @Override
+    public int del(Integer id) {
+        return mapper.deleteById(id);
+    }
+
+    @Override
+    public int edit(UserInfo userInfo) {
+        return mapper.update(userInfo);
+    }
+
+    @Override
+    public UserInfo getUserById(Integer id) {
+        return mapper.selectByID(id);
     }
 }

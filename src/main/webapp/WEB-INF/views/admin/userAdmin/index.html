@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>商品列表</title>
+    <!-- JQuery -->
+    <script type="text/javascript" src="http://127.0.0.1/WTUShop/static/js/jquery.min.js"></script>
+    <!-- Bootstrap核心CSS和JS -->
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <!-- 自定义JS -->
+    <script type="text/javascript">
+        $(function () {
+            search();
+            $("#search").click(function () {
+                search();
+            });
+
+            $("#reset").click(function () {
+                $("#nameKey").val("");
+                search();
+            });
+
+            $("#upon").click(function () {
+                search(pageNow - 1);
+            });
+
+
+            $("#next").click(function () {
+                search(pageNow + 1);
+            });
+
+            $("#start").click(function () {
+                search(1);
+            });
+
+            $("#last").click(function () {
+                search(pageAll);
+            });
+        });
+
+        var pageNow = 1;
+        var pageAll = 1;
+
+        function search(page, size) {
+            $("#searchVar").html("");
+            $.getJSON(
+                "http://127.0.0.1/WTUShop/sa/getUserAll",
+                {name: $("#nameKey").val(), pageIndex: page, pageSize: size},
+                function (json) {
+                    if (json.statusCode !== 200) {
+                        $("#searchVar").html("没有找到相关内容 " + json.msg);
+                    }
+
+                    $("#sumRows").html(json.data.total);
+                    pageNow = json.data.pageNum;
+                    $("#pageNum").html(pageNow);
+                    pageAll = json.data.pages;
+                    $("#pages").html(pageAll);
+
+                    $("#upon").attr('disabled', json.data.isFirstPage);
+                    $("#next").attr('disabled', json.data.isLastPage);
+
+                    for (let i = 0; i < json.data.list.length; i++) {
+                        let user=json.data.list[i];
+
+                        $("#searchVar").append(`
+                        <tr>
+                        <td>${user.userid}</td>
+                        <td>${user.username}</td>
+                        <td>${user.password}</td>
+                        <td>${user.realname}</td>
+                        <td>
+                        <a href="javascript:delUser(${user.userid})" >删除</a>&nbsp;
+                        <a href="http://127.0.0.1/sa/edit/${user.userid}" >编辑</a>
+                        </td>
+                        </tr>
+                        `);
+                    }
+                },
+                "json"
+            );
+        }
+
+        function delUser(ID) {
+            if (!confirm("确定要删除吗？"))
+                return false;
+           location.href="http://127.0.0.1/WTUShop/sa/del/"+ID;
+        }
+
+
+    </script>
+</head>
+<body>
+<h1 class="page-header">商品列表</h1>
+<span>搜索：</span>
+<label for="nameKey" class="form-inline">
+    <input type="text" id="nameKey" class="form-control">&nbsp;&nbsp;
+</label>
+<button id="search" class="btn btn-primary">
+    <span class="glyphicon glyphicon-search"></span> 搜索
+</button>&nbsp;
+<button id="reset" class="btn btn-danger">
+    <span class="glyphicon glyphicon-repeat"></span> 恢复
+</button>&nbsp;
+共找到<span id="sumRows" style="color: crimson"></span>条数据&nbsp;
+<div class="table-responsive">
+    <table id="listGoods" class="table table-striped">
+        <thead>
+        <th>用户ID</th>
+        <th>用户名</th>
+        <th>密码</th>
+        <th>真实姓名</th>
+        <th>操作</th>
+        </thead>
+        <tbody id="searchVar">
+        <!-- 预留数据 -->
+
+
+        </tbody>
+        <tfoot>
+        <!-- 尾部数据 -->
+        <td colspan="5">
+            <a href="#" id="start">首页</a>&nbsp;
+            <button id="upon">上一页</button>&nbsp;
+            第<span id="pageNum" style="color: #142fdc"></span>页&nbsp;
+            <button id="next">下一页</button>&nbsp;
+            共<span id="pages"></span>页&nbsp;
+            <a href="#" id="last">末页</a>&nbsp;
+        </td>
+        </tfoot>
+    </table>
+</div>
+</body>
+</html>
