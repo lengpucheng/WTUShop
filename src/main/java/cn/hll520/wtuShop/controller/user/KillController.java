@@ -62,14 +62,6 @@ public class KillController {
     }
 
 
-    /**
-     * 转发秒杀活动详情页面
-     */
-    @RequestMapping("info/{id}")
-    public String getInfo(@PathVariable Integer id) {
-        System.out.println("id---:" + id);
-        return "user/goods/killInfo";
-    }
 
 
     /*
@@ -78,6 +70,15 @@ public class KillController {
      *
      * */
 
+
+    /**
+     * 转发秒杀活动详情页面
+     */
+    @RequestMapping("info/{id}")
+    public String getInfo(@PathVariable Integer id) {
+        System.out.println("id---:" + id);
+        return "home/goods/infoKill";
+    }
 
     /**
      * 获取当前秒杀活动详情

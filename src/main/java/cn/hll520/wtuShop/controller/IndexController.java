@@ -76,7 +76,7 @@ public class IndexController {
      */
     @RequestMapping(path = "{module}/{page}")
     public String pageForward(@PathVariable String module, @PathVariable String page) {
-        return "user/" + module + "/" + page;
+        return "home/" + module + "/" + page;
     }
 
 

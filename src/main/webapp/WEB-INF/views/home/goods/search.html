@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<!--
+ *  创建时间: 2020-08-05-15:45
+ *  作   者: lpc
+ *  Email : lpc@hll520.cn
+-->
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>首页</title>
+    <!-- JQuery -->
+    <script type="text/javascript" src="http://127.0.0.1/WTUShop/static/js/jquery.min.js"></script>
+    <!-- Bootstrap核心CSS和JS -->
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script>
+        $(function () {
+
+            getData();
+
+        })
+        var pageNow = 1;
+        var pageAll = 1;
+
+        /* 获取数据 */
+        function getData(page, size) {
+            $.getJSON(
+                location.href+"/getData",
+                {pageIndex: page, pageSize: size},
+                function (json) {
+                    if (json.statusCode !== 200) {
+                        $("#searchVar").html("没有找到相关内容 " + json.msg);
+                    }
+
+                    // $("#sumRows").html(json.data.total);
+                    pageNow = json.data.pageNum;
+                    $("#pageNum").html(pageNow);
+                    pageAll = json.data.pages;
+                    // $("#pages").html(pageAll);
+
+                    // $("#upon").attr('disabled', json.data.isFirstPage);
+                    // $("#next").attr('disabled', json.data.isLastPage);
+
+                    for (let i = 0; i < json.data.list.length; i++) {
+                        let kill = json.data.list[i];
+                        if (kill.image == null)
+                            kill.image = "https://i0.hdslb.com/bfs/album/ebba81f89414e46c66082a507b427393240bfbfd.jpg@2000w_1e.webp";
+                        $("#goodsVal").append(`
+        <div class="col-md-4 column">
+            <div class="row clearfix img-rounded" style="background: #eeeeee;padding-top: 10px;margin: 10px">
+                <div class="col-md-12 column">
+                    <img alt="商品预览图" src="${kill.image}" style="width: 100%" class="img-rounded"/>
+                    <div class="panel panel-default" style="margin-top: 20px;width: 100%">
+                        <div class="panel-heading">
+                            <a href="http://127.0.0.1/WTUShop/goods/info/${kill.id}">
+                                <h3 class="panel-title">${kill.name}</h3>
+                            </a>
+                        </div>
+                        <div class="panel-body text-right">
+                            <span style="font-size: 18px">￥</span><span
+                                style="color: red;font-size: 26px">${kill.price}</span>
+                        </div>
+                        <div class="panel-footer">
+                            <a href="javaScript:addBuyCars(${kill.id})">
+                            <button type="button" class="btn btn-default btn-block">加入购物车</button>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+                      `);
+
+                    }
+                },
+                "json"
+            );
+        }
+
+        /* 加入购物车 */
+        function addBuyCars(GoodsID) {
+            alert(GoodsID);
+        }
+
+        /* 搜索 */
+        function search() {
+            let key = $("#key").val();
+            location.href = "http://127.0.0.1/WTUShop/goods/search/" + key;
+        }
+
+    </script>
+</head>
+<body>
+<div class="container">
+
+
+    <div class="row clearfix">
+        <div class="col-md-12 column">
+            <!-- 导航 -->
+            <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse"
+                            data-target="#bs-example-navbar-collapse-1"><span
+                            class="sr-only">WTUShop导航栏</span><span class="icon-bar"></span><span
+                            class="icon-bar"></span><span class="icon-bar"></span></button>
+                    <a class="navbar-brand" href="http://127.0.0.1/WTUShop">WTUShop</a>
+                </div>
+
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <!-- 左边 -->
+                    <ul class="nav navbar-nav">
+                        <li class="active"><a href="#">商场</a></li>
+                        <li><a href="#">个人中心</a></li>
+                        <li><a href="http://127.0.0.1/WTUShop/admin/manage">控制台</a></li>
+                    </ul>
+
+                    <!-- 右边 -->
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a href="#">购物车</a></li>
+                        <li><a href="#">订单查询</a></li>
+                        <li id="nav_login"><a href="http://127.0.0.1/WTUShop/login"><span
+                                class="glyphicon glyphicon-user"></span><span id="userName">请登录</span></a></li>
+                        <li id="nav_register"><a href="http://127.0.0.1/WTUShop/register">注册</a></li>
+                        <li>&nbsp;&nbsp;</li><!-- 占位符 -->
+                    </ul>
+                </div>
+
+            </nav>
+
+        </div>
+    </div>
+
+    <!-- 标题和搜索 -->
+    <div class="row clearfix page-header">
+        <div class="col-md-8 column" style="margin-top: 40px">
+            <a href="http://127.0.0.1/WTUShop"><h1>WTUShop</h1></a>
+        </div>
+
+        <div class="input-group col-md-4 column " style="margin-top: 60px">
+            <input type="text" class="form-control" placeholder="输入关键字" id="key">
+            <span class="input-group-btn">
+                <a href="javaScript:search()">
+                <button id="btn_search" class="btn btn-default">
+                    <span class="glyphicon glyphicon-search"></span> 搜索
+                </button>
+                    </a>
+                    &nbsp;
+            </span>
+        </div>
+    </div>
+
+    <!-- 导航路径 -->
+    <ul class="breadcrumb">
+        <li><a href="http://127.0.0.1/WTUShop/home">商场</a></li>
+        <li><a href="http://127.0.0.1/WTUShop/goods/search">商品列表</a></li>
+        <li class="active" id="nowSearch">全部商品</li>
+    </ul>
+
+    <!-- 内容框 -->
+    <div class="row clearfix" id="goodsVal">
+        <!-- 动态加载 -->
+
+    </div>
+
+
+</div><!-- 自适应结尾（第一个div） -->
+
+<!-- 尾部-->
+<div style="width: 100%;margin-top: 60px;padding:35px;background: silver;">
+    <p class="text-center">
+        WTUShop是一个简易的线上购物商场，最初由 <strong>@Lengpucheng</strong>
+        编写，作为SSM的练习作业.
+    </p>
+    <p class="text-center">
+        Power by <a href="mailto:lpc@hll520.cn">@冷朴承</a> ,
+        Personal Website for <a href="http://www.hll520.cn">hll520.cn</a>
+    </p>
+
+</div>
+
+</body>
+</html>
