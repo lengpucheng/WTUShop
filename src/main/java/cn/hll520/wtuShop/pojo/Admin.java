@@ -9,6 +9,10 @@ public class Admin {
 
     private String realname;
 
+    private Integer userid;
+
+    private UserInfo userInfo;
+
     public Integer getAdminid() {
         return adminid;
     }
@@ -41,6 +45,22 @@ public class Admin {
         this.realname = realname == null ? null : realname.trim();
     }
 
+    public Integer getUserid() {
+        return userid;
+    }
+
+    public void setUserid(Integer userid) {
+        this.userid = userid;
+    }
+
+    public UserInfo getUserInfo() {
+        return userInfo;
+    }
+
+    public void setUserInfo(UserInfo userInfo) {
+        this.userInfo = userInfo;
+    }
+
     @Override
     public String toString() {
         return "Admin{" +
@@ -48,6 +68,8 @@ public class Admin {
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 ", realname='" + realname + '\'' +
+                ", userid=" + userid +
+                ", userInfo=" + userInfo +
                 '}';
     }
 }

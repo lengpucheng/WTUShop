@@ -3,16 +3,35 @@ package myBatisTest;
 import cn.hll520.wtuShop.mapper.AdminMapper;
 import cn.hll520.wtuShop.pojo.Admin;
 import cn.hll520.wtuShop.pojo.AdminExample;
+import cn.hll520.wtuShop.pojo.AdminExample.Criteria;
 import cn.hll520.wtuShop.utils.MyBatisTools;
 import org.apache.ibatis.session.SqlSession;
-import cn.hll520.wtuShop.pojo.AdminExample.*;
 import org.junit.Test;
+
+import java.util.List;
 
 /**
  * @author lpc
  * @create 2020-07-24-12:53
  */
 public class AdminTest {
+
+
+    /*查询*/
+    @Test
+    public void test0(){
+        Admin admin=new Admin();
+        admin.setUsername("admin");
+        admin.setPassword("admin");
+        SqlSession sqlSession = MyBatisTools.getSqlSession();
+        AdminMapper mapper = sqlSession.getMapper(AdminMapper.class);
+        AdminExample example = new AdminExample();
+        example.createCriteria()
+                .andUsernameEqualTo(admin.getUsername())
+                .andPasswordEqualTo(admin.getPassword());
+        List<Admin> admins = mapper.selectByExample(null);
+        System.out.println(admins);
+    }
 
     /* 全覆盖增加 */
     @Test

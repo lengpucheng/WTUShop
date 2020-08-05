@@ -77,17 +77,17 @@ public class UserInfoController {
      * 执行登录
      */
     @RequestMapping(path = "dologin")
-    public String login2(HttpServletRequest request, HttpServletResponse response, UserInfo userInfo) {
+    public String login2(HttpServletRequest request,
+                         HttpServletResponse response,
+                         UserInfo userInfo) {
         UserInfo loginUser = service.login(userInfo);
-
-        response.setContentType("text/html; charset=utf-8");
-
         if (loginUser != null) {
             request.getSession().setAttribute("user", loginUser);
             /* 不写 redirect: 表示请求转发   带上表示302重定向*/
             return "redirect:/admin/manage";
 
         } else {
+            response.setContentType("text/html; charset=utf-8");
             try {
                 response.getWriter().write(JSTools.alterBack("登陆失败！"));
             } catch (IOException e) {

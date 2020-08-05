@@ -3,7 +3,6 @@ package cn.hll520.wtuShop.pojo;
 import java.util.ArrayList;
 import java.util.List;
 
-@SuppressWarnings("all")
 public class AdminExample {
     protected String orderByClause;
 
@@ -372,6 +371,66 @@ public class AdminExample {
 
         public Criteria andRealnameNotBetween(String value1, String value2) {
             addCriterion("realname not between", value1, value2, "realname");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseridIsNull() {
+            addCriterion("userid is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseridIsNotNull() {
+            addCriterion("userid is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseridEqualTo(Integer value) {
+            addCriterion("userid =", value, "userid");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseridNotEqualTo(Integer value) {
+            addCriterion("userid <>", value, "userid");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseridGreaterThan(Integer value) {
+            addCriterion("userid >", value, "userid");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseridGreaterThanOrEqualTo(Integer value) {
+            addCriterion("userid >=", value, "userid");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseridLessThan(Integer value) {
+            addCriterion("userid <", value, "userid");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseridLessThanOrEqualTo(Integer value) {
+            addCriterion("userid <=", value, "userid");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseridIn(List<Integer> values) {
+            addCriterion("userid in", values, "userid");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseridNotIn(List<Integer> values) {
+            addCriterion("userid not in", values, "userid");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseridBetween(Integer value1, Integer value2) {
+            addCriterion("userid between", value1, value2, "userid");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseridNotBetween(Integer value1, Integer value2) {
+            addCriterion("userid not between", value1, value2, "userid");
             return (Criteria) this;
         }
     }
