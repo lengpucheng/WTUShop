@@ -16,15 +16,91 @@
     <!-- 自定义JS -->
     <script type="text/javascript">
         $(function () {
+
+            /* 获取用户信息 */
             $.getJSON(
-                location.href + "/getInfo",
+                "http://127.0.0.1/WTUShop/user/getInfo",
+                {},
+                function (json) {
+                    if (json.statusCode !== 200) {
+
+                    } else {
+                        $("#nav_login").html(`
+                        <a href="#">
+                        <span class="glyphicon glyphicon-user"></span>
+                        <span id="userName">${json.data.realname}</span></a>
+                        `);
+
+                        $("#nav_register").html(`
+                    <a href="http://127.0.0.1/WTUShop/user/signOut">安全退出</a>
+                    `);
+
+                    }
+                },
+                "json"
+            );
+
+            $.getJSON(
+                "http://127.0.0.1/WTUShop/order/info/getAll",
                 {},
                 function (json) {
                     if (json.statusCode !== 200) {
                         alert("没找到订单！");
                         return false;
                     }
-                    let order=oneOrder()
+                    var listOrder = json.data;
+                    for (i = 0; i < listOrder.length; i++) {
+                        let orderThis = listOrder[i];
+                        let order = oneOrder(orderThis);
+                        $("#order_val").append(`
+ <div class="row clearfix img-rounded" style="background: aliceblue;margin-bottom: 25px">
+
+            <div class="col-md-12 column">
+                <div class="row clearfix">
+                    <div class="col-md-6 column">
+                        <h3>
+                            订单编号：
+                            <span style="color: cornflowerblue;">
+                            <a href="http://127.0.0.1/order/info/${order.orderKey}">${order.orderKey}</a>
+                            </span>
+                        </h3>
+                    </div>
+                    <div class="col-md-6 column text-right">
+                        <h3>
+                            订单状态：<span style="color: firebrick;">${order.orderStatus}</span>
+                        </h3>
+                    </div>
+                </div>
+                <table class="table table-hover table-bordered table-striped">
+                    <thead>
+                    <tr>
+                        <th>预览</th>
+                        <th>商品</th>
+                        <th>单价</th>
+                        <th>数量</th>
+                        <th>小计</th>
+                        <th>添加时间</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        ${order.table}
+                    </tbody>
+                </table>
+                <div class="row clearfix">
+                    <div class="col-md-6 column">
+                        <span>下单时间：</span>
+                        <span><b>${order.orderTime}</b></span>
+                    </div>
+                    <div class="col-md-6 column text-right">
+                        <span>总价：</span>
+                        <span style="color: red;font-size: 28px">${order.priceAll}</span>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+                        `)
+                    }
 
 
                 }
@@ -32,11 +108,13 @@
 
         });
 
-        var oneOrder=function(orderList) {
+        var oneOrder = function (orderList) {
             let order = {};
-            let table="";
-            let priceAll=0;
+            let table = "";
+            let priceAll = 0;
+            let orderKey;
             let orderTime;
+            let orderStatus;
             for (let i = 0; i < orderList.length; i++) {
                 let order = orderList[i];
                 let price = order.goodsPrice * order.goodsCount;
@@ -44,8 +122,9 @@
                 priceAll += price;
                 orderTime = order.createDate;
                 orderKey = order.orderKey;
+                orderStatus = order.orderStatus;
                 /* 显示清单 */
-                table+=`
+                table += `
                         <tr>
                         <td>暂无图片</td>
                         <td>${order.goodsName}</td>
@@ -56,10 +135,18 @@
                         </tr>
                         `;
             }
-            order.table=table;
-            order.priceAll=priceAll;
-            order.orderTime=orderTime;
+            order.table = table;
+            order.priceAll = priceAll;
+            order.orderTime = orderTime;
+            order.orderKey = orderKey;
+            order.orderStatus = orderStatus;
             return order;
+        }
+
+        /* 搜索 */
+        function search() {
+            let key = $("#key").val();
+            location.href = "http://127.0.0.1/WTUShop/goods/search/" + key;
         }
 
     </script>
@@ -120,57 +207,15 @@
         <li class="active">我的订单</li>
     </ul>
 
-    <div class="row clearfix img-rounded" style="background: aliceblue">
+    <!-- 主要 -->
+    <div id="order_val">
+        <!-- 动态添加 -->
 
 
-        <div class="col-md-12 column">
-            <div class="row clearfix">
-                <div class="col-md-6 column">
-                    <h3>
-                        订单编号：<span style="color: cornflowerblue;" id="order_id"><a href="#">100088</a></span>
-                    </h3>
-                </div>
-                <div class="col-md-6 column text-right">
-                    <h3>
-                        订单状态：<span style="color: firebrick;" id="status">未支付</span>
-                    </h3>
-                </div>
-            </div>
 
-
-            <table class="table table-hover table-bordered table-striped">
-                <thead>
-                <tr>
-                    <th>预览</th>
-                    <th>商品</th>
-                    <th>单价</th>
-                    <th>数量</th>
-                    <th>小计</th>
-                    <th>添加时间</th>
-                </tr>
-                </thead>
-                <tbody id="order_info">
-
-
-                </tbody>
-            </table>
-
-
-            <div class="row clearfix">
-                <div class="col-md-6 column">
-                    <span>下单时间：</span>
-                    <span><b id="time">2020-02-02 02:02:02</b></span>
-                </div>
-
-                <div class="col-md-6 column text-right">
-                    <span>总价：</span>
-                    <span style="color: red;font-size: 28px" id="price_all">29999</span>
-                </div>
-
-
-            </div>
-        </div>
     </div>
+
+
 </div>
 </body>
 </html>

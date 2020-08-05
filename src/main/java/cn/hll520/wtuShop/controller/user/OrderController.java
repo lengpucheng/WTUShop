@@ -28,6 +28,12 @@ public class OrderController {
     @Autowired
     private OrderService service;
 
+    /** 转发订单页面 */
+    @RequestMapping("list")
+    public String getList(){
+        return "user/order/list";
+    }
+
     /**
      * 获取当前用户全部订单
      */
