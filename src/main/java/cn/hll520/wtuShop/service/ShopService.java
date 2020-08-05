@@ -18,7 +18,6 @@ public interface ShopService {
 
     /**
      * 查询全部管理员
-     * @return
      */
     PageInfo<Shop> showAdmin(Integer pageIndex, Integer pageSize);
 
@@ -30,7 +29,10 @@ public interface ShopService {
     /**
      * 移除
      */
-    int del(Integer userId,Integer shopID);
+    int del(Integer userId, Integer shopID);
+
+    /** 管理员删除 */
+    int delAdmin(Integer shopID);
 
     /**
      * 修改数量
@@ -41,4 +43,6 @@ public interface ShopService {
      * 生成订单
      */
     String makeOrder(Integer UserID);
+
+
 }

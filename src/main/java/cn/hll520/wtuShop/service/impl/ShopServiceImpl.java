@@ -66,6 +66,11 @@ public class ShopServiceImpl implements ShopService {
     }
 
     @Override
+    public int delAdmin(Integer shopID) {
+        return mapper.deleteByPrimaryKey(shopID);
+    }
+
+    @Override
     public int edit(Integer userID, Integer shopID, int sum) {
         Shop shop = mapper.selectByPrimaryKey(shopID);
         if(!Objects.equals(shop.getUserId(), userID))
