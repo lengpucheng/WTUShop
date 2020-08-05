@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>商品列表</title>
+    <!-- JQuery -->
+    <script type="text/javascript" src="http://127.0.0.1/WTUShop/static/js/jquery.min.js"></script>
+    <!-- Bootstrap核心CSS和JS -->
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <!-- 自定义JS -->
+    <script type="text/javascript">
+        $(function () {
+            search();
+            $("#search").click(function () {
+                search();
+            });
+
+            $("#reset").click(function () {
+                $("#nameKey").val("");
+                search();
+            });
+
+            $("#upon").click(function () {
+                search(pageNow - 1);
+            });
+
+
+            $("#next").click(function () {
+                search(pageNow + 1);
+            });
+
+            $("#start").click(function () {
+                search(1);
+            });
+
+            $("#last").click(function () {
+                search(pageAll);
+            });
+        });
+
+        var pageNow = 1;
+        var pageAll = 1;
+
+        function search(page, size) {
+            $("#searchVar").html("");
+            $.getJSON(
+                "http://127.0.0.1/WTUShop/admin/kill/getAll",
+                {name: $("#nameKey").val(), pageIndex: page, pageSize: size},
+                function (json) {
+                    if (json.statusCode !== 200) {
+                        $("#searchVar").html("没有找到相关内容 " + json.msg);
+                    }
+
+                    $("#sumRows").html(json.data.total);
+                    pageNow = json.data.pageNum;
+                    $("#pageNum").html(pageNow);
+                    pageAll = json.data.pages;
+                    $("#pages").html(pageAll);
+
+                    $("#upon").attr('disabled', json.data.isFirstPage);
+                    $("#next").attr('disabled', json.data.isLastPage);
+
+                    for (let i = 0; i < json.data.list.length; i++) {
+                        let goods = json.data.list[i];
+                        $("#searchVar").append(`
+                        <tr>
+                        <td>${goods.categoryId}</td>
+                        <td>${goods.id}</td>
+                        <td>${goods.killId}</td>
+                        <td>${goods.name}</td>
+                        <td><s>${goods.price}</s></td>
+                        <td style="color: red">${goods.killPrice}</td>
+                        <td>${goods.image}</td>
+                        <td style="color: firebrick;">${goods.stockCount}</td>
+                        <td>${goods.dateStart}</td>
+                        <td>${goods.dateEnd}</td>
+                        <td>
+                        <a href="http://127.0.0.1/WTUShop/kill/info/${goods.killId}" >详情</a>&nbsp;
+                        <a href="http://127.0.0.1/WTUShop/admin/kill/edit/${goods.killId}" >编辑</a>
+                        </td>
+                        </tr>
+                        `);
+                    }
+                },
+                "json"
+            );
+        }
+
+        function delCategory(killID) {
+            if (!confirm("确定要删除吗？"))
+                return false;
+            $.post(
+                "http://127.0.0.1/WTUShop/admin/kill/doDel/" + KillID,
+                {},
+                function (json) {
+                    if (json.statusCode !== 200) {
+                        alert("删除失败 " + json.msg);
+                        return false;
+                    }
+                    alert("删除成功");
+
+                    search(pageNow);
+                },
+                "json"
+            ).fail(function () {
+                alert("网络错误!");
+            });
+        }
+
+
+    </script>
+</head>
+<body>
+<h1 class="page-header">秒杀商品列表</h1>
+<span>搜索：</span>
+<label for="nameKey" class="form-inline">
+    <input type="text" id="nameKey" class="form-control">&nbsp;&nbsp;
+</label>
+<button id="search" class="btn btn-primary">
+    <span class="glyphicon glyphicon-search"></span> 搜索
+</button>&nbsp;
+<button id="reset" class="btn btn-danger">
+    <span class="glyphicon glyphicon-repeat"></span> 恢复
+</button>&nbsp;
+共找到<span id="sumRows" style="color: crimson"></span>条数据&nbsp;
+<a href="http://127.0.0.1/WTUShop/admin/kill/add">
+    <button class="btn btn-info">
+        <span class="glyphicon glyphicon-plus"></span> 添加
+    </button>
+</a>
+<div class="table-responsive">
+    <table id="listGoods" class="table table-striped">
+        <thead>
+
+        <th>所属类别</th>
+        <th>商品ID</th>
+        <th>秒杀ID</th>
+        <th>名称</th>
+        <th>原价</th>
+        <th>秒杀价</th>
+        <th>预览</th>
+        <th>剩余</th>
+        <th>开始</th>
+        <th>结束</th>
+        <th>操作</th>
+        </thead>
+        <tbody id="searchVar">
+        <!-- 预留数据 -->
+
+
+        </tbody>
+        <tfoot>
+        <!-- 尾部数据 -->
+        <td colspan="9">
+            <a href="#" id="start">首页</a>&nbsp;
+            <button id="upon">上一页</button>&nbsp;
+            第<span id="pageNum" style="color: #142fdc"></span>页&nbsp;
+            <button id="next">下一页</button>&nbsp;
+            共<span id="pages"></span>页&nbsp;
+            <a href="#" id="last">末页</a>&nbsp;
+        </td>
+        </tfoot>
+    </table>
+</div>
+</body>
+</html>

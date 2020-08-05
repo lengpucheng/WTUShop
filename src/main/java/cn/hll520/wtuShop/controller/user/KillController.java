@@ -1,95 +1,89 @@
-package cn.hll520.wtuShop.controller;
+package cn.hll520.wtuShop.controller.user;
 
 import cn.hll520.wtuShop.pojo.KillGoods;
+import cn.hll520.wtuShop.pojo.Order;
 import cn.hll520.wtuShop.pojo.UserInfo;
 import cn.hll520.wtuShop.service.KillGoodsService;
 import cn.hll520.wtuShop.utils.JSTools;
 import cn.hll520.wtuShop.utils.JsonResult;
-import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.Objects;
+import java.util.List;
 
 import static cn.hll520.wtuShop.service.KillGoodsService.*;
 
 /**
  * @author lpc
- * @create 2020-08-03-9:49
+ * @create 2020-08-05-12:48
  */
 @SuppressWarnings("all")
 @Controller
-@RequestMapping(path = "kill/goods/")
-public class KillGoodsController {
+@RequestMapping("kill/")
+public class KillController {
 
     @Autowired
     private KillGoodsService service;
 
+
+    /*
+     *
+     *     秒杀订单
+     *
+     * */
+
     /**
-     * 转发kill/goods下的页面
+     * 转发秒杀订单详情
      */
-    @RequestMapping("{method}")
-    public String appForward(@PathVariable String method) {
-        return "kill/goods/" + method;
+    @RequestMapping(path = "pay/{killOrderId}")
+    public String viewOrder(@PathVariable Integer killOrderId) {
+        return "user/order/info";
     }
 
-
     /**
-     * 获取所有
+     * 获取秒杀订单详情
      */
     @ResponseBody
-    @RequestMapping(path = "getAll")
-    public JsonResult getAll(@RequestParam(defaultValue = "1") Integer pageIndex, @RequestParam(defaultValue = "5") Integer pageSize) {
+    @RequestMapping(path = "pay/{killOrderId}/getInfo")
+    public JsonResult getOrderInfo(@PathVariable Integer killOrderId) {
         JsonResult result = new JsonResult();
-
-        PageInfo<KillGoods> all = service.getAll(pageIndex, pageSize);
-        if (all.getList().size() < 1)
-            result.setStatusCode(JsonResult.STATUS_ERROR);
-        result.setData(all);
+        List<Order> order = service.killOrderInfo(killOrderId);
+        if (order == null || order.size() < 1)
+            result.setStatusCode(JsonResult.STATUS_NOTFOUND);
+        result.setData(order);
         return result;
     }
 
-    /**
-     * 添加
-     */
-    @ResponseBody
-    @RequestMapping(path = "doAdd")
-    public JsonResult doAdd(KillGoods goods) {
-        JsonResult result = new JsonResult();
-        int rows = service.addKillGoods(goods);
-        if (rows != 1) {
-            result.setStatusCode(JsonResult.STATUS_ERROR);
-            result.setMsg("错误");
-        }
-        result.setData(rows);
-        return result;
-    }
 
     /**
-     * 页面索引  required 是否是必须的？
+     * 转发秒杀活动详情页面
      */
-    @RequestMapping("{method}/{id}")
-    public String getByID(@PathVariable Integer id, @PathVariable String method) {
+    @RequestMapping("info/{id}")
+    public String getInfo(@PathVariable Integer id) {
         System.out.println("id---:" + id);
-        System.out.println(method);
-
-        return "kill/goods/" + method;
+        return "user/goods/killInfo";
     }
 
 
+    /*
+     *
+     *    秒杀活动详情
+     *
+     * */
+
+
     /**
-     * 获取当前ID的信息
+     * 获取当前秒杀活动详情
      */
     @ResponseBody
-    @RequestMapping({"info/{id}/getGoods", "edit/{id}/getGoods"})
+    @RequestMapping("info/{id}/getGoods")
     public JsonResult getGoods(@PathVariable Integer id) {
         JsonResult result = new JsonResult();
         KillGoods killGoods = service.getKillGoodsByID(id);
@@ -130,29 +124,10 @@ public class KillGoodsController {
         return result;
     }
 
+
     /**
-     * 编辑
+     * 立即秒杀
      */
-    @ResponseBody
-    @RequestMapping("edit/{id}/doEdit")
-    public JsonResult doEdit(@PathVariable Integer id, KillGoods goods) {
-
-        System.out.println(goods);
-
-        JsonResult result = new JsonResult();
-        if (!Objects.equals(goods.getKillId(), id)) {
-            result.setStatusCode(JsonResult.STATUS_ERROR);
-            result.setMsg("修改参数不一致！");
-            return result;
-        }
-        int rows = service.editKillGoodsByID(goods);
-        if (rows != 1) {
-            result.setStatusCode(JsonResult.STATUS_ERROR);
-        }
-        result.setData(rows);
-        return result;
-    }
-
     @RequestMapping(path = "info/{id}/kill")
     public String kill(@PathVariable Integer id, HttpServletRequest request, HttpServletResponse response) {
 
@@ -166,22 +141,22 @@ public class KillGoodsController {
             response.setContentType("text/html; charset=utf-8");
             switch (kill) {
                 case NOT_KILL_TIME:
-                    response.getWriter().write(JSTools.alter("不在秒杀时间段"));
+                    response.getWriter().write(JSTools.alterBack("不在秒杀时间段"));
                     break;
                 case NOT_ENOUGH_NUMBER:
-                    response.getWriter().write(JSTools.alter("库存不足，商品已经被抢购一空"));
+                    response.getWriter().write(JSTools.alterBack("库存不足，商品已经被抢购一空"));
                     break;
                 case NOT_JUST_ONCE:
-                    response.getWriter().write(JSTools.alter("只能购买一次哦(●'◡'●)"));
+                    response.getWriter().write(JSTools.alterBack("一种商品只能购买一次哦！"));
                     break;
                 case KILL_FAIL:
-                    response.getWriter().write(JSTools.alter("抢购失败！"));
+                    response.getWriter().write(JSTools.alterBack("抢购失败！"));
                     break;
                 case KILL_SUCCESS:
                 default:
                     /* 抢购成功就跳转支付 */
                     response.getWriter().write(JSTools.alterUrl(
-                            "抢购成功", "http://127.0.0.1/WTUShop/kill/order/pay/" + kill));
+                            "抢购成功", "http://127.0.0.1/WTUShop/kill/pay/" + kill));
                     break;
 
             }
@@ -190,6 +165,5 @@ public class KillGoodsController {
         }
         return null;
     }
-
 
 }

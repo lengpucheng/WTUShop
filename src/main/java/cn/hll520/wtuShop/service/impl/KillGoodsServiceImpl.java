@@ -78,9 +78,11 @@ public class KillGoodsServiceImpl implements KillGoodsService {
         System.out.println("__完成 3___");
 
 
-        /* 4. 是否已经购买 */
+        /* 4. 是否已经购买该商品 */
         KillOrderExample killOrderExample = new KillOrderExample();
-        killOrderExample.createCriteria().andKillUserIdEqualTo(userInfo.getUserid());
+        killOrderExample.createCriteria()
+                .andKillUserIdEqualTo(userInfo.getUserid())
+                .andKillGoodsIdEqualTo(goods.getGoodsId());
         long sum = killOrderMapper.countByExample(killOrderExample);
         if (sum != 0)
             return NOT_JUST_ONCE;

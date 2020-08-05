@@ -25,37 +25,59 @@ public class IndexController {
      */
     /*  method限定请求的方法   */
     @RequestMapping(path = "/{module}", method = RequestMethod.GET)
-    public String forward(@PathVariable String module) { return module; }
+    public String forward(@PathVariable String module) {
+        return module;
+    }
 
-    /** 转发后台 */
-    @RequestMapping(path = "/manage")
-    public String manageForward(HttpServletRequest request, HttpServletResponse response){
+
+    /**
+     * 转发Admin下的内容
+     */
+    @RequestMapping(path = "admin/{module}")
+    public String adminForward(@PathVariable String module,
+                               HttpServletRequest request,
+                               HttpServletResponse response) {
+
+        /* 获取登录的用户 */
         UserInfo user = (UserInfo) request.getSession().getAttribute("user");
-
-        if(user==null){
+        /* 判断登录权限 */
+        if (user == null) {
             response.setContentType("text/html; charset=utf-8");
             try {
-                response.getWriter().write(JSTools.alterUrl("请先登录","login"));
+                response.getWriter().write(JSTools.alterUrl("请先登录", "http://127.0.0.1/WTUShop/login"));
             } catch (IOException e) {
                 e.printStackTrace();
             }
             return null;
         }
-        return "manage";
+
+        /* 转发页面 */
+        switch (module) {
+            case "manage":
+                return "admin/manage";
+            case "navigation":
+                return "admin/navigation";
+            default:
+                return "admin/" + module + "/index";
+        }
     }
 
-//    /**
-//     * 转发admin下的模块首页
-//     */
-//    @RequestMapping(path = "/admin/{module}")
-//    public String appAdminForward(@PathVariable String module) { return "admin/" + module + "/index"; }
 
     /**
-     * 转发一级目录下的模块首页
+     * 转发User目录下
      */
-    @RequestMapping(path = "/{model}/{module}")
-    public String appForward(@PathVariable String model,@PathVariable String module){
-        return model+"/"+module+"/index";
+    @RequestMapping(path = "user/{module}")
+    public String userForward(@PathVariable String model) {
+        return "user/" + model + "/index";
     }
+
+    /**
+     * 转发其他页面
+     */
+    @RequestMapping(path = "{module}/{page}")
+    public String pageForward(@PathVariable String module, @PathVariable String page) {
+        return "user/" + module + "/" + page;
+    }
+
 
 }

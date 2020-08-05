@@ -85,7 +85,7 @@ public class UserInfoController {
         if (loginUser != null) {
             request.getSession().setAttribute("user", loginUser);
             /* 不写 redirect: 表示请求转发   带上表示302重定向*/
-            return "redirect:/manage";
+            return "redirect:/admin/manage";
 
         } else {
             try {
@@ -156,13 +156,14 @@ public class UserInfoController {
         return result;
     }
 
+    /** 退出登录 */
     @RequestMapping(path = "signOut")
     public String signOut(HttpServletRequest request,HttpServletResponse response){
         request.getSession().removeAttribute("user");
         request.getSession().invalidate();
         response.setContentType("text/html; charset=utf-8");
         try {
-            response.getWriter().write(JSTools.alterReplace("已安全退出","../manage"));
+            response.getWriter().write(JSTools.alterReplace("已安全退出","http://127.0.0.1/WTUShop/admin/manage"));
         } catch (IOException e) {
             e.printStackTrace();
         }

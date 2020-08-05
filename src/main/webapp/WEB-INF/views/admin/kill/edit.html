@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>添加秒杀活动</title>
+    <title>修改信息</title>
     <!-- JQuery -->
     <script type="text/javascript" src="http://127.0.0.1/WTUShop/static/js/jquery.min.js"></script>
     <!-- Bootstrap核心CSS和JS -->
@@ -10,14 +10,36 @@
     <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script>
         $(function () {
+
+
+            $.getJSON(
+                window.location.href+"/getGoods",
+                {},
+                function (json) {
+                    if (json.statusCode !== 200) {
+                        alert("获取失败！" + json.msg);
+                    }
+                    let killGoods=json.data;
+                    $("input[name='dateStart']").attr("value", killGoods.dateStart);
+                    $("input[name='dateEnd']").attr("value", killGoods.dateStart);
+                    $("input[name='stockCount']").attr("value", killGoods.stockCount);
+                    $("input[name='killPrice']").attr("value", killGoods.killPrice);
+                    $("input[name='goodsId']").attr("value", killGoods.goodsId);
+                    $("input[name='killId']").attr("value", killGoods.killId);
+
+                },
+                "json"
+            );
             $("#btn_submit").click(function () {
+                $("#killId").attr('disabled',false);
                 $.getJSON(
-                    "http://127.0.0.1/WTUShop/kill/goods/doAdd",
+                    window.location.href+"/doEdit",
                     $("#goods").serialize(),
                     function (json) {
+                        $("#killId").attr('disabled',true);
                         if (json.statusCode === 200) {
-                            alert("添加成功");
-                            location.href = "http://127.0.0.1/WTUShop/kill/goods";
+                            alert("修改成功");
+                            location.href = "http://127.0.0.1/WTUShop/admin/kill";
                             //正常响应
                         } else {
                             alert(json.msg);
@@ -31,11 +53,21 @@
 </head>
 <body>
 <div class="container">
-    <h1 class="page-header">添加秒杀活动</h1>
+    <h1 class="page-header">编辑秒杀活动</h1>
     <form id="goods" class="form-horizontal" role="form">
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label" for="killId">
+                秒杀活动ID:
+            </label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="killId" name="killId" disabled>
+            </div>
+        </div>
+
         <div class="form-group">
             <label class="col-sm-2 control-label" for="goodsId">
-                设置秒杀商品ID：
+                设置商品ID：
             </label>
             <div class="col-sm-10">
                 <input type="text" class="form-control" id="goodsId" name="goodsId">
@@ -72,7 +104,7 @@
             <div class="col-sm-10">
                 <input type="text" class="form-control" id="dateEnd" name="dateEnd">
                 <input type="button" class="btn btn-lg btn-danger btn-block" style="margin-top: 30px" id="btn_submit"
-                       value="添加活动">
+                       value="修改">
             </div>
         </div>
     </form>

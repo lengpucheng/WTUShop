@@ -43,7 +43,7 @@ public class JSTools {
      * @return  JS代码
      */
     public static String historyGo(int N){
-        return "<script>history.go("+N+");</script>";
+        return "<script>history.go('"+N+"');</script>";
     }
 
     /**
