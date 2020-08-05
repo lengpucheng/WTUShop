@@ -26,7 +26,7 @@ public interface OrderService {
     PageInfo<Order> getAll(Integer pageIndex,Integer pageSize);
 
     /* 分页获取所有的订单 */
-    PageInfo<List<Order>> getAllByUserID(Integer userID, Integer pageIndex, Integer pageSize);
+    List<List<Order>> getAllByUserID(Integer userID, Integer pageIndex, Integer pageSize);
 
     List<Order> getOrderByKey(String OrderKey);
 

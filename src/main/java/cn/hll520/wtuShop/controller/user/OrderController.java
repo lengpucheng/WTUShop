@@ -4,7 +4,6 @@ import cn.hll520.wtuShop.pojo.Order;
 import cn.hll520.wtuShop.pojo.UserInfo;
 import cn.hll520.wtuShop.service.OrderService;
 import cn.hll520.wtuShop.utils.JsonResult;
-import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -42,8 +41,8 @@ public class OrderController {
 
         UserInfo user = (UserInfo) request.getSession().getAttribute("user");
 
-        PageInfo<List<Order>> data = service.getAllByUserID(user.getUserid(), pageIndex, pageSize);
-        if (data.getList().size() < 1)
+        List<List<Order>> data = service.getAllByUserID(user.getUserid(), pageIndex, pageSize);
+        if (data.size() < 1)
             result.setStatusCode(JsonResult.STATUS_NOTFOUND);
         result.setData(data);
         return result;

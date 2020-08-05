@@ -33,11 +33,10 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public PageInfo<List<Order>> getAllByUserID(Integer userID, Integer pageIndex, Integer pageSize) {
+    public List<List<Order>> getAllByUserID(Integer userID, Integer pageIndex, Integer pageSize) {
 
         PageHelper.startPage(pageIndex,pageSize);
         List<String> orderKey = getOrderKeyById(userID);
-
         System.out.println(orderKey);
 
         List<List<Order>> list=new ArrayList<>();
@@ -49,7 +48,7 @@ public class OrderServiceImpl implements OrderService {
         }
         System.out.println(list);
 
-        return new PageInfo<>(list);
+        return list;
     }
 
     @Override
