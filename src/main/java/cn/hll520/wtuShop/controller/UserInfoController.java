@@ -131,9 +131,13 @@ public class UserInfoController {
                 e.printStackTrace();
             }
             return null;
-        }
-
-        return "redirect:/dologin";
+        }else {
+            try {
+                response.getWriter().write(JSTools.alterUrl("注册成功！","http://127.0.0.1/WTUShop/login"));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }        }
+        return null;
     }
 
     /** 获取当前的用户登录信息 */

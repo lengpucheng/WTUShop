@@ -166,28 +166,29 @@ public class KillGoodsController {
             response.setContentType("text/html; charset=utf-8");
             switch (kill) {
                 case NOT_KILL_TIME:
-                    response.getWriter().write(JSTools.alterBack("不在秒杀时间段"));
+                    response.getWriter().write(JSTools.alter("不在秒杀时间段"));
                     break;
                 case NOT_ENOUGH_NUMBER:
-                    response.getWriter().write(JSTools.alterBack("库存不足，商品已经被抢购一空"));
+                    response.getWriter().write(JSTools.alter("库存不足，商品已经被抢购一空"));
                     break;
                 case NOT_JUST_ONCE:
-                    response.getWriter().write(JSTools.alterBack("只能购买一次哦(●'◡'●)"));
-                    break;
-                case KILL_SUCCESS:
-                    response.getWriter().write(JSTools.alterUrl(
-                            "抢购成功","http://127.0.0.1/WTUShop/kill/goods"));
+                    response.getWriter().write(JSTools.alter("只能购买一次哦(●'◡'●)"));
                     break;
                 case KILL_FAIL:
-                default:
-                    response.getWriter().write(JSTools.alterBack("抢购失败！"));
+                    response.getWriter().write(JSTools.alter("抢购失败！"));
                     break;
+                case KILL_SUCCESS:
+                default:
+                    /* 抢购成功就跳转支付 */
+                    response.getWriter().write(JSTools.alterUrl(
+                            "抢购成功", "http://127.0.0.1/WTUShop/kill/order/pay/" + kill));
+                    break;
+
             }
-            return null;
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return "index";
+        return null;
     }
 
 

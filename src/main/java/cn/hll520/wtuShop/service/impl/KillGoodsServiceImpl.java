@@ -112,10 +112,17 @@ public class KillGoodsServiceImpl implements KillGoodsService {
 
                 /* 6. 修改库存 */
                 goods.setStockCount(goods.getStockCount() - 1);
-                return mapper.updateByPrimaryKeySelective(goods);
+                int upRows = mapper.updateByPrimaryKeySelective(goods);
+                if(upRows==1)
+                    return killOrder.getKillOrderId();
             }
         }
 
         return KILL_FAIL;
+    }
+
+    @Override
+    public Order killOrderInfo(Integer killOrderId) {
+        return orderMapper.selectByKillOrderId(killOrderId);
     }
 }

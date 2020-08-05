@@ -2,8 +2,9 @@ package cn.hll520.wtuShop.mapper;
 
 import cn.hll520.wtuShop.pojo.Order;
 import cn.hll520.wtuShop.pojo.OrderExample;
-import java.util.List;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface OrderMapper {
     long countByExample(OrderExample example);
@@ -19,6 +20,8 @@ public interface OrderMapper {
     List<Order> selectByExample(OrderExample example);
 
     Order selectByPrimaryKey(Integer orderId);
+
+    Order selectByKillOrderId(Integer KillOrderId);
 
     int updateByExampleSelective(@Param("record") Order record, @Param("example") OrderExample example);
 

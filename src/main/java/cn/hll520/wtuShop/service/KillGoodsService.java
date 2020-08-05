@@ -1,6 +1,7 @@
 package cn.hll520.wtuShop.service;
 
 import cn.hll520.wtuShop.pojo.KillGoods;
+import cn.hll520.wtuShop.pojo.Order;
 import cn.hll520.wtuShop.pojo.UserInfo;
 import com.github.pagehelper.PageInfo;
 
@@ -40,5 +41,13 @@ public interface KillGoodsService {
 
     int editKillGoodsByID(KillGoods goods);
 
+    /**
+     * 秒杀商品
+     * @param killid    活动ID
+     * @param userInfo  用户
+     * @return  失败返回错误码（枚举，int <0),成功返回 killOrderId >1
+     */
     int kill(Integer killid, UserInfo userInfo);
+
+    Order killOrderInfo(Integer killOrderId);
 }

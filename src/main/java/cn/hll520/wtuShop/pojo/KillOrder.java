@@ -1,6 +1,6 @@
 package cn.hll520.wtuShop.pojo;
 
-public class KillOrder {
+public class KillOrder{
     private Integer killOrderId;
 
     private Integer killUserId;
