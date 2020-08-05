@@ -36,8 +36,36 @@
                 //     "json"
                 // );
             })
+
+            /* 获取用户信息 */
+            $.getJSON(
+                "http://127.0.0.1/WTUShop/user/getInfo",
+                {},
+                function (json) {
+                    if (json.statusCode !== 200) {
+
+                    } else {
+                        $("#nav_login").html(`
+                        <a href="#">
+                        <span class="glyphicon glyphicon-user"></span>
+                        <span id="userName">${json.data.realname}</span></a>
+                        `);
+
+                        $("#nav_register").html(`
+                    <a href="http://127.0.0.1/WTUShop/user/signOut">安全退出</a>
+                    `);
+
+                    }
+                },
+                "json"
+            );
         });
 
+        /* 搜索 */
+        function search() {
+            let key = $("#key").val();
+            location.href = "http://127.0.0.1/WTUShop/goods/search/" + key;
+        }
 
 
         /* 获取信息 */
@@ -51,8 +79,8 @@
                         return false;
                     }
                     let goods = json.data;
-                    if(goods.image==null)
-                        goods.image="https://i0.hdslb.com/bfs/album/ebba81f89414e46c66082a507b427393240bfbfd.jpg@2000w_1e.webp";
+                    if (goods.image == null)
+                        goods.image = "https://i0.hdslb.com/bfs/album/ebba81f89414e46c66082a507b427393240bfbfd.jpg@2000w_1e.webp";
                     /* 写入商品详情 */
                     $("#goodsID").html(goods.goodsId);
                     $("#name").html(goods.name);
@@ -60,7 +88,7 @@
                     $("#price").html(goods.price);
                     $("#num").html(goods.num);
                     $("#goodsClass").html(goods.categoryId);
-                    $("#goods_img").attr("src",goods.image);
+                    $("#goods_img").attr("src", goods.image);
                 },
                 "json"
             );
@@ -71,8 +99,56 @@
 <div class="container">
 
 
+    <!-- 导航 -->
+    <nav class="navbar navbar-default" role="navigation">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse"
+                    data-target="#bs-example-navbar-collapse-1"><span
+                    class="sr-only">WTUShop导航栏</span><span class="icon-bar"></span><span
+                    class="icon-bar"></span><span class="icon-bar"></span></button>
+            <a class="navbar-brand" href="http://127.0.0.1/WTUShop">WTUShop</a>
+        </div>
 
-    <a href="http://127.0.0.1/WTUShop"><h1 class="page-header">WTUShop</h1></a>
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <!-- 左边 -->
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="#">商场</a></li>
+                <li><a href="#">个人中心</a></li>
+                <li><a href="http://127.0.0.1/WTUShop/admin/manage">控制台</a></li>
+            </ul>
+
+            <!-- 右边 -->
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="#">购物车</a></li>
+                <li><a href="#">订单查询</a></li>
+                <li id="nav_login"><a href="http://127.0.0.1/WTUShop/login"><span
+                        class="glyphicon glyphicon-user"></span><span id="userName">请登录</span></a></li>
+                <li id="nav_register"><a href="http://127.0.0.1/WTUShop/register">注册</a></li>
+                <li>&nbsp;&nbsp;</li><!-- 占位符 -->
+            </ul>
+        </div>
+
+    </nav>
+
+    <!-- 标题和搜索 -->
+    <div class="row clearfix page-header">
+        <div class="col-md-8 column" >
+            <a href="http://127.0.0.1/WTUShop"><h1>WTUShop</h1></a>
+        </div>
+
+        <div class="input-group col-md-4 column " style="margin-top: 20px">
+            <input type="text" class="form-control" placeholder="输入关键字" id="key">
+            <span class="input-group-btn">
+                <a href="javaScript:search()">
+                <button id="btn_search" class="btn btn-default">
+                    <span class="glyphicon glyphicon-search"></span> 搜索
+                </button>
+                    </a>
+                    &nbsp;
+            </span>
+        </div>
+    </div>
+
     <div class="row clearfix">
         <div class="col-md-12 column">
             <ul class="breadcrumb">
@@ -96,8 +172,8 @@
                          style="width: 100%;" class="img-rounded" id="goods_img"/>
                     <div class="panel panel-info" style="margin-top: 10px">
                         <div class="panel-heading" style="color: red;font-size: 24px">
-                                <span style="font-size: 18px;color: #000">￥</span>
-                                <span  id="price">????</span>
+                            <span style="font-size: 18px;color: #000">￥</span>
+                            <span id="price">????</span>
                         </div>
                     </div>
                 </div>
@@ -132,7 +208,8 @@
 
                     </dl>
                     <button id="btn_submit" type="button"
-                            class="btn btn-default btn-info btn-block">添加到购物车</button>
+                            class="btn btn-default btn-info btn-block">添加到购物车
+                    </button>
                 </div>
 
             </div>

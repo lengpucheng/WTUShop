@@ -13,12 +13,40 @@
             getInfo();
             $("#btn_submit").click(function () {
                 location.href = window.location.href + "/kill";
-            })
+            });
+            /* 获取用户信息 */
+            $.getJSON(
+                "http://127.0.0.1/WTUShop/user/getInfo",
+                {},
+                function (json) {
+                    if (json.statusCode !== 200) {
+
+                    } else {
+                        $("#nav_login").html(`
+                        <a href="#">
+                        <span class="glyphicon glyphicon-user"></span>
+                        <span id="userName">${json.data.realname}</span></a>
+                        `);
+
+                        $("#nav_register").html(`
+                    <a href="http://127.0.0.1/WTUShop/user/signOut">安全退出</a>
+                    `);
+
+                    }
+                },
+                "json"
+            );
         });
 
         var remainSeconds = 0;
         var killStatus = 0;
         var setTime;
+
+        /* 搜索 */
+        function search() {
+            let key = $("#key").val();
+            location.href = "http://127.0.0.1/WTUShop/goods/search/" + key;
+        }
 
         function timeSed() {
             remainSeconds = remainSeconds - 1;
@@ -85,7 +113,57 @@
 </head>
 <body>
 <div class="container">
-    <a href="http://127.0.0.1/WTUShop"><h1 class="page-header">WTUShop</h1></a>
+
+    <!-- 导航 -->
+    <nav class="navbar navbar-default" role="navigation">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse"
+                    data-target="#bs-example-navbar-collapse-1"><span
+                    class="sr-only">WTUShop导航栏</span><span class="icon-bar"></span><span
+                    class="icon-bar"></span><span class="icon-bar"></span></button>
+            <a class="navbar-brand" href="http://127.0.0.1/WTUShop">WTUShop</a>
+        </div>
+
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <!-- 左边 -->
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="#">商场</a></li>
+                <li><a href="#">个人中心</a></li>
+                <li><a href="http://127.0.0.1/WTUShop/admin/manage">控制台</a></li>
+            </ul>
+
+            <!-- 右边 -->
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="#">购物车</a></li>
+                <li><a href="#">订单查询</a></li>
+                <li id="nav_login"><a href="http://127.0.0.1/WTUShop/login"><span
+                        class="glyphicon glyphicon-user"></span><span id="userName">请登录</span></a></li>
+                <li id="nav_register"><a href="http://127.0.0.1/WTUShop/register">注册</a></li>
+                <li>&nbsp;&nbsp;</li><!-- 占位符 -->
+            </ul>
+        </div>
+
+    </nav>
+
+    <!-- 标题和搜索 -->
+    <div class="row clearfix page-header">
+        <div class="col-md-8 column" >
+            <a href="http://127.0.0.1/WTUShop"><h1>WTUShop</h1></a>
+        </div>
+
+        <div class="input-group col-md-4 column " style="margin-top: 20px">
+            <input type="text" class="form-control" placeholder="输入关键字" id="key">
+            <span class="input-group-btn">
+                <a href="javaScript:search()">
+                <button id="btn_search" class="btn btn-default">
+                    <span class="glyphicon glyphicon-search"></span> 搜索
+                </button>
+                    </a>
+                    &nbsp;
+            </span>
+        </div>
+    </div>
+
     <div class="row clearfix">
         <div class="col-md-12 column">
             <ul class="breadcrumb">
