@@ -19,6 +19,8 @@ public interface OrderMapper {
 
     List<Order> selectByExample(OrderExample example);
 
+    List<String> selectOrderKeyByID(Integer userId);
+
     Order selectByKillOrderId(Integer KillOrderId);
 
     Order selectByPrimaryKey(Integer orderId);

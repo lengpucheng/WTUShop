@@ -24,17 +24,28 @@
                         alert("没找到订单！");
                         return false;
                     }
-                    let orderList = json.data;
-                    for (let i = 0; i < orderList.length; i++) {
+                    let order=oneOrder()
 
-                        let order = orderList[i];
-                        let price = order.goodsPrice * order.goodsCount;
-                        /* 赋值 */
-                        priceAll += price;
-                        orderTime = order.createDate;
-                        orderKey = order.orderKey;
-                        /* 显示清单 */
-                        $("#order_info").append(`
+
+                }
+            );
+
+        });
+
+        var oneOrder=function(orderList) {
+            let order = {};
+            let table="";
+            let priceAll=0;
+            let orderTime;
+            for (let i = 0; i < orderList.length; i++) {
+                let order = orderList[i];
+                let price = order.goodsPrice * order.goodsCount;
+                /* 赋值 */
+                priceAll += price;
+                orderTime = order.createDate;
+                orderKey = order.orderKey;
+                /* 显示清单 */
+                table+=`
                         <tr>
                         <td>暂无图片</td>
                         <td>${order.goodsName}</td>
@@ -42,45 +53,19 @@
                         <td>${order.goodsCount}</td>
                         <td>${price}</td>
                         <td>${order.createDate}</td>
-                        <td><a href="#">移除</a></td>
                         </tr>
-                        `);
-                    }
-                    /* 设置总价格时间和订单编号 */
-                    $("#price_all").html(priceAll);
-                    $("#order_id").html(orderKey);
-                    $("#time").html(orderTime);
-                }
-            );
+                        `;
+            }
+            order.table=table;
+            order.priceAll=priceAll;
+            order.orderTime=orderTime;
+            return order;
+        }
 
-
-            /* 支付 */
-            $("#btn_pay").click(function () {
-                $.getJSON(
-                    "http://127.0.0.1/WTUShop/order/"+orderKey+"/pay",
-                    {payPrice:99999},
-                    function (json) {
-                        if(json.statusCode!==200){
-                            alert(json.msg);
-                            return false;
-                        }
-                        alert("支付成功");
-                        location.href="http://127.0.0.1/WTUShop/order/";
-                    }
-                )
-            });
-
-
-        });
-
-        var orderKey = "";
-        var priceAll = 0;
-        var orderTime;
     </script>
 </head>
 <body>
 <div class="container">
-
     <!-- 导航 -->
     <nav class="navbar navbar-default" role="navigation">
         <div class="navbar-header">
@@ -94,7 +79,7 @@
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <!-- 左边 -->
             <ul class="nav navbar-nav">
-                <li ><a href="http://127.0.0.1/WTUShop/goods/search">商场</a></li>
+                <li><a href="http://127.0.0.1/WTUShop/goods/search">商场</a></li>
                 <li><a href="http://127.0.0.1/WTUShop/space/">个人中心</a></li>
                 <li><a href="http://127.0.0.1/WTUShop/admin/manage">控制台</a></li>
             </ul>
@@ -112,7 +97,7 @@
     </nav>
     <!-- 标题和搜索 -->
     <div class="row clearfix page-header">
-        <div class="col-md-8 column" >
+        <div class="col-md-8 column">
             <a href="http://127.0.0.1/WTUShop"><h1>WTUShop</h1></a>
         </div>
 
@@ -128,23 +113,21 @@
             </span>
         </div>
     </div>
+    <!-- 位置 -->
+    <ul class="breadcrumb">
+        <li><a href="http://127.0.0.1/WTUShop/order/list">订单</a></li>
+        <li><a href="http://127.0.0.1/WTUShop/order/info">订单详情</a></li>
+        <li class="active">我的订单</li>
+    </ul>
 
-
-    <div class="row clearfix">
+    <div class="row clearfix img-rounded" style="background: aliceblue">
 
 
         <div class="col-md-12 column">
-            <ul class="breadcrumb">
-                <li><a href="http://127.0.0.1/WTUShop/order/list">订单</a></li>
-                <li><a href="http://127.0.0.1/WTUShop/order/info">订单详情</a></li>
-                <li class="active">支付</li>
-            </ul>
-
-
             <div class="row clearfix">
                 <div class="col-md-6 column">
                     <h3>
-                        订单编号：<span style="color: cornflowerblue;" id="order_id">100088</span>
+                        订单编号：<span style="color: cornflowerblue;" id="order_id"><a href="#">100088</a></span>
                     </h3>
                 </div>
                 <div class="col-md-6 column text-right">
@@ -164,7 +147,6 @@
                     <th>数量</th>
                     <th>小计</th>
                     <th>添加时间</th>
-                    <th>操作</th>
                 </tr>
                 </thead>
                 <tbody id="order_info">
@@ -175,21 +157,17 @@
 
 
             <div class="row clearfix">
-                <div class="col-md-4 column">
+                <div class="col-md-6 column">
                     <span>下单时间：</span>
                     <span><b id="time">2020-02-02 02:02:02</b></span>
                 </div>
 
-                <div class="col-md-4 column text-right">
+                <div class="col-md-6 column text-right">
                     <span>总价：</span>
                     <span style="color: red;font-size: 28px" id="price_all">29999</span>
                 </div>
 
-                <div class="col-md-4 column text-bottom">
-                    <button type="button" class="btn btn-default btn-block btn-primary" id="btn_pay">
-                        支付
-                    </button>
-                </div>
+
             </div>
         </div>
     </div>

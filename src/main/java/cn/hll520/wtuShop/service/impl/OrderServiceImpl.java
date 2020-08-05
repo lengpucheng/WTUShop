@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -32,13 +33,29 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public PageInfo<Order> getAllByUserID(Integer userID,Integer pageIndex,Integer pageSize) {
+    public PageInfo<List<Order>> getAllByUserID(Integer userID, Integer pageIndex, Integer pageSize) {
 
         PageHelper.startPage(pageIndex,pageSize);
-        OrderExample example=new OrderExample();
-        example.createCriteria().andUserIdEqualTo(userID);
-        List<Order> orders = mapper.selectByExample(example);
-        return new PageInfo<>(orders);
+        List<String> orderKey = getOrderKeyById(userID);
+
+        System.out.println(orderKey);
+
+        List<List<Order>> list=new ArrayList<>();
+        for(String key:orderKey){
+            OrderExample example=new OrderExample();
+            example.createCriteria().andOrderKeyEqualTo(key);
+            List<Order> orders = mapper.selectByExample(example);
+            list.add(orders);
+        }
+        System.out.println(list);
+
+        return new PageInfo<>(list);
+    }
+
+    @Override
+    public List<String> getOrderKeyById(Integer userID) {
+
+        return mapper.selectOrderKeyByID(userID);
     }
 
     @Override

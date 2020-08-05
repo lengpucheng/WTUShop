@@ -25,9 +25,13 @@ public interface OrderService {
 
     PageInfo<Order> getAll(Integer pageIndex,Integer pageSize);
 
-    PageInfo<Order> getAllByUserID(Integer userID,Integer pageIndex,Integer pageSize);
+    /* 分页获取所有的订单 */
+    PageInfo<List<Order>> getAllByUserID(Integer userID, Integer pageIndex, Integer pageSize);
 
     List<Order> getOrderByKey(String OrderKey);
+
+    /* 工具ID获取订单号集合 */
+    List<String> getOrderKeyById(Integer userID);
 
     int payOrder(String orderKey,UserInfo userInfo,Integer payPrice);
 

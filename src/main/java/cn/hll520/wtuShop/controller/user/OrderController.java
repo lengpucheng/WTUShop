@@ -42,7 +42,7 @@ public class OrderController {
 
         UserInfo user = (UserInfo) request.getSession().getAttribute("user");
 
-        PageInfo<Order> data = service.getAllByUserID(user.getUserid(), pageIndex, pageSize);
+        PageInfo<List<Order>> data = service.getAllByUserID(user.getUserid(), pageIndex, pageSize);
         if (data.getList().size() < 1)
             result.setStatusCode(JsonResult.STATUS_NOTFOUND);
         result.setData(data);
@@ -59,7 +59,7 @@ public class OrderController {
 
 
     /**
-     * 获取订单详情信息
+     * 获取订单详情信息,需要验证用户
      */
     @ResponseBody
     @RequestMapping("info/{orderKey}/getInfo")

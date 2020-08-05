@@ -98,6 +98,12 @@
         where order_id = #{orderId,jdbcType=INTEGER}
     </select>
 
+    <select id="selectOrderKeyByID" parameterType="java.lang.Integer" resultType="String">
+        select distinct order_key
+        from goodsorder
+        where user_id= #{userID,jdbcType=INTEGER}
+    </select>
+
     <select id="selectByKillOrderId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
       select *
       FROM goodsorder
