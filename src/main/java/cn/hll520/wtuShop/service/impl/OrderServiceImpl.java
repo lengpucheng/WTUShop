@@ -81,4 +81,11 @@ public class OrderServiceImpl implements OrderService {
 
         return PAY_SUCCESS;
     }
+
+    @Override
+    public int delOrder(String orderKey) {
+        OrderExample example=new OrderExample();
+        example.createCriteria().andOrderKeyEqualTo(orderKey);
+        return mapper.deleteByExample(example);
+    }
 }

@@ -57,4 +57,16 @@ public class OrderAdminController {
         return result;
     }
 
+    /** 删除订单 */
+    @ResponseBody
+    @RequestMapping("doDel/{orderKey}")
+    public JsonResult del(@PathVariable String orderKey) {
+        JsonResult result = new JsonResult();
+        int rows= service.delOrder(orderKey);
+        if (rows<1)
+            result.setStatusCode(JsonResult.STATUS_NOTFOUND);
+        result.setData(rows);
+        return result;
+    }
+
 }

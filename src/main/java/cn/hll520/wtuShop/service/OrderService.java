@@ -30,4 +30,6 @@ public interface OrderService {
     List<Order> getOrderByKey(String OrderKey);
 
     int payOrder(String orderKey,UserInfo userInfo,Integer payPrice);
+
+    int delOrder(String orderKey);
 }

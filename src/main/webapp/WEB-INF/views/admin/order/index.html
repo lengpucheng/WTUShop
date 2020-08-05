@@ -71,13 +71,13 @@
                         <td>${order.goodsName}</td>
                         <td>${order.goodsPrice}</td>
                         <td>${order.goodsCount}</td>
-                        <td>${order.goodsCount*order.goodsPrice}</td>
+                        <td>${order.goodsCount * order.goodsPrice}</td>
                         <td>${order.createDate}</td>
                         <td>${order.orderStatus}</td>
                         <td>${order.payDate}</td>
                         <td>
                         <a href="http://127.0.0.1/WTUShop/admin/order/info/${order.orderKey}" >详情</a>&nbsp;
-                        <a href="#" >删除</a>
+                        <a href="javaScript:delOrder(${order.orderKey})" >删除</a>
                         </td>
                         </tr>
                         `);
@@ -87,26 +87,26 @@
             );
         }
 
-        // function delCategory(orderKey) {
-        //     if (!confirm("确定要删除吗？"))
-        //         return false;
-        //     $.post(
-        //         "http://127.0.0.1/WTUShop/admin/order/doDel/" + orderKey,
-        //         {},
-        //         function (json) {
-        //             if (json.statusCode !== 200) {
-        //                 alert("删除失败 " + json.msg);
-        //                 return false;
-        //             }
-        //             alert("删除成功");
-        //
-        //             search(pageNow);
-        //         },
-        //         "json"
-        //     ).fail(function () {
-        //         alert("网络错误!");
-        //     });
-        // }
+        function delOrder(orderKey) {
+            if (!confirm("确定要删除吗？"))
+                return false;
+            $.post(
+                "http://127.0.0.1/WTUShop/admin/order/doDel/" + orderKey,
+                {},
+                function (json) {
+                    if (json.statusCode !== 200) {
+                        alert("删除失败 " + json.msg);
+                        return false;
+                    }
+                    alert("删除成功");
+
+                    search(pageNow);
+                },
+                "json"
+            ).fail(function () {
+                alert("网络错误!");
+            });
+        }
 
 
     </script>
