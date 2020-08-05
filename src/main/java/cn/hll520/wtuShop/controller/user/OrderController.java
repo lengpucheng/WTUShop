@@ -28,9 +28,11 @@ public class OrderController {
     @Autowired
     private OrderService service;
 
-    /** 转发订单页面 */
+    /**
+     * 转发订单页面
+     */
     @RequestMapping("list")
-    public String getList(){
+    public String getList() {
         return "user/order/list";
     }
 
@@ -59,7 +61,9 @@ public class OrderController {
      */
     @RequestMapping("info/{orderKey}")
     public String viewInfo(@PathVariable String orderKey) {
-        return "info";
+
+
+        return "user/order/info";
     }
 
 
@@ -71,16 +75,19 @@ public class OrderController {
     public JsonResult getInfo(@PathVariable String orderKey, HttpServletRequest request) {
         JsonResult result = new JsonResult();
         UserInfo user = (UserInfo) request.getSession().getAttribute("user");
-
-        List<Order> orderList = service.getOrderByKey(orderKey);
-        if (orderList.size() >= 1) {
-            if (orderList.get(0).getUserId() == user.getUserid()) {
-                result.setData(orderList);
-                return result;
+        if (user == null) {
+            result.setMsg("请先登录！");
+        } else {
+            List<Order> orderList = service.getOrderByKey(orderKey);
+            if (orderList.size() >= 1) {
+                if (orderList.get(0).getUserId() == user.getUserid()) {
+                    result.setData(orderList);
+                    return result;
+                } else
+                    result.setMsg("非法的请求！");
             } else
-                result.setMsg("非法的请求！");
-        } else
-            result.setMsg("没有找到该订单！");
+                result.setMsg("没有找到该订单！");
+        }
         result.setStatusCode(JsonResult.STATUS_ERROR);
         return result;
     }

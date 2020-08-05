@@ -16,12 +16,37 @@
     <!-- 自定义JS -->
     <script type="text/javascript">
         $(function () {
+
+            /* 获取用户信息 */
+            $.getJSON(
+                "http://127.0.0.1/WTUShop/user/getInfo",
+                {},
+                function (json) {
+                    if (json.statusCode !== 200) {
+
+                    } else {
+                        $("#nav_login").html(`
+                        <a href="#">
+                        <span class="glyphicon glyphicon-user"></span>
+                        <span id="userName">${json.data.realname}</span></a>
+                        `);
+
+                        $("#nav_register").html(`
+                    <a href="http://127.0.0.1/WTUShop/user/signOut">安全退出</a>
+                    `);
+
+                    }
+                },
+                "json"
+            );
+
             $.getJSON(
                 location.href + "/getInfo",
                 {},
                 function (json) {
                     if (json.statusCode !== 200) {
-                        alert("没找到订单！");
+                        alert("没找到订单！"+json.msg);
+                        location.href="http://127.0.0.1/WTUShop/home"
                         return false;
                     }
                     let orderList = json.data;
@@ -65,7 +90,7 @@
                             return false;
                         }
                         alert("支付成功");
-                        location.href="http://127.0.0.1/WTUShop/order/";
+                        location.href="http://127.0.0.1/WTUShop/order/list";
                     }
                 )
             });
@@ -76,6 +101,14 @@
         var orderKey = "";
         var priceAll = 0;
         var orderTime;
+
+
+        /* 搜索 */
+        function search() {
+            let key = $("#key").val();
+            location.href = "http://127.0.0.1/WTUShop/goods/search/" + key;
+        }
+
     </script>
 </head>
 <body>
