@@ -23,7 +23,8 @@
                 {},
                 function (json) {
                     if (json.statusCode !== 200) {
-
+                        alert("请登录！");
+                        location.href="http://127.0.0.1/WTUShop/login";
                     } else {
                         $("#nav_login").html(`
                         <a href="#">
@@ -40,15 +41,66 @@
                 "json"
             );
 
+            /* 获取订单详情 */
+           getData();
+
+        });
+
+        /* 记录当前页面和数量 */
+        var pageIndex=0;
+        var pageSize=5;
+
+        /* 加载订单详情 */
+        var oneOrder = function (orderList) {
+            let order = {};
+            let table = "";
+            let priceAll = 0;
+            let orderKey;
+            let orderTime;
+            let orderStatus;
+            for (let i = 0; i < orderList.length; i++) {
+                let order = orderList[i];
+                let price = order.goodsPrice * order.goodsCount;
+                /* 赋值 */
+                priceAll += price;
+                orderTime = order.createDate;
+                orderKey = order.orderKey;
+                orderStatus = order.orderStatus;
+                /* 显示清单 */
+                table += `
+                        <tr>
+                        <td>暂无图片</td>
+                        <td>${order.goodsName}</td>
+                        <td>${order.goodsPrice}</td>
+                        <td>${order.goodsCount}</td>
+                        <td>${price}</td>
+                        <td>${order.createDate}</td>
+                        </tr>
+                        `;
+            }
+            order.table = table;
+            order.priceAll = priceAll;
+            order.orderTime = orderTime;
+            order.orderKey = orderKey;
+            order.orderStatus = orderStatus;
+            return order;
+        }
+
+        /* 获取订单 */
+        function getData() {
+            pageIndex+=1;
             $.getJSON(
                 "http://127.0.0.1/WTUShop/order/info/getAll",
-                {},
+                {pageIndex:pageIndex,pageSize:pageSize},
                 function (json) {
                     if (json.statusCode !== 200) {
                         alert("没找到订单！");
                         return false;
                     }
                     var listOrder = json.data;
+                    if(listOrder.length<pageSize)
+                        $("#nextMore").html("没有更多了！");
+
                     for (i = 0; i < listOrder.length; i++) {
                         let orderThis = listOrder[i];
                         let order = oneOrder(orderThis);
@@ -105,42 +157,6 @@
 
                 }
             );
-
-        });
-
-        var oneOrder = function (orderList) {
-            let order = {};
-            let table = "";
-            let priceAll = 0;
-            let orderKey;
-            let orderTime;
-            let orderStatus;
-            for (let i = 0; i < orderList.length; i++) {
-                let order = orderList[i];
-                let price = order.goodsPrice * order.goodsCount;
-                /* 赋值 */
-                priceAll += price;
-                orderTime = order.createDate;
-                orderKey = order.orderKey;
-                orderStatus = order.orderStatus;
-                /* 显示清单 */
-                table += `
-                        <tr>
-                        <td>暂无图片</td>
-                        <td>${order.goodsName}</td>
-                        <td>${order.goodsPrice}</td>
-                        <td>${order.goodsCount}</td>
-                        <td>${price}</td>
-                        <td>${order.createDate}</td>
-                        </tr>
-                        `;
-            }
-            order.table = table;
-            order.priceAll = priceAll;
-            order.orderTime = orderTime;
-            order.orderKey = orderKey;
-            order.orderStatus = orderStatus;
-            return order;
         }
 
         /* 搜索 */
@@ -215,6 +231,12 @@
 
     </div>
 
+    <div class="row clearfix">
+        <ul class="pager" id="nextMore">
+            <li><a href="javaScript:getData()">加载更多</a></li>
+        </ul>
+
+    </div>
 
 </div>
 </body>

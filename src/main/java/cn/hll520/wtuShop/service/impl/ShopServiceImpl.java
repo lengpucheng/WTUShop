@@ -37,10 +37,15 @@ public class ShopServiceImpl implements ShopService {
         Goods goods = goodsMapper.selectByPrimaryKey(goodsID);
         if (goods == null)
             return HAPPEN_ERROR;
+
+        System.out.println("_____"+goods);
+
         /* 查看该商品是否已经存在购物车 */
         ShopExample example = new ShopExample();
-        example.createCriteria().andUserIdEqualTo(userId);
+        example.createCriteria().andUserIdEqualTo(userId).andGoodsIdEqualTo(goodsID);
         List<Shop> shops = mapper.selectByExample(example);
+
+        System.out.println("__shop___"+shops);
 
         /* 如果存在就将数量增加1 */
         if (shops.size() > 1) {
@@ -108,7 +113,7 @@ public class ShopServiceImpl implements ShopService {
         /* 设置购物车和商品之后的数量 */
         shop.setGoodsSum(sum);
         /* 更新商品数量 */
-        return HAPPEN_ERROR;
+        return mapper.updateByPrimaryKeySelective(shop);
 
     }
 

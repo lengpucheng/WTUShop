@@ -47,7 +47,7 @@
                 {},
                 function (json) {
                     if (json.statusCode !== 200) {
-                        alert("没找到订单！" + json.msg);
+                        alert("购物车还是空的哦！" + json.msg);
                         location.href = "http://127.0.0.1/WTUShop/home"
                         return false;
                     }
@@ -76,8 +76,6 @@
                         </tr>
                         `);
                     }
-                    alert(priceAll);
-                    alert(shopSum);
                     /* 设置总价格时间和订单编号 */
                     $("#price").html(priceAll);
                     $("#sum").html(shopSum);
