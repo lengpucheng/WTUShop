@@ -154,6 +154,15 @@ public class KillController {
     public String kill(@PathVariable Integer id, HttpServletRequest request, HttpServletResponse response) {
 
         UserInfo user = (UserInfo) request.getSession().getAttribute("user");
+        if(user==null){
+            try {
+                response.getWriter().write(JSTools.alterUrl("请先登录","http://127.0.0.1/WTUShop/login"));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
         System.out.println(user);
         System.out.println(id);
         // X用户 秒杀了 X商品
