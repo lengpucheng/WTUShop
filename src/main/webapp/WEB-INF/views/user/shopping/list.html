@@ -69,7 +69,11 @@
                         <td>${shop.goods.image}</td>
                         <td>${shop.goods.name}</td>
                         <td>${shop.goods.price}</td>
-                        <td>${shop.goodsSum}</td>
+                        <td>
+                            <a href="javascript:editSum(${shop.shoppingId},${shop.goodsSum}-1)"><b>-</b></a>&nbsp;
+                            ${shop.goodsSum} &nbsp;
+                              <a href="javascript:editSum(${shop.shoppingId},${shop.goodsSum}+1)"><b>+</b></a>
+                        </td>
                         <td>${price}</td>
                         <td>${shop.goods.updateTime}</td>
                         <td><a href="javaScript:del(${shop.shoppingId})">移除</a></td>
@@ -126,12 +130,23 @@
 
         /* 修改数量 */
         function editSum(shop, sum) {
-
+            if(sum<1){
+                alert("不能低于一件哦！");
+                return false;
+            }
             $.getJSON(
-                "",
-                {},
+                "http://127.0.0.1/WTUShop/shopping/edit",
+                {shopId:shop,number:sum},
                 function (json) {
-
+                    if (json.statusCode === 302) {
+                        alert(json.msg);
+                        location.href=json.data;
+                        return false;
+                    }else if(json.statusCode!==200){
+                        alert("修改失败！" + json.msg);
+                        return false;
+                    }
+                    location.reload();
                 }
             )
 

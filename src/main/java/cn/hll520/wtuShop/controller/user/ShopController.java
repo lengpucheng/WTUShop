@@ -120,6 +120,10 @@ public class ShopController {
     @RequestMapping("edit")
     public JsonResult editSUM(Integer shopId,Integer number,HttpServletRequest request){
         JsonResult result = new JsonResult();
+        if(number==null||number<1){
+            result.setStatusCode(JsonResult.STATUS_ERROR);
+            return result;
+        }
         UserInfo user = (UserInfo) request.getSession().getAttribute("user");
         if (user == null || user.getUserid() == null) {
             result.setStatusCode(JsonResult.STATUS_SUCCESS_REDIRECT);
