@@ -78,7 +78,7 @@ public class KillGoodsServiceImpl implements KillGoodsService {
         System.out.println("__完成 3___");
 
 
-        /* 4. 是否已经购买该商品 */
+        /* 4. 是否已经创建该活动 */
         KillOrderExample killOrderExample = new KillOrderExample();
         killOrderExample.createCriteria()
                 .andKillUserIdEqualTo(userInfo.getUserid())

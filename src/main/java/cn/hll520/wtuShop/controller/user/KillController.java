@@ -6,10 +6,12 @@ import cn.hll520.wtuShop.pojo.UserInfo;
 import cn.hll520.wtuShop.service.KillGoodsService;
 import cn.hll520.wtuShop.utils.JSTools;
 import cn.hll520.wtuShop.utils.JsonResult;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
@@ -32,6 +34,25 @@ public class KillController {
     @Autowired
     private KillGoodsService service;
 
+
+    /** 转发秒杀列表 */
+    @RequestMapping("list")
+    public String killForWard(){
+        return "home/kill/index";
+    }
+
+    /** 转发全部秒杀 */
+    @ResponseBody
+    @RequestMapping("list/getData")
+    public JsonResult getList(@RequestParam(defaultValue ="1") Integer pageIndex,
+                              @RequestParam(defaultValue = "5") Integer pageSize){
+        JsonResult result=new JsonResult();
+        PageInfo<KillGoods> all = service.getAll(pageIndex, pageSize);
+        if(all.getList().size()<1)
+            result.setStatusCode(JsonResult.STATUS_NOTFOUND);
+        result.setData(all);
+        return result;
+    }
 
     /*
      *
