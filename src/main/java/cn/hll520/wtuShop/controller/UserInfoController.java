@@ -5,6 +5,7 @@ import cn.hll520.wtuShop.service.UserInfoService;
 import cn.hll520.wtuShop.utils.JSTools;
 import cn.hll520.wtuShop.utils.JsonResult;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -57,8 +58,8 @@ import java.io.IOException;
  * ——————2. 添加数据等直接使用 request 的域对象即可
  * ————I.  addObject(key,obj)  对应 request.setAttribute(key,obj)
  */
+@SuppressWarnings("all")
 @Controller
-@RequestMapping(path = "user/")
 public class UserInfoController {
 
     /*
@@ -76,7 +77,7 @@ public class UserInfoController {
     /**
      * 执行登录
      */
-    @RequestMapping(path = "dologin")
+    @RequestMapping(path = "user/dologin")
     public String login2(HttpServletRequest request,
                          HttpServletResponse response,
                          UserInfo userInfo) {
@@ -100,7 +101,7 @@ public class UserInfoController {
     /**
      * 执行注册
      */
-    @RequestMapping(path = "doRegister")
+    @RequestMapping(path = "user/doRegister")
     public String doRegister(UserInfo userInfo, HttpServletResponse response) {
 
         response.setContentType("text/html; charset=utf-8");
@@ -139,25 +140,100 @@ public class UserInfoController {
             }        }
         return null;
     }
+//    http://127.0.0.1/WTUShop/user/space/
+    /** 转发空间页面 */
+    @RequestMapping({"space/{id}","space"})
+    public String spaceForWard(@PathVariable(required = false) Integer id){
+        return "home/space/index";
+    }
+
+    /** 根据UID获取 */
+    @ResponseBody
+    @RequestMapping("space/{id}/getInfo")
+    public JsonResult getInfo(@PathVariable Integer id){
+        JsonResult result=new JsonResult();
+        UserInfo user = service.getUserById(id);
+        if(user==null){
+            result.setStatusCode(JsonResult.STATUS_NOTFOUND);
+        }else
+            user.setPassword(null);
+        result.setData(user);
+        return result;
+    }
 
     /** 获取当前的用户登录信息 */
     @ResponseBody
-    @RequestMapping(path = "getInfo")
+    @RequestMapping({"user/getInfo","space/getInfo"})
     public JsonResult getUserInfo(HttpServletRequest request){
         JsonResult result=new JsonResult();
         UserInfo user = (UserInfo) request.getSession().getAttribute("user");
         System.out.println("_____当前登录："+user);
         if(user==null||user.getUsername()==null){
-            result.setStatusCode(JsonResult.STATUS_NOTFOUND);
+            result.setStatusCode(JsonResult.STATUS_SUCCESS_REDIRECT);
             result.setMsg("请重新登录");
-        }else
-            user.setPassword("*******");
-        result.setData(user);
+        }
+        UserInfo info=UserInfo.getInfo(user);
+        result.setData(info);
         return result;
     }
 
+    /** 转发修改资料页面 */
+    @RequestMapping("space/edit")
+    public String editForWard(){
+        return "home/space/edit";
+    }
+
+    /** 修改资料 */
+    @RequestMapping("user/doEdit")
+    public String doEdit(UserInfo userInfo,HttpServletRequest request,HttpServletResponse response){
+        UserInfo user = (UserInfo) request.getSession().getAttribute("user");
+        response.setContentType("text/html; charset=utf-8");
+        if(user==null){
+            try {
+                response.getWriter().write(JSTools.alterUrl("请先登录","Http://127.0.0.1/WTUShop/login"));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+        userInfo.setUserid(user.getUserid());
+
+        /* 如果没有设置密码就用原来的 */
+        if(userInfo.getPassword()==null||userInfo.getPassword().isEmpty()){
+            userInfo.setPassword(user.getPassword());
+            System.out.println("设置了原来的密码");
+        }
+
+        System.out.println(userInfo);
+        System.out.println("user___"+user);
+
+        int edit = service.edit(userInfo);
+        if(edit==-1){
+            try {
+                response.getWriter().write(JSTools.alterBack("用户名或密码不能为空哦！"));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }else if(edit==0) {
+            try {
+                response.getWriter().write(JSTools.alterBack("用户名重复！"));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }else {
+            try {
+                request.getSession().setAttribute("user",null);
+                request.getSession().invalidate();
+                response.getWriter().write(JSTools.alterUrl("修改成功！请重新登陆！","http://127.0.0.1/WTUShop/login"));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
+
     /** 退出登录 */
-    @RequestMapping(path = "signOut")
+    @RequestMapping(path = "user/signOut")
     public String signOut(HttpServletRequest request,HttpServletResponse response){
         request.getSession().removeAttribute("user");
         request.getSession().invalidate();

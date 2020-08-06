@@ -22,7 +22,7 @@
             })
 
 
-            /* 获取用户信息 */
+            /* 获取登录的用户信息 */
             $.getJSON(
                 "http://127.0.0.1/WTUShop/user/getInfo",
                 {},
@@ -31,7 +31,7 @@
 
                     } else {
                         $("#nav_login").html(`
-                        <a href="#">
+                        <a href="http://127.0.0.1/WTUShop/space">
                         <span class="glyphicon glyphicon-user"></span>
                         <span id="userName">${json.data.realname}</span></a>
                         `);
@@ -80,7 +80,7 @@
                     let goods = json.data;
                     theGoods=goods.id;
                     if (goods.image == null)
-                        goods.image = "https://i0.hdslb.com/bfs/album/ebba81f89414e46c66082a507b427393240bfbfd.jpg@2000w_1e.webp";
+                        goods.image = "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1596716481337&di=fab03d71304d4827ecde2e1031b53a8e&imgtype=0&src=http%3A%2F%2Fg.hiphotos.baidu.com%2Fzhidao%2Fpic%2Fitem%2Ffc1f4134970a304e9b7f6625d4c8a786c8175c94.jpg";
                     /* 写入商品详情 */
                     $("#goodsID").html(goods.id);
                     $("#name").html(goods.name);

@@ -7,7 +7,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>订单详情</title>
+    <title>订单列表</title>
     <!-- JQuery -->
     <script type="text/javascript" src="http://127.0.0.1/WTUShop/static/js/jquery.min.js"></script>
     <!-- Bootstrap核心CSS和JS -->
@@ -27,7 +27,7 @@
                         location.href="http://127.0.0.1/WTUShop/login";
                     } else {
                         $("#nav_login").html(`
-                        <a href="#">
+                        <a href="http://127.0.0.1/WTUShop/space">
                         <span class="glyphicon glyphicon-user"></span>
                         <span id="userName">${json.data.realname}</span></a>
                         `);
@@ -218,8 +218,8 @@
     </div>
     <!-- 位置 -->
     <ul class="breadcrumb">
-        <li><a href="http://127.0.0.1/WTUShop/order/list">订单</a></li>
-        <li><a href="http://127.0.0.1/WTUShop/order/info">订单详情</a></li>
+        <li><a href="http://127.0.0.1/WTUShop/space">个人中心</a></li>
+        <li><a href="http://127.0.0.1/WTUShop/order/list">订单详情</a></li>
         <li class="active">我的订单</li>
     </ul>
 

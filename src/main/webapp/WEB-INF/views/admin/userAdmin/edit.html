@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>用户注册</title>
+    <title>编辑资料</title>
     <!-- JQuery -->
     <script type="text/javascript" src="http://127.0.0.1/WTUShop/static/js/jquery.min.js"></script>
     <!-- Bootstrap核心CSS和JS -->
@@ -22,6 +22,7 @@
                     $("#username").val(user.username);
                     $("#password").val(user.password);
                     $("#realname").val(user.realname);
+                    $("#doEdit").attr("action",location.href+"/doEdit");
                 }
             )
         })
@@ -31,7 +32,7 @@
 <div class="container">
     <h1 class="page-header">编辑资料</h1>
 
-    <form class="form-horizontal" role="form" action="http://127.0.0.1/WTUShop/user/doRegister" method="post">
+    <form id="doEdit" class="form-horizontal" role="form" action="#" method="post">
         <div class="form-group">
             <label class="col-sm-2 control-label" for="username">
                 用户名：

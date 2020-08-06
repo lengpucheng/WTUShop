@@ -184,7 +184,7 @@ public class AdminController {
     /** 修改 */
     @RequestMapping("edit/{id}/doEdit")
     public String doEdit(@PathVariable Integer id,UserInfo userInfo,HttpServletRequest request,HttpServletResponse response){
-
+        response.setContentType("text/html; charset=utf-8");
         Admin admin = (Admin) request.getSession().getAttribute("admin");
         if (admin == null) {
             try {
@@ -204,7 +204,7 @@ public class AdminController {
             }
         }else {
             try {
-                response.getWriter().write(JSTools.alterUrl("修改成功","http://127.0.0.1/WTUShop/userAdmin"));
+                response.getWriter().write(JSTools.alterUrl("修改成功","http://127.0.0.1/WTUShop/admin/userAdmin"));
             } catch (IOException e) {
                 e.printStackTrace();
             }

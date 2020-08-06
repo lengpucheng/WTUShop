@@ -31,6 +31,8 @@ public class UserInfoServiceImpl implements UserInfoService {
         if (userInfo != null)
             if (userInfo.getPassword().equals(user.getPassword()))
                 result = userInfo;
+
+
         return result;
 
     }
@@ -62,6 +64,8 @@ public class UserInfoServiceImpl implements UserInfoService {
 
     @Override
     public int edit(UserInfo userInfo) {
+        if(userInfo==null||userInfo.getPassword()==null||userInfo.getUsername()==null)
+            return -1;
         return mapper.update(userInfo);
     }
 

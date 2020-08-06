@@ -52,6 +52,17 @@ public class UserInfo {
         this.realname = realname;
     }
 
+    public static UserInfo getInfo(UserInfo user){
+        if(user==null)
+            return null;
+        UserInfo info=new UserInfo();
+        info.setUserid(user.getUserid());
+        info.setUsername(user.getUsername());
+        info.setRealname(user.getRealname());
+        info.setPassword(null);
+        return info;
+    }
+
     @Override
     public String toString() {
         return "UserInfo{" +
