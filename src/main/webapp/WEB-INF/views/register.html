@@ -13,10 +13,97 @@
     <!-- Bootstrap核心CSS和JS -->
     <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            /* 获取登录的用户信息 */
+            $.getJSON(
+                "http://127.0.0.1/WTUShop/user/getInfo",
+                {},
+                function (json) {
+                    if (json.statusCode !== 200) {
+
+                    } else {
+                        $("#nav_login").html(`
+                        <a href="http://127.0.0.1/WTUShop/space">
+                        <span class="glyphicon glyphicon-user"></span>
+                        <span id="userName">${json.data.realname}</span></a>
+                        `);
+
+                        $("#nav_register").html(`
+                    <a href="http://127.0.0.1/WTUShop/user/signOut">安全退出</a>
+                    `);
+
+                    }
+                },
+                "json"
+            );
+        });
+
+
+        /* 搜索 */
+        function search() {
+            let key = $("#key").val();
+            location.href = "http://127.0.0.1/WTUShop/goods/search/" + key;
+        }
+    </script>
 </head>
 <body>
 <div class="container">
-    <h1 class="page-header">用户注册</h1>
+
+    <!-- 导航 -->
+    <nav class="navbar navbar-default" role="navigation">
+        <div class="navbar-header">
+            <button class="navbar-toggle" data-target="#bs-example-navbar-collapse-1" data-toggle="collapse"
+                    type="button"><span
+                    class="sr-only">WTUShop导航栏</span><span class="icon-bar"></span><span
+                    class="icon-bar"></span><span class="icon-bar"></span></button>
+            <a class="navbar-brand" href="http://127.0.0.1/WTUShop">WTUShop</a>
+        </div>
+
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <!-- 左边 -->
+            <ul class="nav navbar-nav">
+                <li><a href="http://127.0.0.1/WTUShop/goods/search">商场</a></li>
+                <li><a href="http://127.0.0.1/WTUShop/kill/list">秒杀活动</a></li>
+                <li class="active"><a href="http://127.0.0.1/WTUShop/space/">个人中心</a></li>
+                <li><a href="http://127.0.0.1/WTUShop/admin/manage">控制台</a></li>
+            </ul>
+            <!-- 右边 -->
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="http://127.0.0.1/WTUShop/shopping/list">购物车</a></li>
+                <li><a href="http://127.0.0.1/WTUShop/order/list">订单查询</a></li>
+                <li id="nav_login"><a href="http://127.0.0.1/WTUShop/login"><span
+                        class="glyphicon glyphicon-user"></span><span id="Theuser">请登录</span></a></li>
+                <li id="nav_register"><a href="http://127.0.0.1/WTUShop/register">注册</a></li>
+                <li>&nbsp;&nbsp;</li><!-- 占位符 -->
+            </ul>
+        </div>
+
+    </nav>
+    <!-- 标题和搜索 -->
+    <div class="row clearfix page-header">
+        <div class="col-md-8 column">
+            <a href="#"><h1 id="webName">用户注册</h1></a>
+        </div>
+
+        <div class="input-group col-md-4 column " style="margin-top: 20px">
+            <input class="form-control" id="key" placeholder="搜索商品" type="text">
+            <span class="input-group-btn">
+                <a href="javaScript:search()">
+                <button class="btn btn-default" id="btn_search">
+                    <span class="glyphicon glyphicon-search"></span> 搜索
+                </button>
+                    </a>
+                    &nbsp;
+            </span>
+        </div>
+    </div>
+
+    <ul class="breadcrumb">
+        <li><a href="http://127.0.0.1/WTUShop/space">个人中心</a></li>
+        <li class="active">用户注册</li>
+    </ul>
+
 
     <form class="form-horizontal" role="form" action="http://127.0.0.1/WTUShop/user/doRegister" method="post">
         <div class="form-group">

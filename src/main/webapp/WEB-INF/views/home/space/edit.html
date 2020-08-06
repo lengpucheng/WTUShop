@@ -46,16 +46,22 @@
                 function (json) {
                     if (json.statusCode !== 200) {
                         alert("获取失败！"+json.msg);
-                        location.href="../";
+                        location.href = "../";
                         return false;
                     }
-                    user=json.data;
+                    user = json.data;
                     $("#username").val(user.username);
                     $("#password").val(user.password);
                     $("#realname").val(user.realname);
                 }
             )
         })
+
+        /* 搜索 */
+        function search() {
+            let key = $("#key").val();
+            location.href = "http://127.0.0.1/WTUShop/goods/search/" + key;
+        }
     </script>
 </head>
 <body>
