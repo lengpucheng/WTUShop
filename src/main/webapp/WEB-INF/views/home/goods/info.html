@@ -18,7 +18,7 @@
             getInfo();
             /* 点击加入购物车 */
             $("#btn_submit").click(function () {
-                addBuyCars(theGoods);
+                addBuyCars();
             })
 
 
@@ -49,10 +49,10 @@
         var theGoods=0;
 
         /* 加入购物车 */
-        function addBuyCars(GoodsID) {
+        function addBuyCars() {
             $.getJSON(
                 "http://127.0.0.1/WTUShop/shopping/addShop",
-                {goodsId: GoodsID},
+                {goodsId: theGoods},
                 function (json) {
                     if (json.statusCode === 302) {
                         alert("添加失败！" + json.msg);
@@ -78,11 +78,11 @@
                         return false;
                     }
                     let goods = json.data;
-                    theGoods=goods.goodsId;
+                    theGoods=goods.id;
                     if (goods.image == null)
                         goods.image = "https://i0.hdslb.com/bfs/album/ebba81f89414e46c66082a507b427393240bfbfd.jpg@2000w_1e.webp";
                     /* 写入商品详情 */
-                    $("#goodsID").html(goods.goodsId);
+                    $("#goodsID").html(goods.id);
                     $("#name").html(goods.name);
                     $("#goodsName").html(goods.name);
                     $("#price").html(goods.price);

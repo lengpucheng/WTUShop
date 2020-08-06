@@ -31,6 +31,7 @@ public class ShopServiceImpl implements ShopService {
     @Autowired
     private OrderMapper orderMapper;
 
+    @Transactional
     @Override
     public int add(Integer userId, Integer goodsID) {
         /* 获取商品 */
@@ -48,7 +49,7 @@ public class ShopServiceImpl implements ShopService {
         System.out.println("__shop___"+shops);
 
         /* 如果存在就将数量增加1 */
-        if (shops.size() > 1) {
+        if (shops.size() > 0) {
             Shop shop = shops.get(0);
             return edit(userId, shop.getShoppingId(), shop.getGoodsSum() + 1);
         }

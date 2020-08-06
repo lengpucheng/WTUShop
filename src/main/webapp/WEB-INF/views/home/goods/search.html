@@ -47,28 +47,36 @@
             );
         })
 
-        var pageNow = 1;
+        var pageNow = 0;
         var pageAll = 1;
+        var pageSize = 6;
 
 
         /* 获取数据 */
-        function getData(page, size) {
+        function getData() {
+            if (pageNow >= pageAll) {
+                $("#nextMore").html("没有更多了哦！");
+                return false;
+            }
+            pageNow += 1;
             $.getJSON(
                 location.href + "/getData",
-                {pageIndex: page, pageSize: size},
+                {pageIndex: pageNow, pageSize: pageSize},
                 function (json) {
                     if (json.statusCode !== 200) {
                         $("#searchVar").html("没有找到相关内容 " + json.msg);
+                        return false;
                     }
 
                     // $("#sumRows").html(json.data.total);
                     pageNow = json.data.pageNum;
                     $("#pageNum").html(pageNow);
                     pageAll = json.data.pages;
-                    // $("#pages").html(pageAll);
-
-                    // $("#upon").attr('disabled', json.data.isFirstPage);
-                    // $("#next").attr('disabled', json.data.isLastPage);
+                    if (json.data.size == 0 || json.data.list.length < 1) {
+                        $("#nextMore").html("没有更多了哦！");
+                        $("#searchVar").html("没有找到相关内容 " + json.msg);
+                        return false;
+                    }
 
                     for (let i = 0; i < json.data.list.length; i++) {
                         let goods = json.data.list[i];
@@ -203,6 +211,12 @@
 
     </div>
 
+    <!-- 加载更多 -->
+    <div class="row clearfix">
+        <ul class="pager" id="nextMore">
+            <li><a href="javaScript:getData()">加载更多</a></li>
+        </ul>
+    </div>
 
 </div><!-- 自适应结尾（第一个div） -->
 
