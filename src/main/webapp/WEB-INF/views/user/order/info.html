@@ -58,6 +58,7 @@
                         priceAll += price;
                         orderTime = order.createDate;
                         orderKey = order.orderKey;
+                        orderStatus=order.orderStatus;
                         /* 显示清单 */
                         $("#order_info").append(`
                         <tr>
@@ -75,6 +76,7 @@
                     $("#price_all").html(priceAll);
                     $("#order_id").html(orderKey);
                     $("#time").html(orderTime);
+                    $("#status").html(orderStatus);
                 }
             );
 
@@ -108,7 +110,6 @@
             let key = $("#key").val();
             location.href = "http://127.0.0.1/WTUShop/goods/search/" + key;
         }
-
     </script>
 </head>
 <body>

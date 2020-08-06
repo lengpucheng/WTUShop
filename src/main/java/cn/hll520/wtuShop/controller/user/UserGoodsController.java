@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * @author lpc
  * @create 2020-08-05-17:52
  */
+@SuppressWarnings("all")
 @Controller
 @RequestMapping("goods/")
 public class UserGoodsController {

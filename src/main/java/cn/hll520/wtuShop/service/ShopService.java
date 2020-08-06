@@ -11,6 +11,32 @@ import java.util.List;
  */
 public interface ShopService {
 
+    /** 没有找到 */
+    String NOT_FOUND="not_found";
+    /** 提交失败 */
+    String SUBMIT_FAILED="submit_failed";
+    /** 权限不足 */
+    String NOT_ADMIN="not_admin";
+    /** 发生错误 */
+    String ERROR="error";
+
+    /** 出现错误 */
+    int HAPPEN_ERROR=-3;
+    /** 库存不足 */
+    int NOT_MOTHER_SUM=-2;
+    /** 权限不足 */
+    int NOT_SA=-1;
+    /** 失败 */
+    int NOT_SUCCESS=0;
+
+    /** 获取提交订单的错误信息
+     *  其中  shopId  保存错误的id
+     *  goods.name 保存错误的内容提示
+     *  goods.goodsID 保存错误的商品ID
+     *
+     * */
+    Shop getError();
+
     /**
      * 添加
      */

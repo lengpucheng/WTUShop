@@ -46,6 +46,7 @@
                 "json"
             );
         })
+
         var pageNow = 1;
         var pageAll = 1;
 
@@ -70,26 +71,26 @@
                     // $("#next").attr('disabled', json.data.isLastPage);
 
                     for (let i = 0; i < json.data.list.length; i++) {
-                        let kill = json.data.list[i];
-                        if (kill.image == null)
-                            kill.image = "https://i0.hdslb.com/bfs/album/ebba81f89414e46c66082a507b427393240bfbfd.jpg@2000w_1e.webp";
+                        let goods = json.data.list[i];
+                        if (goods.image == null)
+                            goods.image = "https://i0.hdslb.com/bfs/album/ebba81f89414e46c66082a507b427393240bfbfd.jpg@2000w_1e.webp";
                         $("#goodsVal").append(`
         <div class="col-md-4 column">
             <div class="row clearfix img-rounded" style="background: #eeeeee;padding-top: 10px;margin: 10px">
                 <div class="col-md-12 column">
-                    <img alt="商品预览图" src="${kill.image}" style="width: 100%" class="img-rounded"/>
+                    <img alt="商品预览图" src="${goods.image}" style="width: 100%" class="img-rounded"/>
                     <div class="panel panel-default" style="margin-top: 20px;width: 100%">
                         <div class="panel-heading">
-                            <a href="http://127.0.0.1/WTUShop/goods/info/${kill.id}">
-                                <h3 class="panel-title">${kill.name}</h3>
+                            <a href="http://127.0.0.1/WTUShop/goods/info/${goods.id}">
+                                <h3 class="panel-title">${goods.name}</h3>
                             </a>
                         </div>
                         <div class="panel-body text-right">
                             <span style="font-size: 18px">￥</span><span
-                                style="color: red;font-size: 26px">${kill.price}</span>
+                                style="color: red;font-size: 26px">${goods.price}</span>
                         </div>
                         <div class="panel-footer">
-                            <a href="javaScript:addBuyCars(${kill.id})">
+                            <a href="javaScript:addBuyCars(${goods.id})">
                             <button type="button" class="btn btn-default btn-block">加入购物车</button>
                             </a>
                         </div>
@@ -107,7 +108,21 @@
 
         /* 加入购物车 */
         function addBuyCars(GoodsID) {
-            alert(GoodsID);
+            $.getJSON(
+                "http://127.0.0.1/WTUShop/shopping/addShop",
+                {goodsId: GoodsID},
+                function (json) {
+                    if (json.statusCode === 302) {
+                        alert("添加失败！" + json.msg);
+                        location.href = json.data;
+                        return false;
+                    } else if (json.statusCode !== 200) {
+                        alert("添加失败！" + json.msg);
+                        return false;
+                    }
+                    alert("添加成功");
+                }
+            )
         }
 
         /* 搜索 */

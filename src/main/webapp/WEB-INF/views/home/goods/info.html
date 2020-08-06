@@ -16,26 +16,11 @@
     <script>
         $(function () {
             getInfo();
-
-            /* 加入购物车 */
+            /* 点击加入购物车 */
             $("#btn_submit").click(function () {
-
-                location.href = window.location.href + "/kill";
-                // $.getJSON(
-                //     window.location.href + "/kill",
-                //     $("#goods").serialize(),
-                //     function (json) {
-                //         if (json.statusCode === 200) {
-                //             alert("修改成功");
-                //             location.href = "http://127.0.0.1/WTUShop/admin/goods";
-                //             //正常响应
-                //         } else {
-                //             alert(json.msg);
-                //         }
-                //     },
-                //     "json"
-                // );
+                addBuyCars(theGoods);
             })
+
 
             /* 获取用户信息 */
             $.getJSON(
@@ -61,12 +46,26 @@
             );
         });
 
-        /* 搜索 */
-        function search() {
-            let key = $("#key").val();
-            location.href = "http://127.0.0.1/WTUShop/goods/search/" + key;
-        }
+        var theGoods=0;
 
+        /* 加入购物车 */
+        function addBuyCars(GoodsID) {
+            $.getJSON(
+                "http://127.0.0.1/WTUShop/shopping/addShop",
+                {goodsId: GoodsID},
+                function (json) {
+                    if (json.statusCode === 302) {
+                        alert("添加失败！" + json.msg);
+                        location.href = json.data;
+                        return false;
+                    } else if (json.statusCode !== 200) {
+                        alert("添加失败！" + json.msg);
+                        return false;
+                    }
+                    alert("添加成功");
+                }
+            )
+        }
 
         /* 获取信息 */
         function getInfo() {
@@ -79,6 +78,7 @@
                         return false;
                     }
                     let goods = json.data;
+                    theGoods=goods.goodsId;
                     if (goods.image == null)
                         goods.image = "https://i0.hdslb.com/bfs/album/ebba81f89414e46c66082a507b427393240bfbfd.jpg@2000w_1e.webp";
                     /* 写入商品详情 */
@@ -92,6 +92,12 @@
                 },
                 "json"
             );
+        }
+
+        /* 搜索 */
+        function search() {
+            let key = $("#key").val();
+            location.href = "http://127.0.0.1/WTUShop/goods/search/" + key;
         }
     </script>
 </head>
