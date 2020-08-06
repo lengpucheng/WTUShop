@@ -1,8 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>商品列表</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>秒杀活动管理</title>
     <!-- JQuery -->
     <script type="text/javascript" src="http://127.0.0.1/WTUShop/static/js/jquery.min.js"></script>
     <!-- Bootstrap核心CSS和JS -->
@@ -69,8 +74,8 @@
                         <td>${kill.id}</td>
                         <td>${kill.killId}</td>
                         <td>${kill.name}</td>
-                        <td><s>${kill.price}</s></td>
-                        <td style="color: red">${kill.killPrice}</td>
+                        <td><s>${kill.price / 100}</s></td>
+                        <td style="color: red">${kill.killPrice / 100}</td>
                         <td>${kill.image}</td>
                         <td style="color: firebrick;">${kill.stockCount}</td>
                         <td>${kill.dateStart}</td>
