@@ -68,6 +68,9 @@
 
                     for (let i = 0; i < json.data.list.length; i++) {
                         let goods = json.data.list[i];
+                        if (goods.image == null || goods.image === "")
+                            goods.image = "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1596716481337&di=fab03d71304d4827ecde2e1031b53a8e&imgtype=0&src=http%3A%2F%2Fg.hiphotos.baidu.com%2Fzhidao%2Fpic%2Fitem%2Ffc1f4134970a304e9b7f6625d4c8a786c8175c94.jpg";
+
                         $("#searchVar").append(`
                         <tr>
                         <td>${goods.categoryId}</td>
@@ -75,7 +78,7 @@
                         <td>${goods.name}</td>
                         <td>${goods.price / 100}</td>
                         <td>${goods.num}</td>
-                        <td>${goods.image}</td>
+                        <td><img src="${goods.image}" width="80px" alt="预览图"/></td>
                         <td>${goods.createTime}</td>
                         <td>${goods.updateTime}</td>
                         <td>
