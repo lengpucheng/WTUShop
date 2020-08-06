@@ -68,6 +68,10 @@ public class UserGoodsController {
     @RequestMapping("info/{goodsID}/getGoods")
     public JsonResult getGoods(@PathVariable(required = false) Integer goodsID) {
         JsonResult result = new JsonResult();
+        if(goodsID==null){
+            result.setStatusCode(JsonResult.STATUS_NOTFOUND);
+            return result;
+        }
 
         Goods goods = service.getGoodsByID(goodsID);
         if (goods==null)

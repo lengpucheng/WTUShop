@@ -6,7 +6,12 @@
 -->
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <meta name="description" content="">
+    <meta name="author" content="">
     <title>订单列表</title>
     <!-- JQuery -->
     <script type="text/javascript" src="http://127.0.0.1/WTUShop/static/js/jquery.min.js"></script>
@@ -60,7 +65,7 @@
             let orderStatus;
             for (let i = 0; i < orderList.length; i++) {
                 let order = orderList[i];
-                let price = order.goodsPrice * order.goodsCount;
+                let price = order.goodsPrice * order.goodsCount/100;
                 /* 赋值 */
                 priceAll += price;
                 orderTime = order.createDate;
