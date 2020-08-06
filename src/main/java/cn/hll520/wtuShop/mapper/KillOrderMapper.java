@@ -2,11 +2,10 @@ package cn.hll520.wtuShop.mapper;
 
 import cn.hll520.wtuShop.pojo.KillOrder;
 import cn.hll520.wtuShop.pojo.KillOrderExample;
-import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
-@Mapper
+
 public interface KillOrderMapper {
     long countByExample(KillOrderExample example);
 

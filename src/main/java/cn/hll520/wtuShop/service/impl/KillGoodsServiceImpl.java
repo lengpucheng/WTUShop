@@ -82,7 +82,7 @@ public class KillGoodsServiceImpl implements KillGoodsService {
         KillOrderExample killOrderExample = new KillOrderExample();
         killOrderExample.createCriteria()
                 .andKillUserIdEqualTo(userInfo.getUserid())
-                .andKillGoodsIdEqualTo(goods.getGoodsId());
+                .andKillIdEqualTo(killid);
         long sum = killOrderMapper.countByExample(killOrderExample);
         if (sum != 0)
             return NOT_JUST_ONCE;
@@ -109,6 +109,7 @@ public class KillGoodsServiceImpl implements KillGoodsService {
             System.out.println("__order2__" + order);
             //加入秒杀订单
             KillOrder killOrder = new KillOrder();
+            killOrder.setKillId(killid);
             killOrder.setKillGoodsId(goods.getGoodsId());
             killOrder.setOrderId(order.getOrderId());
             killOrder.setKillUserId(userInfo.getUserid());

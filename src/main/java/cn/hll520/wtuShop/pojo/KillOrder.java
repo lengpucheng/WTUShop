@@ -1,6 +1,6 @@
 package cn.hll520.wtuShop.pojo;
 
-public class KillOrder{
+public class KillOrder {
     private Integer killOrderId;
 
     private Integer killUserId;
@@ -8,6 +8,8 @@ public class KillOrder{
     private Integer killGoodsId;
 
     private Integer orderId;
+
+    private Integer killId;
 
     public Integer getKillOrderId() {
         return killOrderId;
@@ -41,13 +43,11 @@ public class KillOrder{
         this.orderId = orderId;
     }
 
-    @Override
-    public String toString() {
-        return "KillOrder{" +
-                "killOrderId=" + killOrderId +
-                ", killUserId=" + killUserId +
-                ", killGoodsId=" + killGoodsId +
-                ", orderId=" + orderId +
-                '}';
+    public Integer getKillId() {
+        return killId;
+    }
+
+    public void setKillId(Integer killId) {
+        this.killId = killId;
     }
 }

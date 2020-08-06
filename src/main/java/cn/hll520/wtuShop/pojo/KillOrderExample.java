@@ -343,6 +343,66 @@ public class KillOrderExample {
             addCriterion("order_id not between", value1, value2, "orderId");
             return (Criteria) this;
         }
+
+        public Criteria andKillIdIsNull() {
+            addCriterion("kill_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andKillIdIsNotNull() {
+            addCriterion("kill_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andKillIdEqualTo(Integer value) {
+            addCriterion("kill_id =", value, "killId");
+            return (Criteria) this;
+        }
+
+        public Criteria andKillIdNotEqualTo(Integer value) {
+            addCriterion("kill_id <>", value, "killId");
+            return (Criteria) this;
+        }
+
+        public Criteria andKillIdGreaterThan(Integer value) {
+            addCriterion("kill_id >", value, "killId");
+            return (Criteria) this;
+        }
+
+        public Criteria andKillIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("kill_id >=", value, "killId");
+            return (Criteria) this;
+        }
+
+        public Criteria andKillIdLessThan(Integer value) {
+            addCriterion("kill_id <", value, "killId");
+            return (Criteria) this;
+        }
+
+        public Criteria andKillIdLessThanOrEqualTo(Integer value) {
+            addCriterion("kill_id <=", value, "killId");
+            return (Criteria) this;
+        }
+
+        public Criteria andKillIdIn(List<Integer> values) {
+            addCriterion("kill_id in", values, "killId");
+            return (Criteria) this;
+        }
+
+        public Criteria andKillIdNotIn(List<Integer> values) {
+            addCriterion("kill_id not in", values, "killId");
+            return (Criteria) this;
+        }
+
+        public Criteria andKillIdBetween(Integer value1, Integer value2) {
+            addCriterion("kill_id between", value1, value2, "killId");
+            return (Criteria) this;
+        }
+
+        public Criteria andKillIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("kill_id not between", value1, value2, "killId");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {
