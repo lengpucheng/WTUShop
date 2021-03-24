@@ -9,7 +9,7 @@
 
     <title>管理控制台</title>
     <!-- JQuery -->
-    <script src="http://127.0.0.1/WTUShop/static/js/jquery.min.js"></script>
+    <script src="/WTUShop/static/js/jquery.min.js"></script>
     <!-- Bootstrap核心CSS 、JS-->
     <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
@@ -17,7 +17,7 @@
     <script src="https://v3.bootcss.com/assets/js/ie10-viewport-bug-workaround.js"></script>
     <link href="https://v3.bootcss.com/assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
     <!-- 样式 -->
-    <link href="http://127.0.0.1/WTUShop/static/css/manage.css" rel="stylesheet">
+    <link href="/WTUShop/static/css/manage.css" rel="stylesheet">
     <script type="text/javascript">
 
         $(function () {
@@ -31,12 +31,12 @@
 
             /* 获取用户登录信息 */
             $.getJSON(
-                "http://127.0.0.1/WTUShop/sa/getInfo",
+                "/WTUShop/sa/getInfo",
                 {},
                 function (json) {
                     if (json.statusCode !== 200){
                         alert("权限不足，请用管理员账号登录！")
-                        location.href="http://127.0.0.1/WTUShop/admin";
+                        location.href="/WTUShop/admin";
                         return false;
                     }
                     $("#userName").html(json.data.realname);
@@ -66,12 +66,12 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="http://127.0.0.1/WTUShop">WTUShop</a>
+            <a class="navbar-brand" href="/WTUShop">WTUShop</a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-link">
-                <li><a href="http://127.0.0.1/WTUShop/admin/navigation" target="_view">业务导航</a></li>
-                <li><a href="http://127.0.0.1/WTUShop/home" target="_view">商城首页</a></li>
+                <li><a href="/WTUShop/admin/navigation" target="_view">业务导航</a></li>
+                <li><a href="/WTUShop/home" target="_view">商城首页</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li>
@@ -79,8 +79,8 @@
                         <span class="glyphicon glyphicon-search"></span> 搜索
                     </button>
                 </li>
-                <li><a href="http://127.0.0.1/WTUShop/register">注册</a></li>
-                <li id="login"><a href="http://127.0.0.1/WTUShop/login">登录</a></li>
+                <li><a href="/WTUShop/register">注册</a></li>
+                <li id="login"><a href="/WTUShop/login">登录</a></li>
                 <li><a href="#"><span class="glyphicon glyphicon-user"></span><span id="userName">请登录</span></a></li>
             </ul>
             <form class="navbar-form navbar-right">
@@ -95,25 +95,25 @@
     <div class="row">
         <div id="menu" class="col-sm-3 col-md-2 sidebar">
             <ul class="nav nav-sidebar">
-                <li class="active"><a href="http://127.0.0.1/WTUShop/admin/goods" target="_view">商品列表 </a></li>
-                <li><a href="http://127.0.0.1/WTUShop/admin/goods/add" target="_view">添加</a></li>
+                <li class="active"><a href="/WTUShop/admin/goods" target="_view">商品列表 </a></li>
+                <li><a href="/WTUShop/admin/goods/add" target="_view">添加</a></li>
             </ul>
             <ul class="nav nav-sidebar">
-                <li><a href="http://127.0.0.1/WTUShop/admin/category" target="_view">类别列表</a></li>
-                <li><a href="http://127.0.0.1/WTUShop/admin/category/add" target="_view">添加</a></li>
+                <li><a href="/WTUShop/admin/category" target="_view">类别列表</a></li>
+                <li><a href="/WTUShop/admin/category/add" target="_view">添加</a></li>
             </ul>
             <ul class="nav nav-sidebar">
-                <li><a href="http://127.0.0.1/WTUShop/admin/kill/" target="_view">秒杀活动</a></li>
-                <li><a href="http://127.0.0.1/WTUShop/admin/kill//add" target="_view">添加</a></li>
-<!--                <li><a href="http://127.0.0.1/WTUShop/admin/category/edit" target="_view">编辑</a></li>-->
+                <li><a href="/WTUShop/admin/kill/" target="_view">秒杀活动</a></li>
+                <li><a href="/WTUShop/admin/kill//add" target="_view">添加</a></li>
+<!--                <li><a href="/WTUShop/admin/category/edit" target="_view">编辑</a></li>-->
             </ul>
             <ul class="nav nav-sidebar">
-                <li><a href="http://127.0.0.1/WTUShop/admin/shopping" target="_view">购物车</a></li>
-                <li><a href="http://127.0.0.1/WTUShop/admin/order" target="_view">订单列表</a></li>
-                <li><a href="http://127.0.0.1/WTUShop/admin/userAdmin" target="_view">用户管理</a></li>
+                <li><a href="/WTUShop/admin/shopping" target="_view">购物车</a></li>
+                <li><a href="/WTUShop/admin/order" target="_view">订单列表</a></li>
+                <li><a href="/WTUShop/admin/userAdmin" target="_view">用户管理</a></li>
             </ul>
 
-            <a href="http://127.0.0.1/WTUShop/sa/signOut">
+            <a href="/WTUShop/sa/signOut">
                 <button style="width: 100%" class="btn btn-danger">退出登录</button>
             </a>
         </div>
@@ -121,7 +121,7 @@
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
             <!-- iframe -->
             <iframe id="_view" name="_view" width="100%" height="90%" frameborder="0"
-                    src="http://127.0.0.1/WTUShop/admin/navigation"></iframe>
+                    src="/WTUShop/admin/navigation"></iframe>
         </div>
     </div>
 </div>

@@ -134,13 +134,13 @@ public class UserInfoController {
             return null;
         }else {
             try {
-                response.getWriter().write(JSTools.alterUrl("注册成功！","http://127.0.0.1/WTUShop/login"));
+                response.getWriter().write(JSTools.alterUrl("注册成功！","/WTUShop/login"));
             } catch (IOException e) {
                 e.printStackTrace();
             }        }
         return null;
     }
-//    http://127.0.0.1/WTUShop/user/space/
+//    /WTUShop/user/space/
     /** 转发空间页面 */
     @RequestMapping({"space/{id}","space"})
     public String spaceForWard(@PathVariable(required = false) Integer id){
@@ -190,7 +190,7 @@ public class UserInfoController {
         response.setContentType("text/html; charset=utf-8");
         if(user==null){
             try {
-                response.getWriter().write(JSTools.alterUrl("请先登录","Http://127.0.0.1/WTUShop/login"));
+                response.getWriter().write(JSTools.alterUrl("请先登录","/WTUShop/login"));
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -224,7 +224,7 @@ public class UserInfoController {
             try {
                 request.getSession().setAttribute("user",null);
                 request.getSession().invalidate();
-                response.getWriter().write(JSTools.alterUrl("修改成功！请重新登陆！","http://127.0.0.1/WTUShop/login"));
+                response.getWriter().write(JSTools.alterUrl("修改成功！请重新登陆！","/WTUShop/login"));
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -239,7 +239,7 @@ public class UserInfoController {
         request.getSession().invalidate();
         response.setContentType("text/html; charset=utf-8");
         try {
-            response.getWriter().write(JSTools.alterReplace("已安全退出","http://127.0.0.1/WTUShop/"));
+            response.getWriter().write(JSTools.alterReplace("已安全退出","/WTUShop/"));
         } catch (IOException e) {
             e.printStackTrace();
         }
