@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.hll520.wtuShop.mapper.CategoryMapper">
+    <resultMap id="categoryResultMap" type="Category">
+        <id column="id" property="id"/>
+        <collection property="goodsList" ofType="Goods"
+                    column="id" select="cn.hll520.wtuShop.mapper.GoodsMapper.selectByCategory">
+        </collection>
+    </resultMap>
+
+    <insert id="insertCategory" parameterType="Category">
+        INSERT INTO category(name,goods_num) VALUES(#{name},#{goods_num})
+    </insert>
+
+    <update id="updateCategory" parameterType="Category">
+    UPDATE category  SET name=#{name},goods_num=#{goods_num} WHERE id=#{id}
+    </update>
+
+    <delete id="deleteById" parameterType="Integer">
+        DELETE FROM category WHERE id=#{_id}
+    </delete>
+
+    <select id="selectById" parameterType="Integer" resultType="Category">
+        SELECT * FROM category WHERE id=#{_id}
+    </select>
+
+    <select id="selectCategoryOfGoodsById" parameterType="Integer" resultMap="categoryResultMap">
+        SELECT * FROM category WHERE id=#{_id}
+    </select>
+
+
+    <select id="selectByName" parameterType="String" resultType="Category">
+        SELECT * FROM category WHERE name=#{_name}
+    </select>
+
+    <select id="selectAll" resultType="Category">
+        SELECT * FROM category
+    </select>
+</mapper>

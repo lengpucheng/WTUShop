@@ -44,7 +44,7 @@ public class IndexController {
         if (user == null) {
             response.setContentType("text/html; charset=utf-8");
             try {
-                response.getWriter().write(JSTools.alterUrl("请先登录", "http://127.0.0.1/WTUShop/login"));
+                response.getWriter().write(JSTools.alterUrl("请先登录", "/login"));
             } catch (IOException e) {
                 e.printStackTrace();
             }

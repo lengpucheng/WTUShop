@@ -86,7 +86,7 @@ public class AdminController {
         session.invalidate();
         response.setContentType("text/html; charset=utf-8");
         try {
-            response.getWriter().write(JSTools.alterReplace("已安全退出", "http://127.0.0.1/WTUShop/admin/manage"));
+            response.getWriter().write(JSTools.alterReplace("已安全退出", "/admin/manage"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -125,7 +125,7 @@ public class AdminController {
         Admin admin = (Admin) request.getSession().getAttribute("admin");
         if (admin == null) {
             try {
-                response.getWriter().write(JSTools.alterUrl("权限不足","http://127.0.0.1/WTUShop/admin"));
+                response.getWriter().write(JSTools.alterUrl("权限不足","/admin"));
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -188,7 +188,7 @@ public class AdminController {
         Admin admin = (Admin) request.getSession().getAttribute("admin");
         if (admin == null) {
             try {
-                response.getWriter().write(JSTools.alterUrl("权限不足","http://127.0.0.1/WTUShop/admin"));
+                response.getWriter().write(JSTools.alterUrl("权限不足","/admin"));
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -204,7 +204,7 @@ public class AdminController {
             }
         }else {
             try {
-                response.getWriter().write(JSTools.alterUrl("修改成功","http://127.0.0.1/WTUShop/admin/userAdmin"));
+                response.getWriter().write(JSTools.alterUrl("修改成功","/admin/userAdmin"));
             } catch (IOException e) {
                 e.printStackTrace();
             }

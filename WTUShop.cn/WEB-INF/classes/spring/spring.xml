@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        https://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        https://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/tx
+        https://www.springframework.org/schema/tx/spring-tx.xsd
+">
+
+    <context:annotation-config/>
+    <!--    扫描 X包 下 带注解的类 -->
+    <context:component-scan base-package="cn.hll520.wtuShop">
+        <!--排除Controller-->
+        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+    </context:component-scan>
+    <!-- 更多的bean定义在这里 -->
+
+
+    <!-- 引入属性文件 -->
+    <context:property-placeholder location="classpath:jdbc.properties"/>
+
+    <!-- 创建数据库连接池 -->
+    <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource">
+        <property name="url" value="${db_url}"/>
+        <property name="driverClassName" value="${db_driverClassName}"/>
+        <property name="username" value="${db_username}"/>
+        <property name="password" value="${db_password}"/>
+        <!--        <property name="initialSize" value="${initialSize}"/>-->
+        <!--        <property name="maxActive" value="${maxActive}"/>-->
+    </bean>
+
+    <!-- 创建数据库连接会话工厂 SqlSessionFactory -->
+    <bean id="sqlSessionFactoryBean" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <!-- 导入数据库连接池 -->
+        <property name="dataSource" ref="dataSource"/>
+        <!-- 导入Mybatis 配置文件 -->
+        <property name="configLocation" value="classpath:mybatis/Configuration.xml"/>
+        <!-- 设置别名 -->
+        <property name="typeAliasesPackage" value="cn.hll520.wtuShop.pojo"/>
+    </bean>
+
+    <!-- 扫描接口 -->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <!-- 扫描包下的接口 -->
+        <property name="basePackage" value="cn.hll520.wtuShop.mapper"/>
+        <!-- 调用sqlSession工厂生成sqlSession -->
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactoryBean"/>
+    </bean>
+
+    <!-- 事务管理类 -->
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <!-- 注解驱动 -->
+    <tx:annotation-driven transaction-manager="transactionManager"/>
+
+</beans>

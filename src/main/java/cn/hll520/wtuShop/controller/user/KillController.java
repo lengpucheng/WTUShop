@@ -156,7 +156,7 @@ public class KillController {
         UserInfo user = (UserInfo) request.getSession().getAttribute("user");
         if(user==null){
             try {
-                response.getWriter().write(JSTools.alterUrl("请先登录","http://127.0.0.1/WTUShop/login"));
+                response.getWriter().write(JSTools.alterUrl("请先登录","/login"));
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -187,7 +187,7 @@ public class KillController {
                 default:
                     /* 抢购成功就跳转支付 */
                     response.getWriter().write(JSTools.alterUrl(
-                            "抢购成功", "http://127.0.0.1/WTUShop/kill/pay/" + kill));
+                            "抢购成功", "/kill/pay/" + kill));
                     break;
 
             }

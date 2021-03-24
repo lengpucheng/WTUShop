@@ -45,7 +45,7 @@ public class ShopController {
         if (user == null || user.getUserid() == null) {
             result.setStatusCode(JsonResult.STATUS_SUCCESS_REDIRECT);
             result.setMsg("请登录！");
-            result.setData("http://127.0.0.1/WTUShop/login");
+            result.setData("/login");
         } else {
             List<Shop> show = service.show(user.getUserid());
             if (show.size() < 1)
@@ -71,7 +71,7 @@ public class ShopController {
         if (user == null || user.getUserid() == null) {
             result.setStatusCode(JsonResult.STATUS_SUCCESS_REDIRECT);
             result.setMsg("请登录！");
-            result.setData("http://127.0.0.1/WTUShop/login");
+            result.setData("/login");
         } else {
             int add = service.add(user.getUserid(), goodsId);
             if (add < 1)
@@ -95,7 +95,7 @@ public class ShopController {
         if (user == null || user.getUserid() == null) {
             result.setStatusCode(JsonResult.STATUS_SUCCESS_REDIRECT);
             result.setMsg("请登录！");
-            result.setData("http://127.0.0.1/WTUShop/login");
+            result.setData("/login");
         } else {
             int del = service.del(user.getUserid(), shopID);
             switch (del){
@@ -128,7 +128,7 @@ public class ShopController {
         if (user == null || user.getUserid() == null) {
             result.setStatusCode(JsonResult.STATUS_SUCCESS_REDIRECT);
             result.setMsg("请登录！");
-            result.setData("http://127.0.0.1/WTUShop/login");
+            result.setData("/login");
         } else {
             int edit = service.edit(user.getUserid(), shopId, number);
             switch (edit){
@@ -157,7 +157,7 @@ public class ShopController {
         if (user == null || user.getUserid() == null) {
             result.setStatusCode(JsonResult.STATUS_SUCCESS_REDIRECT);
             result.setMsg("请登录！");
-            result.setData("http://127.0.0.1/WTUShop/login");
+            result.setData("/login");
         } else {
             String orderKey = service.makeOrder(user.getUserid());
             switch (orderKey){
